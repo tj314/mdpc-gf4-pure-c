@@ -1,0 +1,19 @@
+cmake_minimum_required(VERSION 3.20)
+project(test C)
+
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_FLAGS "-Wall -Wextra")
+
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Release")
+endif()
+
+if(CMAKE_BUILD_TYPE MATCHES Release)
+    message("release mode")
+else()
+    message("debug mode")
+    add_definitions(-DSAFE)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g")
+endif()
+
+add_executable(test main.c src/gf4_poly.c src/gf4_poly.h src/gf4.h src/gf4.c)
