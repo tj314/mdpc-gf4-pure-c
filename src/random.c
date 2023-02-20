@@ -1,6 +1,6 @@
 #include "random.h"
 
-void init_random() {
+void random_init() {
     static bool initialized = false;
     if (!initialized) {
         initialized = true;
@@ -11,7 +11,7 @@ void init_random() {
 
 size_t random_from_range(size_t low_bound_inclusive, size_t top_bound_inclusive) {
     assert(low_bound_inclusive < top_bound_inclusive);
-    init_random();
+    random_init();
     return low_bound_inclusive + (rand() % (top_bound_inclusive - low_bound_inclusive + 1));
 }
 

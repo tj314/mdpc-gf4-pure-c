@@ -14,12 +14,12 @@
  * Ensures that srand is called at most once during each program execution. This function is not thread safe.
  * This function doesn't need to be called explicitly.
  */
-void init_random();
+void random_init();
 
 /**
  * Return an unsigned integer within given range.
  *
- * May also call init_random().
+ * May also call random_init().
  * This function uses rand() to generate random values.
  *
  * @param low_bound_inclusive inclusive low bound
@@ -31,7 +31,7 @@ size_t random_from_range(size_t low_bound_inclusive, size_t top_bound_inclusive)
 /**
  * Generate a polynomial of given weight.
  *
- * May also call init_random().
+ * May also call random_init().
  *
  * @param poly output polynomial, it must be allocated in advance
  * @param weight number of nonzero coefficients
