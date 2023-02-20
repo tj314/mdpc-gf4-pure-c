@@ -372,7 +372,7 @@ bool gf4_poly_invert_slow_byref(gf4_poly_t * maybe_inverse, gf4_poly_t * poly, g
         for (size_t i = 0; i <= s.degree; ++i) {
             s.coefficients[i] = gf4_div(s.coefficients[i], a_abs);
         }
-        *maybe_inverse = s;
+        gf4_poly_shallow_copy(maybe_inverse, &s);
         ret_value = true;
     }
     if (!ret_value) {
