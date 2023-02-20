@@ -39,13 +39,12 @@ gf4_poly_t gf4_poly_mul(gf4_poly_t * a, gf4_poly_t * b);
 void gf4_poly_mul_byref(gf4_poly_t * out, gf4_poly_t * a, gf4_poly_t * b);
 
 // division and modulo
-gf4_poly_t gf4_poly_div_x_to_deg(gf4_poly_t * poly, size_t deg);
 void gf4_poly_div_x_to_deg_byref(gf4_poly_t * out, gf4_poly_t * poly, size_t deg);
 void gf4_poly_div_x_to_deg_inplace(gf4_poly_t * poly, size_t deg);
 void gf4_poly_div_rem(gf4_poly_t * div, gf4_poly_t * rem, gf4_poly_t * a, gf4_poly_t * b);
 
 // inverse
-bool gf4_poly_invert_slow_byref(gf4_poly_t * maybe_inverse, gf4_poly_t * poly, gf4_poly_t * modulus);
+bool gf4_poly_invert_slow(gf4_poly_t * maybe_inverse, gf4_poly_t * poly, gf4_poly_t * modulus);
 
 // properties
 bool gf4_poly_is_zero(gf4_poly_t * poly);
@@ -55,5 +54,5 @@ bool gf4_poly_equal(gf4_poly_t * poly1, gf4_poly_t * poly2);
 // helpers
 void gf4_poly_pretty_print(gf4_poly_t * poly, const char * end);
 gf4_poly_t gf4_poly_clone(gf4_poly_t * poly);
-void gf4_poly_shallow_copy(gf4_poly_t * out, gf4_poly_t * in);
+void gf4_poly_copy(gf4_poly_t * out, gf4_poly_t * in);
 #endif // GF4_GF4_POLY_H
