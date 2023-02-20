@@ -2,7 +2,7 @@
 
 // helper function
 bool gf4_is_in_range(gf4_t a) {
-    return a <= 3;
+    return a <= GF4_MAX_VALUE;
 }
 
 const char * gf4_to_str(gf4_t a) {

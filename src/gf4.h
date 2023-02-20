@@ -7,6 +7,8 @@
 #include <stdio.h>
 #include <assert.h>
 
+#define GF4_MAX_VALUE 3
+
 typedef uint8_t gf4_t;
 
 
