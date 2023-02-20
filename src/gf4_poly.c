@@ -319,6 +319,7 @@ void gf4_poly_div_rem(gf4_poly_t * div, gf4_poly_t * rem, gf4_poly_t * a, gf4_po
     }
 }
 
+
 // invert
 bool gf4_poly_invert_slow_byref(gf4_poly_t * maybe_inverse, gf4_poly_t * poly, gf4_poly_t * modulus) {
     assert(NULL != maybe_inverse);
@@ -329,74 +330,60 @@ bool gf4_poly_invert_slow_byref(gf4_poly_t * maybe_inverse, gf4_poly_t * poly, g
     if (gf4_poly_is_zero(poly)) {
         return false;
     }
+
     gf4_poly_t a = gf4_poly_clone(poly);
     gf4_poly_t b = gf4_poly_clone(modulus);
 #ifdef CANRESIZE
-    gf4_poly_t t = gf4_poly_init_zero(1);
     gf4_poly_t s = gf4_poly_init_zero(1);
-    gf4_poly_t d = gf4_poly_init_zero(1);
-    gf4_poly_t r = gf4_poly_init_zero(1);
+    gf4_poly_t t = gf4_poly_init_zero(1);
+    gf4_poly_t div = gf4_poly_init_zero(1);
+    gf4_poly_t rem = gf4_poly_init_zero(1);
 #else
-    size_t capacity = modulus->capacity > poly->capacity ? modulus->capacity : poly->capacity;
-    gf4_poly_t t = gf4_poly_init_zero(capacity);
-    gf4_poly_t s = gf4_poly_init_zero(capacity);
-    gf4_poly_t d = gf4_poly_init_zero(capacity);
-    gf4_poly_t r = gf4_poly_init_zero(capacity);
+    gf4_poly_t s = gf4_poly_init_zero(modulus->capacity);
+    gf4_poly_t t = gf4_poly_init_zero(modulus->capacity);
+    gf4_poly_t div = gf4_poly_init_zero(modulus->capacity);
+    gf4_poly_t rem = gf4_poly_init_zero(modulus->capacity);
 #endif
-
-    while(!gf4_poly_is_zero(&b)) {
-        gf4_poly_div_rem(&d, &r, &a, &b);
-
-        // (a, b) <- (b, r)
-        gf4_poly_t scratch;
-        gf4_poly_shallow_copy(&scratch, &a);
-        gf4_poly_zero_out(&scratch);
-
-        gf4_poly_shallow_copy(&a, &b); // a <- b
-        gf4_poly_shallow_copy(&b, &r); // b <- r
-
-        // (t, s) <- (s, t + d * s)
-        gf4_poly_shallow_copy(&r, &t); // r <- t
-        gf4_poly_shallow_copy(&t, &s); // t <- s
-
-        gf4_poly_mul_byref(&scratch, &d, &s);
-        tmp = gf4_poly_add(&r, &tmp);
-        gf4_poly_copy_from(&s, &tmp); // s <- t + d * s
-
-        for (size_t i = 0; i <= d.degree; ++i) {
-            d.coefficients[i] = 0;
-        }
-        for (size_t i = 0; i <= r.degree; ++i) {
-            r.coefficients[i] = 0;
-        }
-    }
-    if(a.degree > 0) {
-        gf4_poly_deinit(&a);
-        gf4_poly_deinit(&b);
-        gf4_poly_deinit(&s);
-        gf4_poly_deinit(&t);
-        gf4_poly_deinit(&d);
-        gf4_poly_deinit(&r);
-        return false;
-    } else {
-        // t / a
-        size_t deg = 0;
-        for (size_t i = 0; i <= t.degree; ++i) {
-            t.coefficients[i] = gf4_div(t.coefficients[i], a.coefficients[0]);
-            if (0 != t.coefficients[i]) {
-                deg = i;
-            }
-        }
-        t.degree = deg;
-        *maybe_inverse = t;
-        gf4_poly_deinit(&a);
-        gf4_poly_deinit(&b);
-        gf4_poly_deinit(&s);
-        gf4_poly_deinit(&d);
-        gf4_poly_deinit(&r);
-        return true;
+    gf4_poly_t tmp;
+    s.coefficients[0] = 1;
+    while (!gf4_poly_is_zero(&b)) {
+        gf4_poly_div_rem(&div, &rem, &a, &b);
+        // (a, b) = (b, rem)
+        gf4_poly_shallow_copy(&tmp, &a);
+        gf4_poly_shallow_copy(&a, &b);
+        gf4_poly_shallow_copy(&b, &rem);
+        // s = t
+        gf4_poly_zero_out(&tmp);
+        gf4_poly_shallow_copy(&rem, &s);
+        gf4_poly_shallow_copy(&s, &t);
+        // t = s + div * t
+        gf4_poly_mul_byref(&tmp, &div, &t);
+        gf4_poly_zero_out(&div);
+        gf4_poly_add_byref(&div, &rem, &tmp);
+        gf4_poly_shallow_copy(&t, &div);
+        gf4_poly_shallow_copy(&div, &tmp);
+        gf4_poly_zero_out(&div);
+        gf4_poly_zero_out(&rem);
     }
 
+    bool ret_value = false;
+    if(a.degree == 0) {
+        gf4_t a_abs = a.coefficients[0];
+        for (size_t i = 0; i <= s.degree; ++i) {
+            s.coefficients[i] = gf4_div(s.coefficients[i], a_abs);
+        }
+        *maybe_inverse = s;
+        ret_value = true;
+    }
+    if (!ret_value) {
+        gf4_poly_deinit(&s);
+    }
+    gf4_poly_deinit(&a);
+    gf4_poly_deinit(&b);
+    gf4_poly_deinit(&t);
+    gf4_poly_deinit(&div);
+    gf4_poly_deinit(&rem);
+    return ret_value;
 }
 
 // properties
