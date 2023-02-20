@@ -18,4 +18,6 @@ else()
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g")
 endif()
 
-add_executable(mdpc-gf4 main.c src/gf4_poly.c src/gf4_poly.h src/gf4.h src/gf4.c)
+set(SOURCES main.c src/gf4.h src/gf4.c src/gf4_poly.h src/gf4_poly.c src/contexts.h src/contexts.c src/random.c src/random.h)
+
+add_executable(mdpc-gf4 ${SOURCES})
