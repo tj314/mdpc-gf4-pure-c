@@ -1,26 +1,11 @@
 #include <stdio.h>
 #include "src/gf4.h"
 #include "src/gf4_poly.h"
+#include "src/contexts.h"
 
 
 int main(void) {
     /*
-    PolynomialGF2N<GF4> p1; // invertible
-    p1.set_coefficient(0, 1);
-    p1.set_coefficient(1, 1);
-    p1.set_coefficient(2, 1);
-
-    PolynomialGF2N<GF4> p2; // not invertible
-    p2.set_coefficient(1, 2);
-    p2.set_coefficient(4, 2);
-
-    PolynomialGF2N<GF4> modulus;
-    modulus.set_coefficient(0, 1);
-    modulus.set_coefficient(8, 1);
-    */
-
-
-
     gf4_poly_t poly1 = gf4_poly_init_zero(10);
     gf4_poly_t poly2 = gf4_poly_init_zero(10);
     gf4_poly_t modulus = gf4_poly_init_zero(10);
@@ -67,4 +52,15 @@ int main(void) {
     gf4_poly_deinit(&modulus);
     gf4_poly_deinit(&maybe_inverse);
 	return 0;
+    */
+
+    encoding_context_t ec;
+    decoding_context_t dc;
+    size_t block_size = 2339;
+    size_t block_weight = 37;
+    contexts_init(&ec, &dc, block_size, block_weight);
+    
+
+
+    return 0;
 }
