@@ -60,7 +60,6 @@ void contexts_init(encoding_context_t * out_enc_ctx, decoding_context_t * out_de
             gf4_poly_mul(&tmp, &h0, &maybe_inverse);
             gf4_poly_div_rem(&div, &rem, &tmp, &modulus);
             gf4_poly_deinit(&tmp);
-            gf4_poly_deinit(&rem);
             gf4_poly_deinit(&div);
             out_enc_ctx->block_size = block_size;
             out_enc_ctx->second_block_G = rem;
