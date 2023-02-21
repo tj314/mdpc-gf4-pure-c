@@ -1,7 +1,7 @@
-#include "encoder.h"
+#include "enc.h"
 
 
-void encode(gf4_poly_t * out_encoded, gf4_poly_t * in_message, encoding_context_t * ctx) {
+void enc_encode(gf4_poly_t * out_encoded, gf4_poly_t * in_message, encoding_context_t * ctx) {
     assert(NULL != out_encoded);
     assert(NULL != in_message);
     assert(NULL != ctx);
