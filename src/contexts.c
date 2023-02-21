@@ -31,7 +31,7 @@ void contexts_genarate(encoding_context_t * out_enc_ctx, decoding_context_t * ou
         }
         bool inverted = gf4_poly_invert_slow(&maybe_inverse, &h1, &modulus);
         if (inverted) {
-            gf4_poly_t tmp = gf4_poly_init_zero(capacity);
+            gf4_poly_t tmp = gf4_poly_init_zero(2*capacity);
             gf4_poly_t div = gf4_poly_init_zero(capacity);
             gf4_poly_t rem = gf4_poly_init_zero(capacity);
             gf4_poly_mul(&tmp, &h1, &maybe_inverse);
