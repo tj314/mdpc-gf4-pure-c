@@ -58,7 +58,10 @@ int main(void) {
     decoding_context_t dc;
     size_t block_size = 2339;
     size_t block_weight = 37;
+    //size_t block_size = 17;
+    //size_t block_weight = 3;
     contexts_init(&ec, &dc, block_size, block_weight);
+    printf("done\n");
     contexts_deinit(&ec, &dc);
     printf("success!\n");
     return 0;
