@@ -268,7 +268,7 @@ bool gf4_poly_invert_slow(gf4_poly_t * maybe_inverse, gf4_poly_t * poly, gf4_pol
 
         // t = s + div * t
         gf4_poly_zero_out(&tmp);
-        gf4_poly_mul_byref(&tmp, &div, &t);
+        gf4_poly_mul(&tmp, &div, &t);
         gf4_poly_zero_out(&div);
         gf4_poly_add(&div, &rem, &tmp);
         t = div;
@@ -319,37 +319,34 @@ bool gf4_poly_equal(gf4_poly_t * poly1, gf4_poly_t * poly2) {
 
 
 // helpers
-void gf4_poly_pretty_print(gf4_poly_t * poly, const char * end) {
+void gf4_poly_pretty_print(gf4_poly_t * poly, FILE * stream, const char * end) {
     assert(NULL != poly);
     assert(NULL != end);
     if (0 == poly->degree && 0 == poly->coefficients[0]) {
-        printf("0\n");
+        fprintf(stream, "0\n");
     } else {
         char * sep = "";
-        if (1 == poly->coefficients[0]) {
-            printf("1");
-            sep = " + ";
-        } else if (1 < poly->coefficients[0]) {
-            printf("%s", gf4_to_str(poly->coefficients[0]));
+        if (1 <= poly->coefficients[0]) {
+            fprintf(stream, "%s", gf4_to_str(poly->coefficients[0]));
             sep = " + ";
         }
         if (1 <= poly->degree && 1 == poly->coefficients[1]) {
-            printf("%s1x", sep);
+            fprintf(stream, "%sx", sep);
             sep = " + ";
         } else if (1 <= poly->degree && 1 < poly->coefficients[1]) {
-            printf("%s%sx", sep, gf4_to_str(poly->coefficients[1]));
+            fprintf(stream, "%s%s*x", sep, gf4_to_str(poly->coefficients[1]));
             sep = " + ";
         }
         for (size_t i = 2; i <= poly->degree; ++i) {
             if (1 == poly->coefficients[i]) {
-                printf("%sx^%zu", sep, i);
+                fprintf(stream, "%sx^%zu", sep, i);
                 sep = " + ";
             } else if (1 < poly->coefficients[i]) {
-                printf("%s%sx^%zu", sep, gf4_to_str(poly->coefficients[i]), i);
+                fprintf(stream, "%s%s*x^%zu", sep, gf4_to_str(poly->coefficients[i]), i);
                 sep = " + ";
             }
         }
-        printf("%s", end);
+        fprintf(stream, "%s", end);
     }
 }
 
@@ -376,6 +373,5 @@ void gf4_poly_copy(gf4_poly_t * out, gf4_poly_t * in) {
     }
 #endif
     out->degree = in->degree;
-    out->capacity = in->capacity;
     memcpy(out->coefficients, in->coefficients, out->capacity);
 }
