@@ -17,6 +17,11 @@
 void random_init();
 
 /**
+ * Force another call to srand using current time.
+ */
+void random_force_reseed();
+
+/**
  * Return an unsigned integer within given range.
  *
  * May also call random_init().
@@ -34,8 +39,9 @@ size_t random_from_range(size_t low_bound_inclusive, size_t top_bound_inclusive)
  * May also call random_init().
  *
  * @param poly output polynomial, it must be allocated in advance
- * @param weight number of nonzero coefficients
+ * @param size maximum size of the polynomial, size <= polynomial->capacity
+ * @param weight number of nonzero coefficients, weight <= size
  */
-void random_weighted_gf4_poly(gf4_poly_t * poly, size_t weight);
+void random_weighted_gf4_poly(gf4_poly_t * poly, size_t size, size_t weight);
 
 #endif //MDPC_GF4_RANDOM_H
