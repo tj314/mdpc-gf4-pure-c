@@ -33,5 +33,14 @@ typedef struct {
  * @param block_weight hamming weight of each row/columns of the circulant blocks of H and G
  */
 void contexts_init(encoding_context_t * out_enc_ctx, decoding_context_t * out_dec_ctx, size_t block_size, size_t block_weight);
+
+/**
+ * Deinit contexts.
+ *
+ * Deinitializes polynomials contained within the contexts.
+ *
+ * @param enc_ctx memory location of the encoding context
+ * @param dec_ctx memory location of the decoding context
+ */
 void contexts_deinit(encoding_context_t * enc_ctx, decoding_context_t * dec_ctx);
 #endif //MDPC_GF4_CONTEXTS_H
