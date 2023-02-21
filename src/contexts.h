@@ -33,4 +33,5 @@ typedef struct {
  * @param block_weight hamming weight of each row/columns of the circulant blocks of H and G
  */
 void contexts_init(encoding_context_t * out_enc_ctx, decoding_context_t * out_dec_ctx, size_t block_size, size_t block_weight);
+void contexts_deinit(encoding_context_t * enc_ctx, decoding_context_t * dec_ctx);
 #endif //MDPC_GF4_CONTEXTS_H

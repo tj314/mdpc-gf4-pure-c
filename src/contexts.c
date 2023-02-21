@@ -69,3 +69,13 @@ void contexts_init(encoding_context_t * out_enc_ctx, decoding_context_t * out_de
         }
     }
 }
+
+void contexts_deinit(encoding_context_t * enc_ctx, decoding_context_t * dec_ctx) {
+    assert(NULL != enc_ctx);
+    assert(NULL != dec_ctx);
+    gf4_poly_deinit(&(enc_ctx->second_block_G));
+    gf4_poly_deinit(&(dec_ctx->h0));
+    gf4_poly_deinit(&(dec_ctx->h1));
+    enc_ctx->block_size = 0;
+    dec_ctx->block_size = 0;
+}

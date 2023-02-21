@@ -59,8 +59,7 @@ int main(void) {
     size_t block_size = 2339;
     size_t block_weight = 37;
     contexts_init(&ec, &dc, block_size, block_weight);
-    
-
-
+    contexts_deinit(&ec, &dc);
+    printf("success!\n");
     return 0;
 }
