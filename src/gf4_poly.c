@@ -14,6 +14,7 @@ gf4_poly_t gf4_poly_init_zero(size_t capacity) {
 }
 
 void gf4_poly_init_zero_byref(gf4_poly_t * poly, size_t default_capacity) {
+    assert(NULL != poly);
     poly->coefficients = calloc(default_capacity, sizeof(gf4_t));
     if (NULL == poly->coefficients) {
         fprintf(stderr, "gf4_poly_init_byref: Memory allocation failed!\n");
@@ -38,10 +39,13 @@ void gf4_poly_resize(gf4_poly_t * poly, size_t new_capacity) {
 #endif
 
 void gf4_poly_zero_out(gf4_poly_t * poly) {
+    assert(NULL != poly);
     memset(poly->coefficients, 0, poly->capacity);
+    poly->degree = 0;
 }
 
 void gf4_poly_deinit(gf4_poly_t * poly) {
+    assert(NULL != poly);
     free(poly->coefficients);
     poly->coefficients = NULL;
 }
@@ -49,6 +53,7 @@ void gf4_poly_deinit(gf4_poly_t * poly) {
 
 // coefficient access
 gf4_t gf4_poly_get_coefficient(gf4_poly_t * poly, size_t deg) {
+    assert(NULL != poly);
     if (deg > poly->degree) {
         return 0;
     } else {
@@ -82,52 +87,9 @@ void gf4_poly_set_coefficient(gf4_poly_t * poly, size_t deg, gf4_t val) {
     }
 }
 
-// addition
-gf4_poly_t gf4_poly_add(gf4_poly_t * a, gf4_poly_t * b) {
-    assert(NULL != a);
-	assert(NULL != b);
-    if (a->degree == b->degree) {
-        gf4_poly_t out;
-        out.degree = 0;
-        out.capacity = a->capacity;
-        out.coefficients = calloc(out.capacity, sizeof(gf4_t));
-        if (NULL == out.coefficients) {
-            fprintf(stderr, "gf4_poly_add: Memory allocation failed!\n");
-            exit(-1);
-        }
-        for (size_t i = 0; i <= a->degree; ++i) {
-            out.coefficients[i] = a->coefficients[i] ^ b->coefficients[i];
-            if (0 != out.coefficients[i]) {
-                out.degree = i;
-            }
-        }
-        return out;
-    } else {
-        gf4_poly_t * longer;
-        gf4_poly_t * shorter;
-        if (a->degree > b->degree) {
-            longer = a;
-            shorter = b;
-        } else {
-            longer = b;
-            shorter = a;
-        }
-        gf4_poly_t out;
-        out.degree = longer->degree;
-        out.capacity = longer->capacity;
-        out.coefficients = calloc(out.capacity, sizeof(gf4_t));
-        assert(NULL != out.coefficients);
-        for (size_t i = 0; i <= shorter->degree; ++i) {
-            out.coefficients[i] = longer->coefficients[i] ^ shorter->coefficients[i];
-        }
-        for (size_t i = shorter->degree + 1; i <= longer->degree; ++i) {
-            out.coefficients[i] = longer->coefficients[i];
-        }
-        return out;
-    }
-}
 
-void gf4_poly_add_byref(gf4_poly_t * out, gf4_poly_t * a, gf4_poly_t * b) {
+// addition
+void gf4_poly_add(gf4_poly_t * out, gf4_poly_t * a, gf4_poly_t * b) {
     assert(NULL != out);
 	assert(NULL != a);
 	assert(NULL != b);
@@ -181,28 +143,6 @@ void gf4_poly_add_ax_to_deg_inplace(gf4_poly_t * poly, size_t deg, gf4_t val) {
 }
 
 // multiplication
-gf4_poly_t gf4_poly_mul(gf4_poly_t * a, gf4_poly_t * b) {
-    assert(NULL != a);
-	assert(NULL != b);
-    gf4_poly_t out;
-    out.capacity = a->degree + b->degree + 1;
-    out.capacity = out.capacity > a->capacity ? out.capacity : a->capacity;
-    out.capacity = out.capacity > b->capacity ? out.capacity : b->capacity;
-    out.coefficients = calloc(out.capacity, sizeof(gf4_t));
-    for (size_t i = 0; i <= a->degree; ++i) {
-        for (size_t j = 0; j <= b->degree; ++j) {
-            out.coefficients[i+j] ^= gf4_mul(a->coefficients[i], b->coefficients[j]);
-        }
-    }
-    out.degree = 0;
-    for (size_t i = 0; i < out.capacity; ++i) {
-        if (0 != out.coefficients[i]) {
-            out.degree = i;
-        }
-    }
-    return out;
-}
-
 void gf4_poly_mul_byref(gf4_poly_t * out, gf4_poly_t * a, gf4_poly_t * b) {
     assert(NULL != out);
 	assert(NULL != a);
@@ -220,7 +160,9 @@ void gf4_poly_mul_byref(gf4_poly_t * out, gf4_poly_t * a, gf4_poly_t * b) {
     }
 }
 
-void gf4_poly_div_x_to_deg_byref(gf4_poly_t * out, gf4_poly_t * poly, size_t deg) {
+
+// division
+void gf4_poly_div_x_to_deg(gf4_poly_t * out, gf4_poly_t * poly, size_t deg) {
     assert(NULL != out);
 	assert(NULL != poly);
 	assert(poly->degree >= deg);
@@ -328,7 +270,7 @@ bool gf4_poly_invert_slow(gf4_poly_t * maybe_inverse, gf4_poly_t * poly, gf4_pol
         gf4_poly_zero_out(&tmp);
         gf4_poly_mul_byref(&tmp, &div, &t);
         gf4_poly_zero_out(&div);
-        gf4_poly_add_byref(&div, &rem, &tmp);
+        gf4_poly_add(&div, &rem, &tmp);
         t = div;
         div = tmp;
         gf4_poly_zero_out(&div);

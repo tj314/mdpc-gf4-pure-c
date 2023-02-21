@@ -29,17 +29,15 @@ gf4_t gf4_poly_get_coefficient(gf4_poly_t * poly, size_t deg);
 void gf4_poly_set_coefficient(gf4_poly_t * poly, size_t deg, gf4_t val);
 
 // addition
-gf4_poly_t gf4_poly_add(gf4_poly_t * a, gf4_poly_t * b);
-void gf4_poly_add_byref(gf4_poly_t * out, gf4_poly_t * a, gf4_poly_t * b);
+void gf4_poly_add(gf4_poly_t * out, gf4_poly_t * a, gf4_poly_t * b);
 void gf4_poly_add_ax_to_deg_inplace(gf4_poly_t * poly, size_t deg, gf4_t val);
 
 
 // multiplication
-gf4_poly_t gf4_poly_mul(gf4_poly_t * a, gf4_poly_t * b);
-void gf4_poly_mul_byref(gf4_poly_t * out, gf4_poly_t * a, gf4_poly_t * b);
+void gf4_poly_mul(gf4_poly_t * out, gf4_poly_t * a, gf4_poly_t * b);
 
 // division and modulo
-void gf4_poly_div_x_to_deg_byref(gf4_poly_t * out, gf4_poly_t * poly, size_t deg);
+void gf4_poly_div_x_to_deg(gf4_poly_t * out, gf4_poly_t * poly, size_t deg);
 void gf4_poly_div_x_to_deg_inplace(gf4_poly_t * poly, size_t deg);
 void gf4_poly_div_rem(gf4_poly_t * div, gf4_poly_t * rem, gf4_poly_t * a, gf4_poly_t * b);
 

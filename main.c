@@ -24,7 +24,7 @@ int main(void) {
     gf4_poly_t poly1 = gf4_poly_init_zero(10);
     gf4_poly_t poly2 = gf4_poly_init_zero(10);
     gf4_poly_t modulus = gf4_poly_init_zero(10);
-    gf4_poly_t maybe_inverse;
+    gf4_poly_t maybe_inverse = gf4_poly_init_zero(10);
 
     gf4_poly_set_coefficient(&poly1, 2, 1);
     gf4_poly_set_coefficient(&poly1, 1, 1);
@@ -37,7 +37,7 @@ int main(void) {
     gf4_poly_set_coefficient(&modulus, 8, 1);
 
     gf4_poly_t * poly = &poly1;
-    bool inverse_exists = gf4_poly_invert_slow_byref(&maybe_inverse, poly, &modulus);
+    bool inverse_exists = gf4_poly_invert_slow(&maybe_inverse, poly, &modulus);
 
 
     printf("poly:    ");
@@ -50,7 +50,8 @@ int main(void) {
         gf4_poly_pretty_print(&maybe_inverse, "\n");
         gf4_poly_t div = gf4_poly_init_zero(10);
         gf4_poly_t rem = gf4_poly_init_zero(10);
-        gf4_poly_t m = gf4_poly_mul(&maybe_inverse, poly);
+        gf4_poly_t m = gf4_poly_init_zero(20);
+        gf4_poly_mul(&m, &maybe_inverse, poly);
         gf4_poly_div_rem(&div, &rem, &m, &modulus);
         printf("inv*poly %% modulus: ");
         gf4_poly_pretty_print(&rem, "\n");

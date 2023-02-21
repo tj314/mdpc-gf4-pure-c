@@ -34,7 +34,7 @@ void generate_contexts(encoding_context_t * out_enc_ctx, decoding_context_t * ou
             gf4_poly_t tmp = gf4_poly_init_zero(capacity);
             gf4_poly_t div = gf4_poly_init_zero(capacity);
             gf4_poly_t rem = gf4_poly_init_zero(capacity);
-            gf4_poly_mul_byref(&tmp, &h1, &maybe_inverse);
+            gf4_poly_mul(&tmp, &h1, &maybe_inverse);
             gf4_poly_div_rem(&div, &rem, &tmp, &modulus);
             bool correct_inverse = 0 == rem.degree && 1 == rem.coefficients[0];
             if (!correct_inverse) {
@@ -53,7 +53,7 @@ void generate_contexts(encoding_context_t * out_enc_ctx, decoding_context_t * ou
             gf4_poly_zero_out(&tmp);
             gf4_poly_zero_out(&rem);
             gf4_poly_zero_out(&div);
-            gf4_poly_mul_byref(&tmp, &h0, &maybe_inverse);
+            gf4_poly_mul(&tmp, &h0, &maybe_inverse);
             gf4_poly_div_rem(&div, &rem, &tmp, &modulus);
             gf4_poly_deinit(&tmp);
             gf4_poly_deinit(&rem);
