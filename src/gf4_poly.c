@@ -143,7 +143,7 @@ void gf4_poly_add_ax_to_deg_inplace(gf4_poly_t * poly, size_t deg, gf4_t val) {
 }
 
 // multiplication
-void gf4_poly_mul_byref(gf4_poly_t * out, gf4_poly_t * a, gf4_poly_t * b) {
+void gf4_poly_mul(gf4_poly_t * out, gf4_poly_t * a, gf4_poly_t * b) {
     assert(NULL != out);
 	assert(NULL != a);
 	assert(NULL != b);
