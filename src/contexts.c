@@ -11,7 +11,7 @@ size_t poly_sum(gf4_poly_t * poly) {
     return sum;
 }
 
-void generate_contexts(encoding_context_t * out_enc_ctx, decoding_context_t * out_dec_ctx, size_t block_size, size_t block_weight) {
+void contexts_genarate(encoding_context_t * out_enc_ctx, decoding_context_t * out_dec_ctx, size_t block_size, size_t block_weight) {
     assert(NULL != out_enc_ctx);
     assert(NULL != out_dec_ctx);
     assert(block_weight <= block_size);

@@ -18,5 +18,5 @@ typedef struct {
 } decoding_context_t;
 
 
-void generate_contexts(encoding_context_t * out_enc_ctx, decoding_context_t * out_dec_ctx, size_t block_size, size_t block_weight);
+void contexts_genarate(encoding_context_t * out_enc_ctx, decoding_context_t * out_dec_ctx, size_t block_size, size_t block_weight);
 #endif //MDPC_GF4_CONTEXTS_H
