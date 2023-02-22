@@ -2,7 +2,8 @@
 #include "src/gf4.h"
 #include "src/gf4_poly.h"
 #include "src/contexts.h"
-
+#include "src/enc.h"
+#include "src/dec.h"
 
 int main(void) {
     /*
@@ -56,13 +57,42 @@ int main(void) {
 
     encoding_context_t ec;
     decoding_context_t dc;
-    size_t block_size = 2339;
-    size_t block_weight = 37;
-    //size_t block_size = 17;
-    //size_t block_weight = 3;
+    // size_t block_size = 2339;
+    // size_t block_weight = 37;
+    size_t block_size = 7;
+    size_t block_weight = 3;
     contexts_init(&ec, &dc, block_size, block_weight);
-    printf("done\n");
+
+    gf4_poly_t msg = gf4_poly_init_zero(block_size);
+    gf4_poly_t encoded = gf4_poly_init_zero(2*block_size);
+    gf4_poly_t syndrome = gf4_poly_init_zero(block_size);
+
+    fprintf(stderr, "sec: ");
+    gf4_poly_coeff_print(&ec.second_block_G, block_size, stderr, "\n");
+    fprintf(stderr, "h0:  ");
+    gf4_poly_coeff_print(&dc.h0, block_size, stderr, "\n");
+    fprintf(stderr, "h1:  ");
+    gf4_poly_coeff_print(&dc.h1, block_size, stderr, "\n");
+
+    random_weighted_gf4_poly(&msg, block_size, block_weight);
+    fprintf(stderr, "msg: ");
+    gf4_poly_coeff_print(&msg, block_size, stderr, "\n");
+    enc_encode(&encoded, &msg, &ec);
+    fprintf(stderr, "enc: ");
+    gf4_poly_coeff_print(&encoded, 2*block_size, stderr, "\n");
+    dec_calculate_syndrome(&syndrome, &encoded, &dc);
+    fprintf(stderr, "syn: ");
+    gf4_poly_coeff_print(&syndrome, block_size, stderr, "\n");
+
+    if (gf4_poly_is_zero(&syndrome)) {
+        printf("ok!\n");
+    } else {
+        printf("not ok!\n");
+    }
+
+    gf4_poly_deinit(&msg);
+    gf4_poly_deinit(&encoded);
+    gf4_poly_deinit(&syndrome);
     contexts_deinit(&ec, &dc);
-    printf("success!\n");
     return 0;
 }
