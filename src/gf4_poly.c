@@ -350,6 +350,13 @@ void gf4_poly_pretty_print(gf4_poly_t * poly, FILE * stream, const char * end) {
     }
 }
 
+void gf4_poly_coeff_print(gf4_poly_t * poly, size_t max, FILE * stream, const char * end) {
+    for (size_t i = 0; i < max; ++i) {
+        fprintf(stream, "%u ", poly->coefficients[i]);
+    }
+    fprintf(stream, "%s", end);
+}
+
 gf4_poly_t gf4_poly_clone(gf4_poly_t * poly) {
     assert(NULL != poly);
     gf4_poly_t clone;

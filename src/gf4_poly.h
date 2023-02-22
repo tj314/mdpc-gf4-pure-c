@@ -51,6 +51,7 @@ bool gf4_poly_equal(gf4_poly_t * poly1, gf4_poly_t * poly2);
 
 // helpers
 void gf4_poly_pretty_print(gf4_poly_t * poly, FILE * stream, const char * end);
+void gf4_poly_coeff_print(gf4_poly_t * poly, size_t max, FILE * stream, const char * end);
 gf4_poly_t gf4_poly_clone(gf4_poly_t * poly);
 void gf4_poly_copy(gf4_poly_t * out, gf4_poly_t * in);
 #endif // GF4_GF4_POLY_H
