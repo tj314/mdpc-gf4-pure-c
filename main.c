@@ -65,34 +65,42 @@ int main(void) {
 
     gf4_poly_t msg = gf4_poly_init_zero(block_size);
     gf4_poly_t encoded = gf4_poly_init_zero(2*block_size);
-    gf4_poly_t syndrome = gf4_poly_init_zero(block_size);
-
+    gf4_poly_t err = gf4_poly_init_zero(2*block_size);
+    gf4_poly_t decoded = gf4_poly_init_zero(2*block_size);
+    random_weighted_gf4_poly(&err, 2*block_size, 1);
+    /*
     fprintf(stderr, "sec: ");
     gf4_poly_coeff_print(&ec.second_block_G, block_size, stderr, "\n");
     fprintf(stderr, "h0:  ");
     gf4_poly_coeff_print(&dc.h0, block_size, stderr, "\n");
     fprintf(stderr, "h1:  ");
     gf4_poly_coeff_print(&dc.h1, block_size, stderr, "\n");
-
+    */
     random_weighted_gf4_poly(&msg, block_size, block_weight);
     fprintf(stderr, "msg: ");
     gf4_poly_coeff_print(&msg, block_size, stderr, "\n");
+
     enc_encode(&encoded, &msg, &ec);
     fprintf(stderr, "enc: ");
     gf4_poly_coeff_print(&encoded, 2*block_size, stderr, "\n");
-    dec_calculate_syndrome(&syndrome, &encoded, &dc);
-    fprintf(stderr, "syn: ");
-    gf4_poly_coeff_print(&syndrome, block_size, stderr, "\n");
 
-    if (gf4_poly_is_zero(&syndrome)) {
-        printf("ok!\n");
+    gf4_poly_add_inplace(&encoded, &err);
+    fprintf(stderr, "ecr: ");
+    gf4_poly_coeff_print(&encoded, 2*block_size, stderr, "\n");
+
+    bool decoding_success = dec_decode_symbol_flipping(&decoded, &encoded, 10, &dc);
+    if (decoding_success) {
+        fprintf(stderr, "success!\n");
+        fprintf(stderr, "dec: ");
+        gf4_poly_pretty_print(&decoded, stderr, "\n");
     } else {
-        printf("not ok!\n");
+        fprintf(stderr, "failure!\n");
     }
 
     gf4_poly_deinit(&msg);
+    gf4_poly_deinit(&err);
     gf4_poly_deinit(&encoded);
-    gf4_poly_deinit(&syndrome);
+    gf4_poly_deinit(&decoded);
     contexts_deinit(&ec, &dc);
     return 0;
 }
