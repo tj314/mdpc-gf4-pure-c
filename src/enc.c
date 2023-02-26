@@ -16,3 +16,11 @@ void enc_encode(gf4_poly_t * out_encoded, gf4_poly_t * in_message, encoding_cont
         out_encoded->coefficients[2*ctx->block_size - i] = tmp;
     }
 }
+
+void enc_encrypt(gf4_poly_t * out_encrypted, gf4_poly_t * in_message, size_t num_errors, encoding_context_t * ctx) {
+    enc_encode(out_encrypted, in_message, ctx);
+    gf4_poly_t err = gf4_poly_init_zero(2*ctx->block_size);
+    random_weighted_gf4_poly(&err, 2*ctx->block_size, num_errors);
+    gf4_poly_add_inplace(out_encrypted, &err);
+    gf4_poly_deinit(&err);
+}
