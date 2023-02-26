@@ -2,11 +2,11 @@
 
 
 // helper function
-size_t poly_sum(gf4_poly_t * poly) {
+gf4_t poly_sum(gf4_poly_t * poly) {
     assert(NULL != poly);
-    size_t sum = 0;
+    gf4_t sum = 0;
     for (size_t i = 0; i <= poly->degree; ++i) {
-        sum += poly->coefficients[i];
+        sum ^= poly->coefficients[i];
     }
     return sum;
 }
