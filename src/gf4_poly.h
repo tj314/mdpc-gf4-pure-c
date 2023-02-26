@@ -30,6 +30,7 @@ void gf4_poly_set_coefficient(gf4_poly_t * poly, size_t deg, gf4_t val);
 
 // addition
 void gf4_poly_add(gf4_poly_t * out, gf4_poly_t * a, gf4_poly_t * b);
+void gf4_poly_add_inplace(gf4_poly_t * a, gf4_poly_t * b);
 void gf4_poly_add_ax_to_deg_inplace(gf4_poly_t * poly, size_t deg, gf4_t val);
 
 

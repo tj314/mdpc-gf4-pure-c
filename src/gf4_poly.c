@@ -121,6 +121,26 @@ void gf4_poly_add(gf4_poly_t * out, gf4_poly_t * a, gf4_poly_t * b) {
     }
 }
 
+void gf4_poly_add_inplace(gf4_poly_t * a, gf4_poly_t * b) {
+    assert(NULL != a);
+    assert(NULL != b);
+    assert(a->capacity >= b->capacity);
+    for (size_t i = 0; i <= b->degree; ++i) {
+        a->coefficients[i] ^= b->coefficients[i];
+    }
+    if (b->degree > a->degree) {
+        a->degree = b->degree;
+    } else if (b->degree == a->degree) {
+        a->degree = 0;
+        for (size_t i = a->capacity; a != 0; --a) {
+            if (0 != a->coefficients[i]) {
+                a->degree = i;
+                break;
+            }
+        }
+    }
+}
+
 void gf4_poly_add_ax_to_deg_inplace(gf4_poly_t * poly, size_t deg, gf4_t val) {
     assert(NULL != poly);
 #ifdef CANRESIZE
