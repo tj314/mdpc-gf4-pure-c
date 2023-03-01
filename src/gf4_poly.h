@@ -26,6 +26,7 @@ void gf4_poly_resize(gf4_poly_t * poly, size_t new_capacity);
 
 // coefficient access
 gf4_t gf4_poly_get_coefficient(gf4_poly_t * poly, size_t deg);
+void gf4_poly_set_from_array(gf4_poly_t * poly, gf4_t * array, size_t array_len);
 void gf4_poly_set_coefficient(gf4_poly_t * poly, size_t deg, gf4_t val);
 
 // addition
@@ -51,6 +52,7 @@ bool gf4_poly_equal(gf4_poly_t * poly1, gf4_poly_t * poly2);
 
 
 // helpers
+void gf4_poly_adjust_degree(gf4_poly_t * poly, size_t max_degree);
 void gf4_poly_pretty_print(gf4_poly_t * poly, FILE * stream, const char * end);
 void gf4_poly_coeff_print(gf4_poly_t * poly, size_t max, FILE * stream, const char * end);
 gf4_poly_t gf4_poly_clone(gf4_poly_t * poly);
