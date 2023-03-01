@@ -15,6 +15,7 @@ void enc_encode(gf4_poly_t * out_encoded, gf4_poly_t * in_message, encoding_cont
         }
         out_encoded->coefficients[2*ctx->block_size - i] = tmp;
     }
+    gf4_poly_adjust_degree(out_encoded, out_encoded->capacity - 1);
 }
 
 void enc_encrypt(gf4_poly_t * out_encrypted, gf4_poly_t * in_message, size_t num_errors, encoding_context_t * ctx) {
