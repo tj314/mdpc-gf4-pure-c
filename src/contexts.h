@@ -2,8 +2,10 @@
 #define MDPC_GF4_CONTEXTS_H
 
 #include <stdlib.h>
+#include <inttypes.h>
 #include "gf4.h"
 #include "gf4_poly.h"
+#include "utils.h"
 #include "random.h"
 
 typedef struct {
@@ -43,4 +45,22 @@ void contexts_init(encoding_context_t * out_enc_ctx, decoding_context_t * out_de
  * @param dec_ctx memory location of the decoding context
  */
 void contexts_deinit(encoding_context_t * enc_ctx, decoding_context_t * dec_ctx);
-#endif //MDPC_GF4_CONTEXTS_H
+
+/**
+ * Save matrices G and H to a file.
+ *
+ * @param filename savefile path
+ * @param enc_ctx memory location of the encoding context
+ * @param dec_ctx memory location of the decoding context
+ */
+void contexts_save(const char * filename, encoding_context_t * enc_ctx, decoding_context_t * dec_ctx);
+
+/**
+ * Load matrices G and H to a file.
+ *
+ * @param filename savefile path
+ * @param enc_ctx memory location of the encoding context
+ * @param dec_ctx memory location of the decoding context
+ */
+void contexts_load(const char * filename, size_t block_size, encoding_context_t * enc_ctx, decoding_context_t * dec_ctx);
+#endif // MDPC_GF4_CONTEXTS_H

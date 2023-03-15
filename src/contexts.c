@@ -89,3 +89,90 @@ void contexts_deinit(encoding_context_t * enc_ctx, decoding_context_t * dec_ctx)
     enc_ctx->block_size = 0;
     dec_ctx->block_size = 0;
 }
+
+
+void contexts_save(const char * filename, encoding_context_t * enc_ctx, decoding_context_t * dec_ctx) {
+    assert(NULL != filename);
+    assert(NULL != enc_ctx);
+    assert(NULL != dec_ctx);
+    FILE * output = fopen(filename, "wb+");
+    if (NULL == output) {
+        fprintf(stderr, "contexts_save: Output file couldn't be created!\n");
+        exit(-1);
+    }
+    size_t num_nonzero = utils_hamming_weight(&enc_ctx->second_block_G);
+    fwrite(&num_nonzero, sizeof(size_t), 1, output);
+    for (size_t i = 0; i <= enc_ctx->second_block_G.degree; ++i) {
+        if (0 != enc_ctx->second_block_G.coefficients[i]) {
+            fwrite(&i, sizeof(size_t), 1, output);
+            fwrite(&enc_ctx->second_block_G.coefficients[i], sizeof(uint8_t), 1, output);
+        }
+    }
+
+    num_nonzero = utils_hamming_weight(&dec_ctx->h0);
+    fwrite(&num_nonzero, sizeof(size_t), 1, output);
+    for (size_t i = 0; i <= dec_ctx->h0.degree; ++i) {
+        if (0 != dec_ctx->h0.coefficients[i]) {
+            fwrite(&i, sizeof(size_t), 1, output);
+            fwrite(&dec_ctx->h0.coefficients[i], sizeof(uint8_t), 1, output);
+        }
+    }
+
+    num_nonzero = utils_hamming_weight(&dec_ctx->h1);
+    fwrite(&num_nonzero, sizeof(size_t), 1, output);
+    for (size_t i = 0; i <= dec_ctx->h1.degree; ++i) {
+        if (0 != dec_ctx->h1.coefficients[i]) {
+            fwrite(&i, sizeof(size_t), 1, output);
+            fwrite(&dec_ctx->h1.coefficients[i], sizeof(uint8_t), 1, output);
+        }
+    }
+
+    fclose(output);
+}
+
+
+void contexts_load(const char * filename, size_t block_size, encoding_context_t * enc_ctx, decoding_context_t * dec_ctx) {
+    assert(NULL != filename);
+    assert(NULL != enc_ctx);
+    assert(NULL != dec_ctx);
+    FILE * input = fopen(filename, "rb");
+    if (NULL == input) {
+        fprintf(stderr, "contexts_load: Input file doesn't exist!\n");
+        exit(-1);
+    }
+
+    enc_ctx->block_size = block_size;
+    dec_ctx->block_size = block_size;
+    enc_ctx->second_block_G = gf4_poly_init_zero(block_size);
+    dec_ctx->h0 = gf4_poly_init_zero(block_size);
+    dec_ctx->h1 = gf4_poly_init_zero(block_size);
+
+    size_t deg, num_nonzero;
+    uint8_t coeff;
+
+    fread(&num_nonzero, sizeof(size_t), 1, input);
+    for (size_t i = 0; i < num_nonzero; ++i) {
+        fread(&deg, sizeof(size_t), 1, input);
+        fread(&coeff, sizeof(uint8_t), 1, input);
+        enc_ctx->second_block_G.coefficients[deg] = coeff;
+        enc_ctx->second_block_G.degree = deg;
+    }
+
+    fread(&num_nonzero, sizeof(size_t), 1, input);
+    for (size_t i = 0; i < num_nonzero; ++i) {
+        fread(&deg, sizeof(size_t), 1, input);
+        fread(&coeff, sizeof(uint8_t), 1, input);
+        dec_ctx->h0.coefficients[deg] = coeff;
+        dec_ctx->h0.degree = deg;
+    }
+
+    fread(&num_nonzero, sizeof(size_t), 1, input);
+    for (size_t i = 0; i < num_nonzero; ++i) {
+        fread(&deg, sizeof(size_t), 1, input);
+        fread(&coeff, sizeof(uint8_t), 1, input);
+        dec_ctx->h1.coefficients[deg] = coeff;
+        dec_ctx->h1.degree = deg;
+    }
+
+    fclose(input);
+}
