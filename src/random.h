@@ -44,4 +44,17 @@ size_t random_from_range(size_t low_bound_inclusive, size_t top_bound_inclusive)
  */
 void random_weighted_gf4_poly(gf4_poly_t * poly, size_t size, size_t weight);
 
+
+/**
+ * Generate a polynomial of given weight such that at least weight/2 ones are placed exactly distance apart.
+ *
+ * @param poly
+ * @param size
+ * @param weight
+ * @param distance
+ */
+void random_weighted_gf4_poly_pairs_of_ones(gf4_poly_t * poly, size_t size, size_t weight, size_t distance);
+
+void random_weighted_gf4_poly_pairs_of_one_alpha(gf4_poly_t * poly, size_t size, size_t weight, size_t distance);
+
 #endif //MDPC_GF4_RANDOM_H

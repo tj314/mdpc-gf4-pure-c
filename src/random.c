@@ -41,3 +41,25 @@ void random_weighted_gf4_poly(gf4_poly_t * poly, size_t size, size_t weight) {
         }
     }
 }
+
+void random_weighted_gf4_poly_pairs_of_ones(gf4_poly_t * poly, size_t size, size_t weight, size_t distance) {
+    assert(NULL != poly);
+    size_t num_pairs = weight / 2;
+    for (size_t i = 0; i < num_pairs; ++i) {
+        size_t index = random_from_range(0, size - 1);
+        poly->coefficients[index] = 1;
+        poly->coefficients[(index + distance) % size] = 1;
+    }
+    gf4_poly_adjust_degree(poly, size - 1);
+}
+
+void random_weighted_gf4_poly_pairs_of_one_alpha(gf4_poly_t * poly, size_t size, size_t weight, size_t distance) {
+    assert(NULL != poly);
+    size_t num_pairs = weight / 2;
+    for (size_t i = 0; i < num_pairs; ++i) {
+        size_t index = random_from_range(0, size - 1);
+        poly->coefficients[index] = 1;
+        poly->coefficients[(index + distance) % size] = 2;
+    }
+    gf4_poly_adjust_degree(poly, size - 1);
+}
