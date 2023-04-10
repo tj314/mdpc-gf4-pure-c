@@ -34,6 +34,17 @@ void random_force_reseed();
 size_t random_from_range(size_t low_bound_inclusive, size_t top_bound_inclusive);
 
 /**
+ * Generate a random polynomial.
+ *
+ * May also call random_init().
+ *
+ * @param poly output polynomial, it must be allocated in advance
+ * @param size maximum size of the polynomial, size must be less or equal to the polynomial->capacity
+ * @param weight number of nonzero coefficients, weight <= size
+ */
+void random_gf4_poly(gf4_poly_t * poly, size_t size);
+
+/**
  * Generate a polynomial of given weight.
  *
  * May also call random_init().
