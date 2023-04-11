@@ -1,3 +1,4 @@
+#ifndef RUNTESTS
 #include <stdio.h>
 #include <pthread.h>
 #include "src/gf4.h"
@@ -5,7 +6,6 @@
 #include "src/contexts.h"
 #include "src/enc.h"
 #include "src/dec.h"
-
 
 void experiment0(size_t block_size, size_t num_errors, size_t M, const char * out_filename) {
     encoding_context_t ec;
@@ -206,3 +206,12 @@ int main(int argc, char ** argv) {
     }
     return 0;
 }
+#else
+#include <stdio.h>
+#include "src/tests.h"
+
+int main() {
+    test_dec_calculate_syndrome();
+    return 0;
+}
+#endif
