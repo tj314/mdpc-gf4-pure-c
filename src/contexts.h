@@ -17,6 +17,7 @@ typedef struct {
     gf4_poly_t h0;
     gf4_poly_t h1;
     size_t block_size;
+    long delta_setting; // THIS WILL BE REMOVED, DO NOT USE THIS // TODO: REMOVE
 } decoding_context_t;
 
 /**
