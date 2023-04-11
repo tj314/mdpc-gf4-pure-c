@@ -30,6 +30,38 @@ void dec_calculate_syndrome(gf4_poly_t * out_syndrome, gf4_poly_t * in_vector, d
  */
 bool dec_decode_symbol_flipping(gf4_poly_t * maybe_decoded, gf4_poly_t * in_vector, size_t num_iterations, decoding_context_t * ctx);
 
+/**
+ * Perform basic symbol-flipping decoding, version 2.
+ *
+ * maybe_decoded and in_vector must be initialized in advance and must have capacity = 2*block_size.
+ * ctx must a valid decoding_context_t.
+ *
+ * while symbol flipping thies to maximize w(s) - w(s-a*h_j), this version tries to minimize w(s-a*h_j).
+ *
+ * @param maybe_decoded pointer to a polynomial tha will be used to store the decoded message
+ * @param in_vector pointer to a polynomial representing the encoded message
+ * @param num_iterations number of decoding iterations
+ * @param ctx a valid decoding context
+ * @return true on successful decoding, false otherwise
+ */
+bool dec_decode_symbol_flipping_2(gf4_poly_t * maybe_decoded, gf4_poly_t * in_vector, size_t num_iterations, decoding_context_t * ctx);
+
+/**
+ * Perform symbol-flipping decoding with delta param.
+ *
+ * maybe_decoded and in_vector must be initialized in advance and must have capacity = 2*block_size.
+ * ctx must a valid decoding_context_t.
+ *
+ * symbol flipping searches maximum positive value of maximize w(s) - w(s-a*h_j) = sigma_max.
+ * this version finds sigma_max and then flips all positions s. t. sigma_j > sigma_max-delta
+ *
+ * @param maybe_decoded pointer to a polynomial tha will be used to store the decoded message
+ * @param in_vector pointer to a polynomial representing the encoded message
+ * @param num_iterations number of decoding iterations
+ * @param ctx a valid decoding context
+ * @return true on successful decoding, false otherwise
+ */
+bool dec_decode_symbol_flipping_delta(gf4_poly_t * maybe_decoded, gf4_poly_t * in_vector, size_t num_iterations, decoding_context_t * ctx);
 
 bool dec_decrypt(gf4_poly_t * out_decrypted, gf4_poly_t * in_encrypted, bool (*decode)(gf4_poly_t*, gf4_poly_t *, size_t, decoding_context_t *), size_t num_iterations, decoding_context_t * ctx);
 
