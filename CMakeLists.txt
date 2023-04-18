@@ -8,6 +8,8 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release")
 endif()
 
+# add_definitions(-DWRITE_WEIGHTS)
+
 if(CMAKE_BUILD_TYPE MATCHES Release)
     message("release mode")
     add_definitions(-DNDEBUG)

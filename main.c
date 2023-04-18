@@ -129,13 +129,13 @@ void run_tests(FILE * file, size_t num_keys, size_t num_messages, size_t block_s
         for (size_t j = 0; j < num_messages; ++j) {
             random_gf4_poly(&plaintext, block_size);
             enc_encrypt(&ciphertext, &plaintext, num_errors, &ec);
-            bool decryption_success = dec_decrypt(&decrypted, &ciphertext, dec_decode_symbol_flipping, num_iterations,
+            bool decryption_success = dec_decrypt(&decrypted, &ciphertext, decode_function, num_iterations,
                                                   &dc);
             if (decryption_success) {
-                fprintf(stderr, "progress: %zu / %zu,  SUCCESS\n", j + 1, num_messages*num_keys);
+                fprintf(stderr, "progress: %zu / %zu,  SUCCESS\n", i*num_messages + j + 1, num_messages*num_keys);
             } else {
                 failure_counter += 1;
-                fprintf(stderr, "progress: %zu / %zu,  FAILURE\n", j + 1, num_messages*num_keys);
+                fprintf(stderr, "progress: %zu / %zu,  FAILURE\n", i*num_messages + j + 1, num_messages*num_keys);
             }
             gf4_poly_zero_out(&plaintext);
             gf4_poly_zero_out(&ciphertext);
@@ -146,7 +146,7 @@ void run_tests(FILE * file, size_t num_keys, size_t num_messages, size_t block_s
     gf4_poly_deinit(&plaintext);
     gf4_poly_deinit(&ciphertext);
     gf4_poly_deinit(&decrypted);
-    fprintf(file, "num failures: %zu / %zu\n", failure_counter, num_messages);
+    fprintf(file, "num failures: %zu / %zu\n", failure_counter, num_keys*num_messages);
 }
 
 
@@ -168,8 +168,47 @@ void print_usage() {
     fprintf(stderr, "2 --> SF with delta\n");
     fprintf(stderr, "3 --> SF with thr\n");
 }
+#ifdef WRITE_WEIGHTS
+void test_syndromes() {
+    // define WRITE_WEIGHTS
+    size_t block_size = 2339;
+    size_t block_weight = 37;
+    size_t num_iterations = 150;
+    size_t num_errors = 84;
+    gf4_poly_t plaintext = gf4_poly_init_zero(block_size);
+    gf4_poly_t ciphertext = gf4_poly_init_zero(2 * block_size);
+    gf4_poly_t decrypted = gf4_poly_init_zero(2 * block_size);
+    size_t counter = 0;
+    for (size_t key = 0; key < 10; ++key) {
+        encoding_context_t ec;
+        decoding_context_t dc;
+        contexts_init(&ec, &dc, block_size, block_weight);
+        for (size_t msg = 0; msg < 10; ++msg) {
+            fprintf(stderr, "Progress: %zu/100\n", counter);
+            dc.index = counter;
+            ec.index = counter;
+            random_gf4_poly(&plaintext, block_size);
+            enc_encrypt(&ciphertext, &plaintext, num_errors, &ec);
+            bool success = dec_decrypt(&decrypted, &ciphertext, dec_decode_symbol_flipping, num_iterations,&dc);
+            if (success) {
+                counter++;
+            }
+            gf4_poly_zero_out(&plaintext);
+            gf4_poly_zero_out(&ciphertext);
+            gf4_poly_zero_out(&decrypted);
+        }
+        contexts_deinit(&ec, &dc);
+    }
+    gf4_poly_deinit(&plaintext);
+    gf4_poly_deinit(&ciphertext);
+    gf4_poly_deinit(&decrypted);
+}
+#endif
 
 int main(int argc, char ** argv) {
+#ifdef WRITE_WEIGHTS
+    test_syndromes();
+#else
     /*
     size_t block_size = 2293;
     size_t block_weight = 37;
@@ -205,13 +244,25 @@ int main(int argc, char ** argv) {
         run_tests(stderr, num_keys, num_messages, block_size, block_weight, num_errors, num_iterations, decoder, delta);
     }
     return 0;
+#endif
 }
 #else
 #include <stdio.h>
 #include "src/tests.h"
 
 int main() {
+    test_gf4_is_in_range();
+    test_gf4_to_str();
+    test_gf4_add();
+    test_gf4_mul();
+    test_gf4_div();
+    test_utils_hamming_weight();
+    test_contexts_init();
+    test_contexts_save_load();
+    test_enc_encode();
+    test_enc_encrypt();
     test_dec_calculate_syndrome();
+    fprintf(stderr, "All tests passed!\n");
     return 0;
 }
 #endif

@@ -22,6 +22,16 @@ void enc_encrypt(gf4_poly_t * out_encrypted, gf4_poly_t * in_message, size_t num
     enc_encode(out_encrypted, in_message, ctx);
     gf4_poly_t err = gf4_poly_init_zero(2*ctx->block_size);
     random_weighted_gf4_poly(&err, 2*ctx->block_size, num_errors);
+#ifdef WRITE_WEIGHTS
+    char fname[100] = {0};
+    sprintf(fname, "errorvec-exp_%zu.txt", ctx->index);
+    FILE * outfile = fopen(fname, "w");
+    for (size_t i = 0; i < 2*ctx->block_size; ++i) {
+        fprintf(outfile, "%u;", err.coefficients[i]);
+    }
+    fprintf(outfile, "\n");
+    fclose(outfile);
+#endif
     gf4_poly_add_inplace(out_encrypted, &err);
     gf4_poly_deinit(&err);
 }

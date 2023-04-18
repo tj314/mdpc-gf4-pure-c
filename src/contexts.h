@@ -11,6 +11,9 @@
 typedef struct {
     gf4_poly_t second_block_G;
     size_t block_size;
+#ifdef WRITE_WEIGHTS
+    size_t index;
+#endif
 } encoding_context_t;
 
 typedef struct {
@@ -18,6 +21,9 @@ typedef struct {
     gf4_poly_t h1;
     size_t block_size;
     long delta_setting; // THIS WILL BE REMOVED, DO NOT USE THIS // TODO: REMOVE
+#ifdef WRITE_WEIGHTS
+    size_t index;
+#endif
 } decoding_context_t;
 
 /**
