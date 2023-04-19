@@ -24,6 +24,7 @@ typedef struct {
 #ifdef WRITE_WEIGHTS
     size_t index;
 #endif
+    size_t elapsed_iterations;
 } decoding_context_t;
 
 /**

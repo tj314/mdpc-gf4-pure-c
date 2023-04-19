@@ -118,6 +118,8 @@ void run_tests(FILE * file, size_t num_keys, size_t num_messages, size_t block_s
     gf4_poly_t ciphertext = gf4_poly_init_zero(2 * block_size);
     gf4_poly_t decrypted = gf4_poly_init_zero(2 * block_size);
     size_t failure_counter = 0;
+    // size_t * iteration_counter = malloc(num_keys*num_messages* sizeof(size_t));
+    size_t pos = 0;
     for (size_t i = 0; i < num_keys; ++i) {
         fprintf(stderr, "regen keys!\n");
         encoding_context_t ec;
@@ -132,14 +134,16 @@ void run_tests(FILE * file, size_t num_keys, size_t num_messages, size_t block_s
             bool decryption_success = dec_decrypt(&decrypted, &ciphertext, decode_function, num_iterations,
                                                   &dc);
             if (decryption_success) {
-                fprintf(stderr, "progress: %zu / %zu,  SUCCESS\n", i*num_messages + j + 1, num_messages*num_keys);
+                fprintf(stderr, "progress: %zu / %zu,  SUCCESS\n", pos+1, num_messages*num_keys);
             } else {
                 failure_counter += 1;
-                fprintf(stderr, "progress: %zu / %zu,  FAILURE\n", i*num_messages + j + 1, num_messages*num_keys);
+                fprintf(stderr, "progress: %zu / %zu,  FAILURE\n", pos+1, num_messages*num_keys);
             }
+            // iteration_counter[pos] = dc.elapsed_iterations;
             gf4_poly_zero_out(&plaintext);
             gf4_poly_zero_out(&ciphertext);
             gf4_poly_zero_out(&decrypted);
+            pos++;
         }
         contexts_deinit(&ec, &dc);
     }
@@ -147,6 +151,17 @@ void run_tests(FILE * file, size_t num_keys, size_t num_messages, size_t block_s
     gf4_poly_deinit(&ciphertext);
     gf4_poly_deinit(&decrypted);
     fprintf(file, "num failures: %zu / %zu\n", failure_counter, num_keys*num_messages);
+    /*
+    char fname[100] = {0};
+    sprintf(fname, "iteracie.txt");
+    FILE * out = fopen(fname, "w");
+    for (size_t i = 0; i < pos; ++i) {
+        fprintf(out, "%zu;", iteration_counter[i]);
+    }
+    fprintf(out, "\n");
+    fclose(out);
+    free(iteration_counter);
+    */
 }
 
 

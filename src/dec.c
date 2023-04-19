@@ -67,17 +67,17 @@ bool dec_decode_symbol_flipping(gf4_poly_t * maybe_decoded, gf4_poly_t * in_vect
         size_t pos = 0;
         gf4_t a_max = 0;
         for (size_t j = 0; j < 2*ctx->block_size; ++j) {
+            gf4_poly_t *h_block;
+            size_t actual_j;
+            if (j < ctx->block_size) {
+                h_block = &ctx->h0;
+                actual_j = j;
+            } else {
+                h_block = &ctx->h1;
+                actual_j = j - ctx->block_size;
+            }
             for (gf4_t a = 1; a <= GF4_MAX_VALUE; ++a) {
                 // s = s - a*h_j, where h_j is j-th column of H
-                gf4_poly_t *h_block;
-                size_t actual_j;
-                if (j < ctx->block_size) {
-                    h_block = &ctx->h0;
-                    actual_j = j;
-                } else {
-                    h_block = &ctx->h1;
-                    actual_j = j - ctx->block_size;
-                }
                 size_t x = actual_j;
                 size_t idx = 0;
                 long tmp_hamming_weight = 0; // hamming weight of s-a*h_j
@@ -201,17 +201,17 @@ bool dec_decode_symbol_flipping_2(gf4_poly_t * maybe_decoded, gf4_poly_t * in_ve
         size_t pos = 0;
         gf4_t a_max = 0;
         for (size_t j = 0; j < 2*ctx->block_size; ++j) {
+            gf4_poly_t *h_block;
+            size_t actual_j;
+            if (j < ctx->block_size) {
+                h_block = &ctx->h0;
+                actual_j = j;
+            } else {
+                h_block = &ctx->h1;
+                actual_j = j - ctx->block_size;
+            }
             for (gf4_t a = 1; a <= GF4_MAX_VALUE; ++a) {
                 // s = s - a*h_j, where h_j is j-th column of H
-                gf4_poly_t *h_block;
-                size_t actual_j;
-                if (j < ctx->block_size) {
-                    h_block = &ctx->h0;
-                    actual_j = j;
-                } else {
-                    h_block = &ctx->h1;
-                    actual_j = j - ctx->block_size;
-                }
                 size_t x = actual_j;
                 size_t idx = 0;
                 size_t new_syndrome_weight = 0; // hamming weight of s-a*h_j
@@ -300,6 +300,7 @@ bool dec_decode_symbol_flipping_delta(gf4_poly_t * maybe_decoded, gf4_poly_t * i
     gf4_poly_t syndrome = gf4_poly_init_zero(ctx->block_size);
     dec_calculate_syndrome(&syndrome, in_vector, ctx);
     gf4_poly_copy(maybe_decoded, in_vector);
+    ctx->elapsed_iterations = 0;
 
     long * sigmas = calloc(2 * ctx->block_size, sizeof(long));
     assert(NULL != sigmas);
@@ -314,22 +315,24 @@ bool dec_decode_symbol_flipping_delta(gf4_poly_t * maybe_decoded, gf4_poly_t * i
             free(sigmas);
             free(values);
             gf4_poly_deinit(&syndrome);
+            ctx->elapsed_iterations = i;
             return true;
         }
-        memset(sigmas, -1, 2 * ctx->block_size);
         long sigma_max = -1;
         for (size_t j = 0; j < 2*ctx->block_size; ++j) {
+            sigmas[j] = -1;
+            values[j] = 0;
+            gf4_poly_t *h_block;
+            size_t actual_j;
+            if (j < ctx->block_size) {
+                h_block = &ctx->h0;
+                actual_j = j;
+            } else {
+                h_block = &ctx->h1;
+                actual_j = j - ctx->block_size;
+            }
             for (gf4_t a = 1; a <= GF4_MAX_VALUE; ++a) {
                 // s = s - a*h_j, where h_j is j-th column of H
-                gf4_poly_t *h_block;
-                size_t actual_j;
-                if (j < ctx->block_size) {
-                    h_block = &ctx->h0;
-                    actual_j = j;
-                } else {
-                    h_block = &ctx->h1;
-                    actual_j = j - ctx->block_size;
-                }
                 size_t x = actual_j;
                 size_t idx = 0;
                 long new_syndrome_weight = 0; // hamming weight of s-a*h_j
@@ -352,42 +355,33 @@ bool dec_decode_symbol_flipping_delta(gf4_poly_t * maybe_decoded, gf4_poly_t * i
                 }
             }
         }
-        // fprintf(stderr, "flipping pos=%zu with a_max=%u and min_syndrome_weight=%ld\n", pos, a_max, min_syndrome_weight);
 
         long bound = ((sigma_max - DELTA) >= 0) ? sigma_max - DELTA : 0;
-        size_t flipped = 0;
-
-        for (size_t j = 0; j < ctx->block_size; ++j) {
-            if (sigmas[j] >= bound) {
-                flipped += 1;
-                size_t x = j;
-                size_t idx = 0;
-                do {
-                    syndrome.coefficients[idx] ^= gf4_mul(ctx->h0.coefficients[x], values[j]);
-                    x = (0 == x) ? ctx->block_size - 1: x-1;
-                    ++idx;
-                } while (x != j);
-                maybe_decoded->coefficients[j] ^= values[j];
+        for (size_t j = 0; j < 2*ctx->block_size; ++j) {
+            if (sigmas[j] < bound) continue;
+            gf4_poly_t *h_block;
+            size_t actual_j;
+            if (j < ctx->block_size) {
+                h_block = &ctx->h0;
+                actual_j = j;
+            } else {
+                h_block = &ctx->h1;
+                actual_j = j - ctx->block_size;
             }
+            size_t x = actual_j;
+            size_t idx = 0;
+            do {
+                syndrome.coefficients[idx] ^= gf4_mul(h_block->coefficients[x], values[j]);
+                x = (0 == x) ? ctx->block_size - 1 : x-1;
+                ++idx;
+            } while (x != actual_j);
+            maybe_decoded->coefficients[j] ^= values[j];
         }
-        for (size_t j = 0; j < ctx->block_size; ++j) {
-            if (sigmas[ctx->block_size + j] >= bound) {
-                flipped += 1;
-                size_t x = j;
-                size_t idx = 0;
-                do {
-                    syndrome.coefficients[idx] ^= gf4_mul(ctx->h1.coefficients[x], values[ctx->block_size + j]);
-                    x = (0 == x) ? ctx->block_size - 1: x-1;
-                    ++idx;
-                } while (x != j);
-                maybe_decoded->coefficients[ctx->block_size + j] ^= values[ctx->block_size + j];
-            }
-        }
-        fprintf(stderr, "flipped: %zu\n", flipped);
     }
     free(sigmas);
     free(values);
     gf4_poly_deinit(&syndrome);
+    ctx->elapsed_iterations = num_iterations;
     return false;
 }
 
