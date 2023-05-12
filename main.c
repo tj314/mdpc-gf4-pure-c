@@ -80,7 +80,7 @@ void test_iterations(size_t decoder, size_t opt) {
             decode_function = &dec_decode_symbol_flipping_threshold;
             break;
         case 4:
-            decode_function = &dec_decode_symbol_flipping_bgf;
+            decode_function = &dec_decode_symbol_flipping_bg;
             break;
         default:
             decode_function = NULL;
@@ -321,7 +321,7 @@ void run_tests(FILE * file, size_t num_keys, size_t num_messages, size_t block_s
             decode_function = &dec_decode_symbol_flipping_threshold;
             break;
         case 4:
-            decode_function = &dec_decode_symbol_flipping_bgf;
+            decode_function = &dec_decode_symbol_flipping_bg;
             break;
         default:
             decode_function = NULL;
@@ -422,12 +422,12 @@ void print_usage() {
     fprintf(stderr, "\nPossible OPT settings:\n");
     fprintf(stderr, "With decoder 2, OPT as used as value of delta.\n");
     fprintf(stderr, "With decoder 3:\n");
-    fprintf(stderr, "0 --> threshold function 0\n");
-    fprintf(stderr, "1 --> threshold function 1\n");
-    fprintf(stderr, "2 --> threshold function 2\n");
-    fprintf(stderr, "3 --> threshold function 3\n");
-    fprintf(stderr, "4 --> threshold function 4\n");
-    fprintf(stderr, "5 --> threshold function 5\n");
+    fprintf(stderr, "0 --> threshold function T0\n");
+    fprintf(stderr, "1 --> threshold function T1\n");
+    fprintf(stderr, "2 --> threshold function T2\n");
+    fprintf(stderr, "3 --> threshold function T3\n");
+    fprintf(stderr, "4 --> threshold function T4\n");
+    fprintf(stderr, "5 --> threshold function T5\n");
 
 
 
@@ -436,7 +436,7 @@ void print_usage() {
     fprintf(stderr, "1 --> SF v2  DEPRECATED! \n");
     fprintf(stderr, "2 --> SF with delta\n");
     fprintf(stderr, "3 --> SF with thr\n");
-    fprintf(stderr, "4 --> SF BGF\n");
+    fprintf(stderr, "4 --> SF BG\n");
 }
 
 int main(int argc, char ** argv) {

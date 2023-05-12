@@ -1,6 +1,6 @@
 #include "dec.h"
 
-void dec_decode_symbol_flipping_bgf_first_iteration(gf4_poly_t * maybe_decoded, gf4_poly_t * syndrome, decoding_context_t * ctx) {
+void dec_decode_symbol_flipping_bg_iteration(gf4_poly_t * maybe_decoded, gf4_poly_t * syndrome, decoding_context_t * ctx) {
     long syndrome_weight = (long)utils_hamming_weight(syndrome);
     if (0 == syndrome_weight) {
         return;
@@ -105,7 +105,7 @@ void dec_decode_symbol_flipping_bgf_first_iteration(gf4_poly_t * maybe_decoded, 
     free(gray);
 }
 
-bool dec_decode_symbol_flipping_bgf(gf4_poly_t * maybe_decoded, gf4_poly_t * in_vector, size_t num_iterations, decoding_context_t * ctx) {
+bool dec_decode_symbol_flipping_bg(gf4_poly_t * maybe_decoded, gf4_poly_t * in_vector, size_t num_iterations, decoding_context_t * ctx) {
     assert(NULL != maybe_decoded);
     assert(NULL != in_vector);
     assert(NULL != ctx);
@@ -130,7 +130,7 @@ bool dec_decode_symbol_flipping_bgf(gf4_poly_t * maybe_decoded, gf4_poly_t * in_
             ctx->elapsed_iterations = i;
             return true;
         }
-        dec_decode_symbol_flipping_bgf_first_iteration(maybe_decoded, &syndrome, ctx);
+        dec_decode_symbol_flipping_bg_iteration(maybe_decoded, &syndrome, ctx);
     }
     gf4_poly_deinit(&syndrome);
     ctx->elapsed_iterations = num_iterations;
