@@ -9,7 +9,7 @@
 
 
 /**
- * Initialize random using srand with current time.
+ * @brief Initialize random using srand with current time.
  *
  * Ensures that srand is called at most once during each program execution. This function is not thread safe.
  * This function doesn't need to be called explicitly.
@@ -17,12 +17,12 @@
 void random_init();
 
 /**
- * Force another call to srand using current time.
+ * @brief Force another call to srand using current time.
  */
 void random_force_reseed();
 
 /**
- * Return an unsigned integer within given range.
+ * @brief Return an unsigned integer within given range.
  *
  * May also call random_init().
  * This function uses rand() to generate random values.
@@ -34,22 +34,24 @@ void random_force_reseed();
 size_t random_from_range(size_t low_bound_inclusive, size_t top_bound_inclusive);
 
 /**
- * Generate a random polynomial.
+ * @brief Generate a random polynomial.
  *
  * May also call random_init().
+ * poly must be initialized beforehand.
  *
- * @param poly output polynomial, it must be allocated in advance
+ * @param poly pointer to a polynomial to store the result in
  * @param size maximum size of the polynomial, size must be less or equal to the polynomial->capacity
  * @param weight number of nonzero coefficients, weight <= size
  */
 void random_gf4_poly(gf4_poly_t * poly, size_t size);
 
 /**
- * Generate a polynomial of given weight.
+ * @brief Generate a polynomial of given weight.
  *
  * May also call random_init().
+ * poly must be initialized beforehand.
  *
- * @param poly output polynomial, it must be allocated in advance
+ * @param poly pointer to a polynomial to store the result in
  * @param size maximum size of the polynomial, size <= polynomial->capacity
  * @param weight number of nonzero coefficients, weight <= size
  */
@@ -57,15 +59,27 @@ void random_weighted_gf4_poly(gf4_poly_t * poly, size_t size, size_t weight);
 
 
 /**
- * Generate a polynomial of given weight such that at least weight/2 ones are placed exactly distance apart.
+ * @brief Generate a polynomial of given weight such that at least weight/2 ones are placed exactly distance apart.
  *
- * @param poly
- * @param size
- * @param weight
- * @param distance
+ * poly must be initialized beforehand.
+ *
+ * @param poly pointer to a polynomial to store the result in
+ * @param size maximum size of the polynomial, size <= polynomial->capacity
+ * @param weight number of nonzero coefficients, weight <= size
+ * @param distance distance between pairs
  */
 void random_weighted_gf4_poly_pairs_of_ones(gf4_poly_t * poly, size_t size, size_t weight, size_t distance);
 
+/**
+ * @brief Generate a polynomial of given weight such that at least weight/2 pairs of 1 and (a+1) are placed exactly distance apart.
+ *
+ * poly must be initialized beforehand.
+ *
+ * @param poly pointer to a polynomial to store the result in
+ * @param size maximum size of the polynomial, size <= polynomial->capacity
+ * @param weight number of nonzero coefficients, weight <= size
+ * @param distance distance between pairs
+ */
 void random_weighted_gf4_poly_pairs_of_one_alpha(gf4_poly_t * poly, size_t size, size_t weight, size_t distance);
 
 #endif //MDPC_GF4_RANDOM_H
