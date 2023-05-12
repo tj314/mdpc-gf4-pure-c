@@ -15,6 +15,13 @@ void contexts_init(encoding_context_t * out_enc_ctx, decoding_context_t * out_de
     assert(NULL != out_enc_ctx);
     assert(NULL != out_dec_ctx);
     assert(block_weight <= block_size);
+
+    // settings not required by all decoders
+    out_dec_ctx->threshold = NULL;
+    out_dec_ctx->elapsed_iterations = 0;
+    out_dec_ctx->delta_setting = -1;
+
+    // generate keys
     size_t capacity = block_size + 1;
     gf4_poly_t modulus = gf4_poly_init_zero(capacity);
     gf4_poly_set_coefficient(&modulus, 0, 1);
@@ -43,6 +50,7 @@ void contexts_init(encoding_context_t * out_enc_ctx, decoding_context_t * out_de
             bool correct_inverse = 0 == rem.degree && 1 == rem.coefficients[0];
             if (!correct_inverse) {
                 // WTF???? this means invert function is incorrectly implemented
+                fprintf(stderr, "contexts_init: WTF? invert function is incorrectly implemented!\n");
                 gf4_poly_deinit(&tmp);
                 gf4_poly_deinit(&rem);
                 gf4_poly_deinit(&div);

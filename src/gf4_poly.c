@@ -13,17 +13,6 @@ gf4_poly_t gf4_poly_init_zero(size_t capacity) {
     return poly;
 }
 
-void gf4_poly_init_zero_byref(gf4_poly_t * poly, size_t default_capacity) {
-    assert(NULL != poly);
-    poly->coefficients = calloc(default_capacity, sizeof(gf4_t));
-    if (NULL == poly->coefficients) {
-        fprintf(stderr, "gf4_poly_init_byref: Memory allocation failed!\n");
-        exit(-1);
-    }
-    poly->capacity = default_capacity;
-    poly->degree = 0;
-}
-
 #ifdef CANRESIZE
 void gf4_poly_resize(gf4_poly_t * poly, size_t new_capacity) {
     assert(NULL != poly);
@@ -59,19 +48,6 @@ gf4_t gf4_poly_get_coefficient(gf4_poly_t * poly, size_t deg) {
     } else {
         return poly->coefficients[deg];
     }
-}
-
-void gf4_poly_set_from_array(gf4_poly_t * poly, gf4_t * array, size_t array_len) {
-    assert(NULL != poly);
-    assert(NULL != array);
-    assert(array_len <= poly->capacity);
-    for (size_t i = 0; i < array_len; ++i) {
-        poly->coefficients[i] = array[i];
-        if (0 != poly->coefficients[i]) {
-            poly->degree = i;
-        }
-    }
-    memset(poly->coefficients + array_len, 0, poly->capacity - array_len);
 }
 
 void gf4_poly_set_coefficient(gf4_poly_t * poly, size_t deg, gf4_t val) {
