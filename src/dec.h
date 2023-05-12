@@ -1,3 +1,10 @@
+/**
+ *  @file   dec.h
+ *  @brief  Decoders and associated functions.
+ *  @author Tomáš Vavro
+ *  @date   2023-05-12
+ ***********************************************/
+
 #ifndef MDPC_GF4_DEC_H
 #define MDPC_GF4_DEC_H
 

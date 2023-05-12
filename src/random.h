@@ -1,3 +1,10 @@
+/**
+ *  @file   randoms.h
+ *  @brief  Random functions.
+ *  @author Tomáš Vavro
+ *  @date   2023-05-12
+ ***********************************************/
+
 #ifndef MDPC_GF4_RANDOM_H
 #define MDPC_GF4_RANDOM_H
 

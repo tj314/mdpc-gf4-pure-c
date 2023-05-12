@@ -1,3 +1,10 @@
+/**
+ *  @file   enc.h
+ *  @brief  Encoding functions.
+ *  @author Tomáš Vavro
+ *  @date   2023-05-12
+ ***********************************************/
+
 #ifndef MDPC_GF4_ENC_H
 #define MDPC_GF4_ENC_H
 

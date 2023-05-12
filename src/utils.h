@@ -1,6 +1,9 @@
-//
-// Created by tj on 13.3.2023.
-//
+/**
+ *  @file   utils.h
+ *  @brief  Additional utilities.
+ *  @author Tomáš Vavro
+ *  @date   2023-05-12
+ ***********************************************/
 
 #ifndef MDPC_GF4_UTILS_H
 #define MDPC_GF4_UTILS_H

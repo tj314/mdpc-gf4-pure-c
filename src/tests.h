@@ -1,4 +1,10 @@
-//#ifdef RUNTESTS
+/**
+ *  @file   tests.h
+ *  @brief  Unit tests.
+ *  @author Tomáš Vavro
+ *  @date   2023-05-12
+ ***********************************************/
+
 #ifndef MDPC_GF4_TESTS_H
 #define MDPC_GF4_TESTS_H
 
@@ -35,4 +41,3 @@ void test_enc_encrypt();
 void test_dec_calculate_syndrome();
 
 #endif
-//#endif

@@ -1,3 +1,10 @@
+/**
+ *  @file   contexts.h
+ *  @brief  Encoding and decoding contexts.
+ *  @author Tomáš Vavro
+ *  @date   2023-05-12
+ ***********************************************/
+
 #ifndef MDPC_GF4_CONTEXTS_H
 #define MDPC_GF4_CONTEXTS_H
 

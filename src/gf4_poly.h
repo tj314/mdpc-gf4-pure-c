@@ -1,3 +1,10 @@
+/**
+ *  @file   gf4_poly.h
+ *  @brief  Polynomials over GF(4).
+ *  @author Tomáš Vavro
+ *  @date   2023-05-12
+ ***********************************************/
+
 #ifndef GF4_GF4_POLY_H
 #define GF4_GF4_POLY_H
 

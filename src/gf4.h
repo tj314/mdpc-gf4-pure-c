@@ -1,4 +1,11 @@
-#ifndef GF4_GF4_H 
+/**
+ *  @file   gf4.h
+ *  @brief  Implementation of GF(4).
+ *  @author Tomáš Vavro
+ *  @date   2023-05-12
+ ***********************************************/
+
+#ifndef GF4_GF4_H
 #define GF4_GF4_H
 
 #include <stdlib.h>
