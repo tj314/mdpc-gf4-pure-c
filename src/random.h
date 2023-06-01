@@ -96,7 +96,7 @@ void random_weighted_gf4_poly(gf4_poly_t * poly, size_t size, size_t weight);
 void random_weighted_gf4_poly_pairs_of_ones(gf4_poly_t * poly, size_t size, size_t weight, size_t distance);
 
 /**
- * @brief Generate a polynomial of given weight such that at least weight/2 pairs of 1 and (a+1) are placed exactly distance apart.
+ * @brief Generate a polynomial of given weight such that at least weight/2 pairs of 1 and alpha are placed exactly distance apart.
  *
  * poly must be initialized beforehand.
  *
@@ -106,5 +106,17 @@ void random_weighted_gf4_poly_pairs_of_ones(gf4_poly_t * poly, size_t size, size
  * @param distance distance between pairs
  */
 void random_weighted_gf4_poly_pairs_of_one_alpha(gf4_poly_t * poly, size_t size, size_t weight, size_t distance);
+
+/**
+ * @brief Generate a polynomial of given weight such that at least weight/2 pairs of alpha and 1 are placed exactly distance apart.
+ *
+ * poly must be initialized beforehand.
+ *
+ * @param poly pointer to a polynomial to store the result in
+ * @param size maximum size of the polynomial, size <= polynomial->capacity
+ * @param weight number of nonzero coefficients, weight <= size
+ * @param distance distance between pairs
+ */
+void random_weighted_gf4_poly_pairs_of_alpha_one(gf4_poly_t * poly, size_t size, size_t weight, size_t distance);
 
 #endif //MDPC_GF4_RANDOM_H

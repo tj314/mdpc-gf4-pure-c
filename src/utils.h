@@ -28,6 +28,7 @@
 
 #include <stdlib.h>
 #include "gf4_poly.h"
+#include "contexts.h"
 
 /**
  * @brief Find Hamming weight of a vector.
@@ -39,4 +40,5 @@
  */
 size_t utils_hamming_weight(gf4_poly_t * vector);
 
+void utils_get_distance_multiplicities_h0(size_t ** multiplicities_same_symbols, size_t ** multiplicities_different_symbols, decoding_context_t * dc);
 #endif //MDPC_GF4_UTILS_H

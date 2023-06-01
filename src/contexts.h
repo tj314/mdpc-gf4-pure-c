@@ -31,7 +31,6 @@
 #include <inttypes.h>
 #include "gf4.h"
 #include "gf4_poly.h"
-#include "utils.h"
 #include "random.h"
 
 /**
@@ -121,6 +120,7 @@ void contexts_save(const char * filename, encoding_context_t * enc_ctx, decoding
  * @see contexts_deinit
  *
  * @param filename savefile path
+ * @param block_size block size
  * @param enc_ctx memory location of the encoding context
  * @param dec_ctx memory location of the decoding context
  */

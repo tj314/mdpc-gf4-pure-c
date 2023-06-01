@@ -182,7 +182,7 @@ void test_contexts_save_load() {
     decoding_context_t dc_gen, dc_load;
     contexts_init(&ec_gen, &dc_gen, block_size, block_weight);
     char filename[100] = {0};
-    sprintf(filename, "test-file-%lu.bin", (unsigned long)time(NULL));
+    sprintf(filename, "test-file-%lu.txt", (unsigned long)time(NULL));
 
     // test: save, load, compare to the original
     contexts_save(filename, &ec_gen, &dc_gen);

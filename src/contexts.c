@@ -17,6 +17,7 @@
 */
 
 #include "contexts.h"
+#include "utils.h"
 
 
 // helper function
@@ -116,11 +117,11 @@ void contexts_deinit(encoding_context_t * enc_ctx, decoding_context_t * dec_ctx)
     dec_ctx->block_size = 0;
 }
 
-
 void contexts_save(const char * filename, encoding_context_t * enc_ctx, decoding_context_t * dec_ctx) {
     assert(NULL != filename);
     assert(NULL != enc_ctx);
     assert(NULL != dec_ctx);
+    /*
     FILE * output = fopen(filename, "wb+");
     if (NULL == output) {
         fprintf(stderr, "contexts_save: Output file couldn't be created!\n");
@@ -154,6 +155,37 @@ void contexts_save(const char * filename, encoding_context_t * enc_ctx, decoding
     }
 
     fclose(output);
+    */
+    FILE * output = fopen(filename, "w+");
+    if (NULL == output) {
+        fprintf(stderr, "contexts_save: Output file couldn't be created!\n");
+        exit(-1);
+    }
+    size_t num_nonzero = utils_hamming_weight(&enc_ctx->second_block_G);
+    fprintf(output, "%zu\n", num_nonzero);
+    for (size_t i = 0; i <= enc_ctx->second_block_G.degree; ++i) {
+        if (0 != enc_ctx->second_block_G.coefficients[i]) {
+            fprintf(output, "%zu %hhu\n", i, enc_ctx->second_block_G.coefficients[i]);
+        }
+    }
+
+    num_nonzero = utils_hamming_weight(&dec_ctx->h0);
+    fprintf(output, "%zu\n", num_nonzero);
+    for (size_t i = 0; i <= dec_ctx->h0.degree; ++i) {
+        if (0 != dec_ctx->h0.coefficients[i]) {
+            fprintf(output, "%zu %hhu\n", i, dec_ctx->h0.coefficients[i]);
+        }
+    }
+
+    num_nonzero = utils_hamming_weight(&dec_ctx->h1);
+    fprintf(output, "%zu\n", num_nonzero);
+    for (size_t i = 0; i <= dec_ctx->h1.degree; ++i) {
+        if (0 != dec_ctx->h1.coefficients[i]) {
+            fprintf(output, "%zu %hhu\n", i, dec_ctx->h1.coefficients[i]);
+        }
+    }
+
+    fclose(output);
 }
 
 
@@ -161,6 +193,7 @@ void contexts_load(const char * filename, size_t block_size, encoding_context_t 
     assert(NULL != filename);
     assert(NULL != enc_ctx);
     assert(NULL != dec_ctx);
+    /*
     FILE * input = fopen(filename, "rb");
     if (NULL == input) {
         fprintf(stderr, "contexts_load: Input file doesn't exist!\n");
@@ -196,6 +229,53 @@ void contexts_load(const char * filename, size_t block_size, encoding_context_t 
     for (size_t i = 0; i < num_nonzero; ++i) {
         fread(&deg, sizeof(size_t), 1, input);
         fread(&coeff, sizeof(uint8_t), 1, input);
+        dec_ctx->h1.coefficients[deg] = coeff;
+        dec_ctx->h1.degree = deg;
+    }
+
+    fclose(input);
+    */
+    FILE * input = fopen(filename, "r");
+    if (NULL == input) {
+        fprintf(stderr, "contexts_load: Input file doesn't exist!\n");
+        exit(-1);
+    }
+
+    enc_ctx->block_size = block_size;
+    dec_ctx->block_size = block_size;
+    enc_ctx->second_block_G = gf4_poly_init_zero(block_size);
+    dec_ctx->h0 = gf4_poly_init_zero(block_size);
+    dec_ctx->h1 = gf4_poly_init_zero(block_size);
+
+    size_t deg, num_nonzero;
+    gf4_t coeff;
+
+    fscanf(input, "%zu", &num_nonzero);
+    fgetc(input); // remove line ending
+    for (size_t i = 0; i < num_nonzero; ++i) {
+        fscanf(input, "%zu", &deg);
+        fscanf(input, "%hhu", &coeff);
+        fgetc(input); // remove line ending
+        enc_ctx->second_block_G.coefficients[deg] = coeff;
+        enc_ctx->second_block_G.degree = deg;
+    }
+
+    fscanf(input, "%zu", &num_nonzero);
+    fgetc(input); // remove line ending
+    for (size_t i = 0; i < num_nonzero; ++i) {
+        fscanf(input, "%zu", &deg);
+        fscanf(input, "%hhu", &coeff);
+        fgetc(input); // remove line ending
+        dec_ctx->h0.coefficients[deg] = coeff;
+        dec_ctx->h0.degree = deg;
+    }
+
+    fscanf(input, "%zu", &num_nonzero);
+    fgetc(input); // remove line ending
+    for (size_t i = 0; i < num_nonzero; ++i) {
+        fscanf(input, "%zu", &deg);
+        fscanf(input, "%hhu", &coeff);
+        fgetc(input); // remove line ending
         dec_ctx->h1.coefficients[deg] = coeff;
         dec_ctx->h1.degree = deg;
     }

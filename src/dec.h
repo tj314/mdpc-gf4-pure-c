@@ -29,6 +29,7 @@
 #include "gf4.h"
 #include "gf4_poly.h"
 #include "contexts.h"
+#include "utils.h"
 
 /**
  * @brief Calculate the syndrome of a vector.

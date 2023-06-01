@@ -77,14 +77,18 @@ void random_weighted_gf4_poly(gf4_poly_t * poly, size_t size, size_t weight) {
 
 void random_weighted_gf4_pairs_common(gf4_poly_t * poly, size_t size, size_t weight, size_t distance, gf4_t first, gf4_t second) {
     assert(NULL != poly);
+    assert(poly->capacity >= size);
+    assert(size > weight);
     size_t num_pairs = weight / 2;
     for (size_t i = 0; i < num_pairs; ++i) {
         size_t index = random_from_range(0, size - 1);
-        while (poly->coefficients[index] > 0) {
+        size_t second_index = (index + distance) % size;
+        while (poly->coefficients[index] > 0 || poly->coefficients[second_index] > 0) {
             index = random_from_range(0, size - 1);
+            second_index = (index + distance) % size;
         }
         poly->coefficients[index] = first;
-        poly->coefficients[(index + distance) % size] = second;
+        poly->coefficients[second_index] = second;
     }
     gf4_poly_adjust_degree(poly, size - 1);
 }
@@ -95,4 +99,8 @@ void random_weighted_gf4_poly_pairs_of_ones(gf4_poly_t * poly, size_t size, size
 
 void random_weighted_gf4_poly_pairs_of_one_alpha(gf4_poly_t * poly, size_t size, size_t weight, size_t distance) {
     random_weighted_gf4_pairs_common(poly, size, weight, distance, 1, 2);
+}
+
+void random_weighted_gf4_poly_pairs_of_alpha_one(gf4_poly_t * poly, size_t size, size_t weight, size_t distance) {
+    random_weighted_gf4_pairs_common(poly, size, weight, distance, 2, 1);
 }

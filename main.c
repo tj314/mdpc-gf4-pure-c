@@ -1,3 +1,5 @@
+#define GJS
+
 #ifdef RUNTESTS // run unit tests defined in test.h (new tests must be called here manually!)
 #include <stdio.h>
 #include "src/tests.h"
@@ -205,94 +207,54 @@ int main(int argc, char ** argv) {
 #elif defined(GJS)  // TODO, for the love of god do not run this, bad things will happen, monsters will crawl from under your bed
 
 #include <stdio.h>
-#include "src/gf4.h"
 #include "src/gf4_poly.h"
 #include "src/contexts.h"
-#include "src/enc.h"
 #include "src/dec.h"
 
-void experiment0(size_t block_size, size_t num_errors, size_t M, const char * out_filename) {
+
+int main() {
+    size_t ** mults_same = malloc(4* sizeof(size_t *));
+    assert(NULL != mults_same);
+    size_t ** mults_diff = malloc(4* sizeof(size_t *));
+    assert(NULL != mults_diff);
+    for (size_t i = 0; i < 4; ++i) {
+        mults_same[i] = calloc(2339, sizeof(size_t));
+        assert(NULL != mults_same[i]);
+        mults_diff[i] = calloc(2339, sizeof(size_t));
+        assert(NULL != mults_diff[i]);
+    }
     encoding_context_t ec;
     decoding_context_t dc;
-    contexts_load("keys.bin", block_size, &ec, &dc);
+    contexts_init(&ec, &dc, 2339, 37);
 
-    size_t bound = (size_t)(block_size / 2);
+    utils_get_distance_multiplicities_h0(mults_same, mults_diff, &dc);
 
-    gf4_poly_t syndrome = gf4_poly_init_zero(block_size);
-    gf4_poly_t err_vector = gf4_poly_init_zero(2*block_size);
-
-    FILE * output = fopen(out_filename, "w+");
-
-    for (size_t d = 1; d <= bound; ++d) {
-        fprintf(output, "\ndistance: %zu\n", d);
-        fprintf(output, "===================\n\n");
-        for (size_t i = 0; i < M; ++i) {
-            random_weighted_gf4_poly_pairs_of_ones(&err_vector, block_size, num_errors, d);
-            dec_calculate_syndrome(&syndrome, &err_vector, &dc);
-            size_t syndrome_weight = utils_hamming_weight(&syndrome);
-
-            fprintf(output, "err: ");
-            gf4_poly_coeff_print(&err_vector, 2*block_size, output, "\n");
-            fprintf(output, "syn: ");
-            gf4_poly_coeff_print(&syndrome, block_size, output, "\n");
-            fprintf(output, "syndrome weight: %zu\n\n", syndrome_weight);
-
-            gf4_poly_zero_out(&err_vector);
-            gf4_poly_zero_out(&syndrome);
+    fprintf(stderr, "Mults same symbols:\n");
+    for (size_t i = 0; i < 4; ++i) {
+        fprintf(stderr, "mult = %zu: ", i);
+        for (size_t j = 0; j < 20; ++j) {
+            fprintf(stderr, "%zu, ", mults_same[i][j]);
         }
+        fprintf(stderr, "%zu\n", mults_same[i][20]);
     }
 
-    fclose(output);
-
-    gf4_poly_deinit(&syndrome);
-    gf4_poly_deinit(&err_vector);
-    contexts_deinit(&ec, &dc);
-}
-
-void experiment1(size_t block_size, size_t num_errors, size_t M, const char * out_filename) {
-    encoding_context_t ec;
-    decoding_context_t dc;
-    contexts_load("keys.bin", block_size, &ec, &dc);
-
-    size_t bound = (size_t)(block_size / 2);
-
-    gf4_poly_t syndrome = gf4_poly_init_zero(block_size);
-    gf4_poly_t err_vector = gf4_poly_init_zero(2*block_size);
-
-    FILE * output = fopen(out_filename, "w+");
-
-    for (size_t d = 1; d <= bound; ++d) {
-        fprintf(output, "\ndistance: %zu\n", d);
-        fprintf(output, "===================\n\n");
-        for (size_t i = 0; i < M; ++i) {
-            random_weighted_gf4_poly_pairs_of_one_alpha(&err_vector, block_size, num_errors, d);
-            dec_calculate_syndrome(&syndrome, &err_vector, &dc);
-            size_t syndrome_weight = utils_hamming_weight(&syndrome);
-
-            fprintf(output, "err: ");
-            gf4_poly_coeff_print(&err_vector, 2*block_size, output, "\n");
-            fprintf(output, "syn: ");
-            gf4_poly_coeff_print(&syndrome, block_size, output, "\n");
-            fprintf(output, "syndrome weight: %zu\n\n", syndrome_weight);
-
-            gf4_poly_zero_out(&err_vector);
-            gf4_poly_zero_out(&syndrome);
+    fprintf(stderr, "Mults diff symbols:\n");
+    for (size_t i = 0; i < 4; ++i) {
+        fprintf(stderr, "mult = %zu: ", i);
+        for (size_t j = 0; j < 20; ++j) {
+            fprintf(stderr, "%zu, ", mults_diff[i][j]);
         }
+        fprintf(stderr, "%zu\n", mults_diff[i][20]);
     }
 
-    fclose(output);
-
-    gf4_poly_deinit(&syndrome);
-    gf4_poly_deinit(&err_vector);
+    for (size_t i = 0; i < 4; ++i) {
+        free(mults_same[i]);
+        free(mults_diff[i]);
+    }
+    free(mults_same);
+    free(mults_diff);
     contexts_deinit(&ec, &dc);
-}
-
-void gen_keys(size_t block_size, size_t block_weight) {
-    encoding_context_t ec;
-    decoding_context_t dc;
-    contexts_init(&ec, &dc, block_size, block_weight);
-    contexts_save("keys.bin", &ec, &dc);
-    contexts_deinit(&ec, &dc);
+    return 0;
 }
 
 #else // DFR tests
