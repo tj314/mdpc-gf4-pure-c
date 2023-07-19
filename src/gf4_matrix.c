@@ -30,16 +30,20 @@ gf4_square_matrix_t gf4_square_matrix_make_cyclic_matrix(gf4_poly_t * first_row,
     assert(first_row->capacity >= N);
     assert(0 != N);
     gf4_square_matrix_t matrix;
-    matrix.N = N;
-    matrix.rows = calloc(N, sizeof(gf4_poly_t));
+    matrix.rows = malloc(N * sizeof(gf4_t *));
     if (NULL == matrix.rows) {
         fprintf(stderr, "gf4_square_matrix_make_cyclic_matrix: Memory allocation failed!\n");
         exit(-1);
     }
-    matrix.rows[0] = gf4_poly_clone(first_row);
-    for (size_t i = 1; i < N; ++i) {
-        matrix.rows[i] = gf4_poly_clone(&matrix.rows[i-1]);
-        gf4_poly_cyclic_shift_right_inplace(&matrix.rows[i], N);
+    for (size_t row = 0; row < N; ++row) {
+        matrix.rows[row] = malloc(N * sizeof(gf4_t));
+        if (NULL == matrix.rows[row]) {
+            fprintf(stderr, "gf4_square_matrix_make_cyclic_matrix: Memory allocation failed!\n");
+            exit(-1);
+        }
+        for (size_t col = 0; col < N; ++col) {
+            matrix.rows[row][col] = first_row->coefficients[(row + col) % N];
+        }
     }
     return matrix;
 }
@@ -47,9 +51,8 @@ gf4_square_matrix_t gf4_square_matrix_make_cyclic_matrix(gf4_poly_t * first_row,
 void gf4_square_matrix_deinit(gf4_square_matrix_t * matrix) {
     assert(NULL != matrix);
     for (size_t i = 0; i < matrix->N; ++i) {
-        if (NULL != matrix->rows[i].coefficients) {
-            gf4_poly_deinit(&matrix->rows[i]);
-        }
+        free(matrix->rows[i]);
+        matrix->rows[i] = NULL;
     }
     free(matrix->rows);
     matrix->rows = NULL;

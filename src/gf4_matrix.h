@@ -32,15 +32,15 @@
  * @brief This structure represents a square matrix of size NxN.
  */
 typedef struct {
-    gf4_poly_t * rows;
-    size_t N; // number of rows and cols
+    gf4_t ** rows; ///< rows of the matrix
+    size_t N; ///< number of rows and cols
 } gf4_square_matrix_t;
 
 /**
  * @brief Allocate a cyclic matrix and fill it it based on the given first_row.
  *
  * i-th row of the cyclic matrix is obtained by cyclically shifting its (i-1)-th row by 1 place to the right.
- * This function allocates memory! It creates a copy of the first_row polynomial.
+ * This function allocates memory!
  * Initialized matrix must be cleaned up using gf4_square_matrix_deinit function if no longer needed!
  *
  * @see gf4_matrix_deinit
@@ -54,7 +54,7 @@ gf4_square_matrix_t gf4_square_matrix_make_cyclic_matrix(gf4_poly_t * first_row,
 /**
  * @brief Destroy a matrix.
  *
- * Free all the polynomials from the rows array and the array itself.
+ * Free all the rows of the matrix and the rows array itself.
  *
  * @param matrix an initialized matrix
  */
