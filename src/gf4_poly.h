@@ -53,7 +53,7 @@ typedef struct {
 /**
  * @brief Initialize a zero polynomial with the given capacity.
  *
- * Initialized polynomial must be cleaned up using gf4_deinit function if no longer needed!
+ * Initialized polynomial must be cleaned up using gf4_poly_deinit function if no longer needed!
  *
  * @see gf4_poly_deinit
  *
