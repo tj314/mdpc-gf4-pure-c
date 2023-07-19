@@ -35,16 +35,17 @@ gf4_square_matrix_t gf4_square_matrix_make_cyclic_matrix(gf4_poly_t * first_row,
         fprintf(stderr, "gf4_square_matrix_make_cyclic_matrix: Memory allocation failed!\n");
         exit(-1);
     }
-    for (size_t row = 0; row < N; ++row) {
-        matrix.rows[row] = malloc(N * sizeof(gf4_t));
-        if (NULL == matrix.rows[row]) {
+    for (size_t row = N; row > 0; --row) {
+        matrix.rows[N - row] = malloc(N * sizeof(gf4_t));
+        if (NULL == matrix.rows[N - row]) {
             fprintf(stderr, "gf4_square_matrix_make_cyclic_matrix: Memory allocation failed!\n");
             exit(-1);
         }
         for (size_t col = 0; col < N; ++col) {
-            matrix.rows[row][col] = first_row->coefficients[(row + col) % N];
+            matrix.rows[N - row][col] = first_row->coefficients[(row + col) % N];
         }
     }
+    matrix.N = N;
     return matrix;
 }
 
