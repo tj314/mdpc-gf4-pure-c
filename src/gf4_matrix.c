@@ -47,7 +47,7 @@ gf4_square_matrix_t gf4_square_matrix_make_cyclic_matrix(gf4_poly_t * first_row,
 void gf4_square_matrix_deinit(gf4_square_matrix_t * matrix) {
     assert(NULL != matrix);
     for (size_t i = 0; i < matrix->N; ++i) {
-        if (NULL != &matrix->rows[i]) {
+        if (NULL != matrix->rows[i].coefficients) {
             gf4_poly_deinit(&matrix->rows[i]);
         }
     }
