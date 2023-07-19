@@ -24,6 +24,11 @@ void print_OK() {
     fprintf(stderr, "\x1B[0m");
 }
 
+void assert_compare_coeffs(gf4_t * coeffs1, gf4_t * coeffs2, size_t size) {
+    for (size_t i = 0; i < size; ++i) {
+        assert(coeffs1[i] == coeffs2[i]);
+    }
+}
 
 // gf4
 void test_gf4_is_in_range() {
@@ -133,41 +138,26 @@ void test_gf4_poly_cyclic_shift_right_inplace() {
     gf4_poly_set_coefficient(&poly, 0, 1);
     gf4_poly_set_coefficient(&poly, 1, 1);
     gf4_poly_set_coefficient(&poly, 3, 1);
+    gf4_t expected_poly[5] = {1,1,0,1,0};
     assert(5 == poly.capacity);
     assert(3 == poly.degree);
-    assert(1 == poly.coefficients[0]);
-    assert(1 == poly.coefficients[1]);
-    assert(0 == poly.coefficients[2]);
-    assert(1 == poly.coefficients[3]);
-    assert(0 == poly.coefficients[4]);
+    assert_compare_coeffs(poly.coefficients, expected_poly, 5);
 
     // test 1
     // cyclic shift of 1 + x + x^3 with size=4 and capacity=5: [1, 1, 0, 1, 0] -> [1, 1, 1, 0, 0] -> 1 + x + x^2
     gf4_poly_t poly1 = gf4_poly_clone(&poly);
+    gf4_t expected_poly1_after_shift[5] = {1,1,1,0,0};
     assert(5 == poly1.capacity);
     assert(3 == poly1.degree);
-    assert(1 == poly1.coefficients[0]);
-    assert(1 == poly1.coefficients[1]);
-    assert(0 == poly1.coefficients[2]);
-    assert(1 == poly1.coefficients[3]);
-    assert(0 == poly1.coefficients[4]);
+    assert_compare_coeffs(poly1.coefficients, expected_poly, 5);
 
     gf4_poly_cyclic_shift_right_inplace(&poly1, 4);
     assert(5 == poly1.capacity);
     assert(3 == poly1.degree);
-    assert(1 == poly1.coefficients[0]);
-    assert(1 == poly1.coefficients[1]);
-    assert(1 == poly1.coefficients[2]);
-    assert(0 == poly1.coefficients[3]);
-    assert(0 == poly1.coefficients[4]);
     assert(5 == poly.capacity);
     assert(3 == poly.degree);
-    assert(1 == poly.coefficients[0]);
-    assert(1 == poly.coefficients[1]);
-    assert(0 == poly.coefficients[2]);
-    assert(1 == poly.coefficients[3]);
-    assert(0 == poly.coefficients[4]);
-
+    assert_compare_coeffs(poly.coefficients, expected_poly, 5);
+    assert_compare_coeffs(poly1.coefficients, expected_poly1_after_shift, 5);
     gf4_poly_deinit(&poly1);
 
     // test 2
@@ -175,34 +165,62 @@ void test_gf4_poly_cyclic_shift_right_inplace() {
     gf4_poly_t poly2 = gf4_poly_clone(&poly);
     assert(5 == poly2.capacity);
     assert(3 == poly2.degree);
-    assert(1 == poly2.coefficients[0]);
-    assert(1 == poly2.coefficients[1]);
-    assert(0 == poly2.coefficients[2]);
-    assert(1 == poly2.coefficients[3]);
-    assert(0 == poly2.coefficients[4]);
+    assert_compare_coeffs(poly2.coefficients, expected_poly, 5);
 
+    gf4_t expected_poly2_after_shift[5] = {0, 1, 1, 0, 1};
     gf4_poly_cyclic_shift_right_inplace(&poly2, 5);
     assert(5 == poly2.capacity);
     assert(3 == poly2.degree);
-    assert(0 == poly2.coefficients[0]);
-    assert(1 == poly2.coefficients[1]);
-    assert(1 == poly2.coefficients[2]);
-    assert(0 == poly2.coefficients[3]);
-    assert(1 == poly2.coefficients[4]);
+    assert_compare_coeffs(poly2.coefficients, expected_poly2_after_shift, 5);
     assert(5 == poly.capacity);
     assert(3 == poly.degree);
-    assert(1 == poly.coefficients[0]);
-    assert(1 == poly.coefficients[1]);
-    assert(0 == poly.coefficients[2]);
-    assert(1 == poly.coefficients[3]);
-    assert(0 == poly.coefficients[4]);
-
+    assert_compare_coeffs(poly.coefficients, expected_poly, 5);
     gf4_poly_deinit(&poly2);
 
     // cleanup
     gf4_poly_deinit(&poly);
     print_OK();
 }
+
+
+// gf4_matrix
+void test_gf4_square_matrix_make_cyclic_matrix() {
+    // setup
+    fprintf(stderr, "test_gf4_square_matrix_make_cyclic_matrix: \n");
+    gf4_poly_t first_row = gf4_poly_init_zero(5);
+    gf4_poly_set_coefficient(&first_row, 0, 1);
+    gf4_poly_set_coefficient(&first_row, 1, 2);
+    gf4_poly_set_coefficient(&first_row, 4, 3);
+
+    gf4_t expected_matrix[5][5] = {
+            {1, 2, 0, 0, 3},
+            {3, 1, 2, 0, 0},
+            {0, 3, 1, 2, 0},
+            {0, 0, 3, 1, 2},
+            {2, 0, 0, 3, 1}
+    };
+
+    gf4_square_matrix_t matrix = gf4_square_matrix_make_cyclic_matrix(&first_row, 5);
+    assert(5 == matrix.N);
+    for (size_t i = 0; i < 5; ++i) {
+        for (size_t j = 0; j < 5; ++j) {
+            fprintf(stderr, "%d <---> %d\n", matrix.rows[i][j], expected_matrix[i][j]);
+        }
+        assert_compare_coeffs(matrix.rows[i], expected_matrix[i], 5);
+        fprintf(stderr, "next row\n");
+    }
+
+    // cleanup
+    gf4_poly_deinit(&first_row);
+    gf4_square_matrix_deinit(&matrix);
+    print_OK();
+}
+
+void test_gf4_square_matrix_deinit() {
+    // setup
+}
+
+
 
 // contexts
 void test_contexts_init() {

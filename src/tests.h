@@ -33,6 +33,7 @@
 #include "enc.h"
 #include "gf4.h"
 #include "gf4_poly.h"
+#include "gf4_matrix.h"
 #include "random.h"
 #include "utils.h"
 
@@ -49,6 +50,9 @@ void test_utils_hamming_weight();
 
 // gf4_poly
 void test_gf4_poly_cyclic_shift_right_inplace();
+
+// gf4_matrix
+void test_gf4_square_matrix_make_cyclic_matrix();
 
 // contexts
 void test_contexts_init();
