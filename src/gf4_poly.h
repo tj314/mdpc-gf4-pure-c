@@ -150,16 +150,16 @@ void gf4_poly_add(gf4_poly_t * out, gf4_poly_t * a, gf4_poly_t * b);
 void gf4_poly_add_inplace(gf4_poly_t * a, gf4_poly_t * b);
 
 /**
- * @brief poly = poly + val*x^deg
+ * @brief poly = poly + a*x^deg
  *
  * poly must be initialized beforehand.
  * The following must hold: deg <= poly->degree.
  *
  * @param poly an initialized polynomial
  * @param deg degree of x
- * @param val coefficient of x^deg
+ * @param a coefficient of x^deg
  */
-void gf4_poly_add_ax_to_deg_inplace(gf4_poly_t * poly, size_t deg, gf4_t val);
+void gf4_poly_add_ax_to_deg_inplace(gf4_poly_t * poly, size_t deg, gf4_t a);
 
 
 // multiplication
@@ -256,6 +256,21 @@ bool gf4_poly_is_zero(gf4_poly_t * poly);
  */
 bool gf4_poly_equal(gf4_poly_t * poly1, gf4_poly_t * poly2);
 
+// cyclic shifts
+/**
+ * @brief Perform a cyclic shift of the coefficients of poly to right by one place.
+ *
+ * size determines where to overflow coefficients to the beginning of the array,
+ * i.e. size is the index of the first element not to be shifted.
+ * The following must be true: size <= poly->capacity.
+ * e.g.: cyclic shift of 1 + x + x^3 with size=4 and capacity=5 is performed as follows: [1, 1, 0, 1, 0] -> [1, 1, 1, 0, 0] -> 1 + x + x^2
+ * e.g.: cyclic shift of 1 + x + x^3 with size=5 and capacity=5 is performed as follows: [1, 1, 0, 1, 0] -> [0, 1, 1, 0, 1] -> x + x^2 + x^4
+ *
+ * @param poly pointer to a polynomial to be shifted
+ * @param size size of the shift, size <= poly->capacity
+ */
+void gf4_poly_cyclic_shift_right_inplace(gf4_poly_t * poly, size_t size);
+
 
 // helpers
 /**
@@ -307,6 +322,7 @@ void gf4_poly_coeff_print(gf4_poly_t * poly, size_t max, FILE * stream, const ch
  * poly must be initialized beforehand.
  * A new polynomial is created and returned.
  * This polynomial contains a copy of coefficients of poly. capacity and degree are the same.
+ * Cloned polynomial must be cleaned up using gf4_deinit function if no longer needed!
  *
  * @see gf4_poly_deinit
  *

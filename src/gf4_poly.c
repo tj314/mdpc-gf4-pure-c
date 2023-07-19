@@ -136,14 +136,14 @@ void gf4_poly_add_inplace(gf4_poly_t * a, gf4_poly_t * b) {
     }
 }
 
-void gf4_poly_add_ax_to_deg_inplace(gf4_poly_t * poly, size_t deg, gf4_t val) {
+void gf4_poly_add_ax_to_deg_inplace(gf4_poly_t * poly, size_t deg, gf4_t a) {
     assert(NULL != poly);
 #ifdef CANRESIZE
     if (deg >= poly->capacity) {
         gf4_poly_resize(poly, deg + 1);
     }
 #endif // CANRESIZE
-    poly->coefficients[deg] = poly->coefficients[deg] ^ val;
+    poly->coefficients[deg] = poly->coefficients[deg] ^ a;
     if (deg > poly->degree && 0 != poly->coefficients[deg]) {
         poly->degree = deg;
     } else if (deg == poly->degree && 0 == poly->coefficients[deg]) {
@@ -311,6 +311,19 @@ bool gf4_poly_equal(gf4_poly_t * poly1, gf4_poly_t * poly2) {
         }
         return true;
     }
+}
+
+
+
+// cyclic shifts
+void gf4_poly_cyclic_shift_right_inplace(gf4_poly_t * poly, size_t size) {
+    assert(NULL != poly);
+    assert(size <= poly->capacity);
+    gf4_t last = poly->coefficients[size - 1];
+    for (size_t i = size - 1; i > 0; --i) {
+        poly->coefficients[i] = poly->coefficients[i-1];
+    }
+    poly->coefficients[0] = last;
 }
 
 

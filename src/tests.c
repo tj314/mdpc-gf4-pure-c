@@ -125,6 +125,85 @@ void test_utils_hamming_weight() {
     print_OK();
 }
 
+// gf4_poly
+void test_gf4_poly_cyclic_shift_right_inplace() {
+    fprintf(stderr, "test_gf4_poly_cyclic_shift_right_inplace: ");
+    // setup
+    gf4_poly_t poly = gf4_poly_init_zero(5);
+    gf4_poly_set_coefficient(&poly, 0, 1);
+    gf4_poly_set_coefficient(&poly, 1, 1);
+    gf4_poly_set_coefficient(&poly, 3, 1);
+    assert(5 == poly.capacity);
+    assert(3 == poly.degree);
+    assert(1 == poly.coefficients[0]);
+    assert(1 == poly.coefficients[1]);
+    assert(0 == poly.coefficients[2]);
+    assert(1 == poly.coefficients[3]);
+    assert(0 == poly.coefficients[4]);
+
+    // test 1
+    // cyclic shift of 1 + x + x^3 with size=4 and capacity=5: [1, 1, 0, 1, 0] -> [1, 1, 1, 0, 0] -> 1 + x + x^2
+    gf4_poly_t poly1 = gf4_poly_clone(&poly);
+    assert(5 == poly1.capacity);
+    assert(3 == poly1.degree);
+    assert(1 == poly1.coefficients[0]);
+    assert(1 == poly1.coefficients[1]);
+    assert(0 == poly1.coefficients[2]);
+    assert(1 == poly1.coefficients[3]);
+    assert(0 == poly1.coefficients[4]);
+
+    gf4_poly_cyclic_shift_right_inplace(&poly1, 4);
+    assert(5 == poly1.capacity);
+    assert(3 == poly1.degree);
+    assert(1 == poly1.coefficients[0]);
+    assert(1 == poly1.coefficients[1]);
+    assert(1 == poly1.coefficients[2]);
+    assert(0 == poly1.coefficients[3]);
+    assert(0 == poly1.coefficients[4]);
+    assert(5 == poly.capacity);
+    assert(3 == poly.degree);
+    assert(1 == poly.coefficients[0]);
+    assert(1 == poly.coefficients[1]);
+    assert(0 == poly.coefficients[2]);
+    assert(1 == poly.coefficients[3]);
+    assert(0 == poly.coefficients[4]);
+
+    gf4_poly_deinit(&poly1);
+
+    // test 2
+    // cyclic shift of 1 + x + x^3 with size=5 and capacity=5: [1, 1, 0, 1, 0] -> [0, 1, 1, 0, 1] -> x + x^2 + x^4
+    gf4_poly_t poly2 = gf4_poly_clone(&poly);
+    assert(5 == poly2.capacity);
+    assert(3 == poly2.degree);
+    assert(1 == poly2.coefficients[0]);
+    assert(1 == poly2.coefficients[1]);
+    assert(0 == poly2.coefficients[2]);
+    assert(1 == poly2.coefficients[3]);
+    assert(0 == poly2.coefficients[4]);
+
+    gf4_poly_cyclic_shift_right_inplace(&poly2, 5);
+    assert(5 == poly2.capacity);
+    assert(3 == poly2.degree);
+    assert(0 == poly2.coefficients[0]);
+    assert(1 == poly2.coefficients[1]);
+    assert(1 == poly2.coefficients[2]);
+    assert(0 == poly2.coefficients[3]);
+    assert(1 == poly2.coefficients[4]);
+    assert(5 == poly.capacity);
+    assert(3 == poly.degree);
+    assert(1 == poly.coefficients[0]);
+    assert(1 == poly.coefficients[1]);
+    assert(0 == poly.coefficients[2]);
+    assert(1 == poly.coefficients[3]);
+    assert(0 == poly.coefficients[4]);
+
+    gf4_poly_deinit(&poly2);
+
+    // cleanup
+    gf4_poly_deinit(&poly);
+    print_OK();
+}
+
 // contexts
 void test_contexts_init() {
     fprintf(stderr, "test_contexts_init: ");

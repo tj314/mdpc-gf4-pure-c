@@ -47,6 +47,9 @@ void test_gf4_div();
 // utils
 void test_utils_hamming_weight();
 
+// gf4_poly
+void test_gf4_poly_cyclic_shift_right_inplace();
+
 // contexts
 void test_contexts_init();
 void test_contexts_save_load();
