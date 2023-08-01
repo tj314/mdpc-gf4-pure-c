@@ -69,3 +69,13 @@ void utils_get_distance_multiplicities_h0(size_t ** multiplicities_same_symbols,
         }
     }
 }
+
+size_t utils_binary_pow(size_t x, size_t n) {
+    if(n == 0) {
+        return 1;
+    } else {
+        size_t t = utils_binary_pow(x, n / 2);
+        t = t * t;
+        return n % 2 ? x * t : t;
+    }
+}
