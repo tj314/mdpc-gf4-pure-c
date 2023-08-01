@@ -221,10 +221,11 @@ gf4_matrix_t gf4_matrix_solve_homogenous_linear_system(gf4_matrix_t * equations)
             }
             for (size_t row = 0; row < out_solutions.num_rows; ++row) {
                 gf4_t sum_right_of_pivot = 0;
+                gf4_t pivot_coefficient = equations->rows[current_row][pivot_index];
                 for (size_t col = pivot_index + 1; col < out_solutions.num_cols; ++col) {
-                    sum_right_of_pivot ^= gf4_mul(equations->rows[row][col], out_solutions.rows[row][col]);
+                    sum_right_of_pivot ^= gf4_mul(equations->rows[current_row][col], out_solutions.rows[row][col]);
                 }
-                out_solutions.rows[row][pivot_index] = gf4_div(sum_right_of_pivot, equations->rows[row][pivot_index]);
+                out_solutions.rows[row][pivot_index] = gf4_div(sum_right_of_pivot, pivot_coefficient);
             }
             last_set_unknown_index = (0 == pivot_index) ? pivot_index - 1 : out_solutions.num_cols;
         } while (0 != current_row);
