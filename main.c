@@ -12,7 +12,9 @@ int main() {
     test_gf4_div();
     test_utils_hamming_weight();
     test_gf4_poly_cyclic_shift_right_inplace();
-    test_gf4_square_matrix_make_cyclic_matrix();
+    test_gf4_square_matrix_init_cyclic_matrix();
+    test_gf4_matrix_gaussian_elimination_inplace();
+    test_gf4_matrix_solve_homogenous_linear_system();
     test_contexts_init();
     test_contexts_save_load();
     test_enc_encode();

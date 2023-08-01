@@ -184,9 +184,9 @@ void test_gf4_poly_cyclic_shift_right_inplace() {
 
 
 // gf4_matrix
-void test_gf4_square_matrix_make_cyclic_matrix() {
+void test_gf4_square_matrix_init_cyclic_matrix() {
     // setup
-    fprintf(stderr, "test_gf4_square_matrix_make_cyclic_matrix: \n");
+    fprintf(stderr, "test_gf4_square_matrix_init_cyclic_matrix: ");
     gf4_poly_t first_row = gf4_poly_init_zero(5);
     gf4_poly_set_coefficient(&first_row, 0, 1);
     gf4_poly_set_coefficient(&first_row, 1, 2);
@@ -200,26 +200,68 @@ void test_gf4_square_matrix_make_cyclic_matrix() {
             {2, 0, 0, 3, 1}
     };
 
-    gf4_square_matrix_t matrix = gf4_square_matrix_make_cyclic_matrix(&first_row, 5);
-    assert(5 == matrix.N);
+    gf4_matrix_t matrix = gf4_matrix_init_cyclic_matrix(&first_row, 5);
+    assert(5 == matrix.num_rows);
     for (size_t i = 0; i < 5; ++i) {
-        for (size_t j = 0; j < 5; ++j) {
-            fprintf(stderr, "%d <---> %d\n", matrix.rows[i][j], expected_matrix[i][j]);
-        }
         assert_compare_coeffs(matrix.rows[i], expected_matrix[i], 5);
-        fprintf(stderr, "next row\n");
     }
 
     // cleanup
     gf4_poly_deinit(&first_row);
-    gf4_square_matrix_deinit(&matrix);
+    gf4_matrix_deinit(&matrix);
     print_OK();
 }
 
-void test_gf4_square_matrix_deinit() {
-    // setup
+void test_gf4_matrix_gaussian_elimination_inplace() {
+    fprintf(stderr, "test_gf4_matrix_gaussian_elimination_inplace: ");
+    {
+        gf4_poly_t first_row = gf4_poly_init_zero(4);
+        gf4_poly_set_coefficient(&first_row, 0, 1);
+        gf4_poly_set_coefficient(&first_row, 1, 2);
+        gf4_poly_set_coefficient(&first_row, 2, 1);
+        gf4_poly_set_coefficient(&first_row, 3, 3);
+        gf4_matrix_t matrix = gf4_matrix_init_cyclic_matrix(&first_row, 4);
+        gf4_matrix_gaussian_elimination_inplace(&matrix);
+        gf4_t expected_matrix[4][4] = {
+                {2, 0, 0, 0},
+                {0, 3, 0, 0},
+                {0, 0, 1, 0},
+                {0, 0, 0, 3}
+        };
+        // gf4_matrix_pretty_print(&matrix);
+        assert(4 == matrix.num_rows);
+        assert(4 == matrix.num_cols);
+        for (size_t i = 0; i < 4; ++i) {
+            assert_compare_coeffs(matrix.rows[i], expected_matrix[i], 4);
+        }
+        gf4_poly_deinit(&first_row);
+    }
+    {
+        gf4_poly_t first_row = gf4_poly_init_zero(4);
+        gf4_poly_set_coefficient(&first_row, 0, 1);
+        gf4_poly_set_coefficient(&first_row, 2, 1);
+        gf4_matrix_t matrix = gf4_matrix_init_cyclic_matrix(&first_row, 4);
+        gf4_matrix_gaussian_elimination_inplace(&matrix);
+        gf4_t expected_matrix[4][4] = {
+                {1, 0, 1, 0},
+                {0, 1, 0, 1},
+                {0, 0, 0, 0},
+                {0, 0, 0, 0}
+        };
+        // gf4_matrix_pretty_print(&matrix);
+        assert(4 == matrix.num_rows);
+        assert(4 == matrix.num_cols);
+        for (size_t i = 0; i < 4; ++i) {
+            assert_compare_coeffs(matrix.rows[i], expected_matrix[i], 4);
+        }
+        gf4_poly_deinit(&first_row);
+    }
+    print_OK();
 }
 
+void test_gf4_matrix_solve_homogenous_linear_system() {
+    assert(false);
+}
 
 
 // contexts

@@ -52,7 +52,9 @@ void test_utils_hamming_weight();
 void test_gf4_poly_cyclic_shift_right_inplace();
 
 // gf4_matrix
-void test_gf4_square_matrix_make_cyclic_matrix();
+void test_gf4_square_matrix_init_cyclic_matrix();
+void test_gf4_matrix_gaussian_elimination_inplace();
+void test_gf4_matrix_solve_homogenous_linear_system();
 
 // contexts
 void test_contexts_init();
