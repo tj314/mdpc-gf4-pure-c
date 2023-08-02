@@ -396,6 +396,47 @@ void test_gf4_matrix_solve_homogenous_linear_system() {
         gf4_matrix_deinit(&solutions);
     }
 
+    // test 4
+    {
+        gf4_matrix_t matrix;
+        matrix.num_rows = 4;
+        matrix.num_cols = 4;
+        matrix.rows = malloc(4* sizeof(gf4_t *));
+        assert(NULL != matrix.rows);
+        for (size_t i = 0; i < 4; ++i) {
+            matrix.rows[i] = calloc(4, sizeof(gf4_t));
+            assert(NULL != matrix.rows[0]);
+        }
+        matrix.rows[0][0] = 1;
+        matrix.rows[0][1] = 2;
+        matrix.rows[1][2] = 1;
+        matrix.rows[2][3] = 3;
+
+        gf4_matrix_gaussian_elimination_inplace(&matrix);
+        assert(4 == matrix.num_rows);
+        assert(4 == matrix.num_cols);
+        assert(1 == matrix.rows[0][0]);
+        assert(2 == matrix.rows[0][1]);
+        assert(1 == matrix.rows[1][2]);
+        assert(3 == matrix.rows[2][3]);
+
+        gf4_matrix_t solutions = gf4_matrix_solve_homogenous_linear_system(&matrix);
+        gf4_t expected_solutions[4][4] = {
+                {0, 0, 0, 0},
+                {2, 1, 0, 0},
+                {3, 2, 0, 0},
+                {1, 3, 0, 0}
+        };
+        assert(4 == solutions.num_rows);
+        assert(4 == solutions.num_cols);
+        for (size_t i = 0; i < 4; ++i) {
+            assert_compare_coeffs(solutions.rows[i], expected_solutions[i], 4);
+        }
+
+        gf4_matrix_deinit(&matrix);
+        gf4_matrix_deinit(&solutions);
+    }
+
     print_OK();
 }
 
@@ -471,6 +512,7 @@ void test_contexts_save_load() {
     // cleanup
     contexts_deinit(&ec_gen, &dc_gen);
     contexts_deinit(&ec_load, &dc_load);
+    remove(filename);
     print_OK();
 }
 
