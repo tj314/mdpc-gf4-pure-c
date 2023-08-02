@@ -263,7 +263,7 @@ void test_gf4_matrix_solve_homogenous_linear_system() {
     fprintf(stderr, "test_gf4_matrix_solve_homogenous_linear_system: ");
 
     // test 1
-    /*{
+    {
         gf4_matrix_t matrix;
         matrix.num_rows = 1;
         matrix.num_cols = 3;
@@ -309,7 +309,7 @@ void test_gf4_matrix_solve_homogenous_linear_system() {
 
         gf4_matrix_deinit(&matrix);
         gf4_matrix_deinit(&solutions);
-    }*/
+    }
 
     // test 2
     {
@@ -346,6 +346,56 @@ void test_gf4_matrix_solve_homogenous_linear_system() {
         gf4_matrix_deinit(&equations);
         gf4_poly_deinit(&first_row);
     }
+
+    // test 3
+    {
+        gf4_matrix_t matrix;
+        matrix.num_rows = 1;
+        matrix.num_cols = 3;
+        matrix.rows = malloc(sizeof(gf4_t *));
+        assert(NULL != matrix.rows);
+        matrix.rows[0] = malloc(3 * sizeof(gf4_t));
+        assert(NULL != matrix.rows[0]);
+        matrix.rows[0][0] = 0;
+        matrix.rows[0][1] = 1;
+        matrix.rows[0][2] = 0;
+
+        gf4_matrix_gaussian_elimination_inplace(&matrix);
+        assert(1 == matrix.num_rows);
+        assert(3 == matrix.num_cols);
+        assert(0 == matrix.rows[0][0]);
+        assert(1 == matrix.rows[0][1]);
+        assert(0 == matrix.rows[0][2]);
+
+        gf4_matrix_t solutions = gf4_matrix_solve_homogenous_linear_system(&matrix);
+        gf4_t expected_solutions[16][3] = {
+                {0, 0, 0},
+                {0, 0, 1},
+                {0, 0, 2},
+                {0, 0, 3},
+                {1, 0, 0},
+                {1, 0, 1},
+                {1, 0, 2},
+                {1, 0, 3},
+                {2, 0, 0},
+                {2, 0, 1},
+                {2, 0, 2},
+                {2, 0, 3},
+                {3, 0, 0},
+                {3, 0, 1},
+                {3, 0, 2},
+                {3, 0, 3}
+        };
+        assert(16 == solutions.num_rows);
+        assert(3 == solutions.num_cols);
+        for (size_t i = 0; i < 16; ++i) {
+            assert_compare_coeffs(solutions.rows[i], expected_solutions[i], 3);
+        }
+
+        gf4_matrix_deinit(&matrix);
+        gf4_matrix_deinit(&solutions);
+    }
+
     print_OK();
 }
 
