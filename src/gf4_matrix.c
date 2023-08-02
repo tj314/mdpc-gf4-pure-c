@@ -64,7 +64,7 @@ bool gf4_matrix_find_pivot_index(gf4_matrix_t * matrix, size_t row_index, size_t
 
 bool gf4_matrix_is_row_zero(gf4_matrix_t * matrix, size_t row_index) {
     bool is_zero = true;
-    for (size_t i = 0; i < matrix->num_rows; ++i) {
+    for (size_t i = 0; i < matrix->num_cols; ++i) {
         is_zero &= (0 == matrix->rows[row_index][i]);
     }
     return is_zero;
@@ -198,9 +198,9 @@ gf4_matrix_t gf4_matrix_solve_homogenous_linear_system(gf4_matrix_t * equations)
         size_t current_row = equations_rank;
         size_t repetitions = 1;
         size_t last_set_unknown_index = equations->num_cols - 1;
+        size_t pivot_index;
         do {
             --current_row;
-            size_t pivot_index;
             bool pivot_exists = gf4_matrix_find_pivot_index(equations, current_row, &pivot_index);
             if (!pivot_exists) {
                 fprintf(stderr, "gf4_matrix_solve_homogenous_linear_system: Unexpected error! Encountered a zero row where no such row was expected!\n");
@@ -229,6 +229,21 @@ gf4_matrix_t gf4_matrix_solve_homogenous_linear_system(gf4_matrix_t * equations)
             }
             last_set_unknown_index = (0 == pivot_index) ? equations->num_cols : last_set_unknown_index - 1;
         } while (0 != current_row);
+
+        while (0 != pivot_index) {
+            --pivot_index;
+            gf4_t val = 0;
+            size_t index = 0;
+            while (index < out_solutions.num_rows) {
+                for (size_t rep = 0; rep < repetitions; ++rep) {
+                    out_solutions.rows[index][pivot_index] = val;
+                    ++index;
+                }
+                ++val;
+                val %= 4;
+            }
+            repetitions *= 4;
+        }
     }
     return out_solutions;
 }
