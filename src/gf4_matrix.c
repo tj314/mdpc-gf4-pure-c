@@ -227,11 +227,9 @@ gf4_matrix_t gf4_matrix_solve_homogenous_linear_system(gf4_matrix_t * equations)
                 }
                 out_solutions.rows[row][pivot_index] = gf4_div(sum_right_of_pivot, pivot_coefficient);
             }
-            last_set_unknown_index = (0 == pivot_index) ? pivot_index - 1 : out_solutions.num_cols;
+            last_set_unknown_index = (0 == pivot_index) ? equations->num_cols : last_set_unknown_index - 1;
         } while (0 != current_row);
     }
-
-
     return out_solutions;
 }
 
