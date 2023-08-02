@@ -90,6 +90,32 @@ void gf4_matrix_gaussian_elimination_inplace(gf4_matrix_t * matrix);
 gf4_matrix_t gf4_matrix_solve_homogenous_linear_system(gf4_matrix_t * equations);
 
 /**
+ * @brief Remove a row from a matrix.
+ *
+ * @param matrix an initialized matrix
+ * @param row_index index of the row to remove
+ */
+void gf4_matrix_remove_row_inplace(gf4_matrix_t * matrix, size_t row_index);
+
+/**
+ * @brief Remove a column from a matrix.
+ *
+ * @param matrix an initialized matrix
+ * @param col_index index of the column to remove
+ */
+void gf4_matrix_remove_col_inplace(gf4_matrix_t * matrix, size_t col_index);
+
+/**
+ * @brief Realloc given matrix to shrink it or grow it.
+ *
+ * e.g. a matrix was originally allocated with 4 rows and 3 columns. Then one column was removed.
+ * Its dimensions are now set to 4 by 2. This function reallocates all rows to be of length 2.
+ *
+ * @param matrix an initialized matrix
+ */
+void gf4_matrix_realloc_to_match_dimensions_inplace(gf4_matrix_t * matrix);
+
+/**
  * @brief Pretty print a matrix.
  *
  * @param matrix an initialized matrix

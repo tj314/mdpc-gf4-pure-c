@@ -248,6 +248,37 @@ gf4_matrix_t gf4_matrix_solve_homogenous_linear_system(gf4_matrix_t * equations)
     return out_solutions;
 }
 
+void gf4_matrix_remove_row_inplace(gf4_matrix_t * matrix, size_t row_index) {
+    assert(NULL != matrix);
+    assert(matrix->num_rows > row_index);
+    free(matrix->rows[row_index]);
+    matrix->rows[row_index] = NULL;
+    for (size_t row = row_index; row < matrix->num_rows - 1; ++row) {
+        // gf4_t * tmp_row = matrix->rows[row];
+        matrix->rows[row] = matrix->rows[row + 1];
+        // matrix->rows[row + 1] = tmp_row;
+    }
+    matrix->num_rows -= 1;
+}
+
+void gf4_matrix_remove_col_inplace(gf4_matrix_t * matrix, size_t col_index) {
+    assert(NULL != matrix);
+    assert(matrix->num_cols > col_index);
+
+    for (size_t row = 0; row < matrix->num_rows; ++row) {
+        for (size_t col = col_index; col < matrix->num_cols - 1; ++col) {
+            matrix->rows[row][col] = matrix->rows[row][col + 1];
+        }
+        matrix->rows[matrix->num_cols - 1] = 0;
+    }
+    matrix->num_cols -= 1;
+}
+
+void gf4_matrix_realloc_to_match_dimensions_inplace(gf4_matrix_t * matrix) {
+    fprintf(stderr, "gf4_matrix_realloc_to_match_dimensions_inplace: Not yet implemented!\n");
+    exit(-1);
+}
+
 void gf4_matrix_deinit(gf4_matrix_t * matrix) {
     assert(NULL != matrix);
     for (size_t i = 0; i < matrix->num_rows; ++i) {
