@@ -260,7 +260,93 @@ void test_gf4_matrix_gaussian_elimination_inplace() {
 }
 
 void test_gf4_matrix_solve_homogenous_linear_system() {
-    assert(false);
+    fprintf(stderr, "test_gf4_matrix_solve_homogenous_linear_system: ");
+
+    // test 1
+    /*{
+        gf4_matrix_t matrix;
+        matrix.num_rows = 1;
+        matrix.num_cols = 3;
+        matrix.rows = malloc(sizeof(gf4_t *));
+        assert(NULL != matrix.rows);
+        matrix.rows[0] = malloc(3 * sizeof(gf4_t));
+        assert(NULL != matrix.rows[0]);
+        matrix.rows[0][0] = 2;
+        matrix.rows[0][1] = 1;
+        matrix.rows[0][2] = 0;
+
+        gf4_matrix_gaussian_elimination_inplace(&matrix);
+        assert(1 == matrix.num_rows);
+        assert(3 == matrix.num_cols);
+        assert(2 == matrix.rows[0][0]);
+        assert(1 == matrix.rows[0][1]);
+        assert(0 == matrix.rows[0][2]);
+
+        gf4_matrix_t solutions = gf4_matrix_solve_homogenous_linear_system(&matrix);
+        gf4_t expected_solutions[16][3] = {
+                {0, 0, 0},
+                {0, 0, 1},
+                {0, 0, 2},
+                {0, 0, 3},
+                {3, 1, 0},
+                {3, 1, 1},
+                {3, 1, 2},
+                {3, 1, 3},
+                {1, 2, 0},
+                {1, 2, 1},
+                {1, 2, 2},
+                {1, 2, 3},
+                {2, 3, 0},
+                {2, 3, 1},
+                {2, 3, 2},
+                {2, 3, 3}
+        };
+        assert(16 == solutions.num_rows);
+        assert(3 == solutions.num_cols);
+        for (size_t i = 0; i < 16; ++i) {
+            assert_compare_coeffs(solutions.rows[i], expected_solutions[i], 3);
+        }
+
+        gf4_matrix_deinit(&matrix);
+        gf4_matrix_deinit(&solutions);
+    }*/
+
+    // test 2
+    {
+        gf4_poly_t first_row = gf4_poly_init_zero(3);
+        gf4_poly_set_coefficient(&first_row, 0, 2);
+        gf4_matrix_t equations = gf4_matrix_init_cyclic_matrix(&first_row, 3);
+
+        gf4_t expected_equations[3][3] = {
+                {2, 0, 0},
+                {0, 2, 0},
+                {0, 0, 2}
+        };
+
+        assert(3 == equations.num_cols);
+        assert(3 == equations.num_rows);
+        for (size_t i = 0; i < 3; ++i) {
+            assert_compare_coeffs(equations.rows[i], expected_equations[i], 3);
+        }
+
+        gf4_matrix_gaussian_elimination_inplace(&equations);
+        assert(3 == equations.num_cols);
+        assert(3 == equations.num_rows);
+        for (size_t i = 0; i < 3; ++i) {
+            assert_compare_coeffs(equations.rows[i], expected_equations[i], 3);
+        }
+
+        gf4_matrix_t solutions = gf4_matrix_solve_homogenous_linear_system(&equations);
+        gf4_t expected_solution[3] = {0, 0, 0};
+        assert(1 == solutions.num_rows);
+        assert(3 == solutions.num_cols);
+        assert_compare_coeffs(solutions.rows[0], expected_solution, 3);
+
+        gf4_matrix_deinit(&solutions);
+        gf4_matrix_deinit(&equations);
+        gf4_poly_deinit(&first_row);
+    }
+    print_OK();
 }
 
 
