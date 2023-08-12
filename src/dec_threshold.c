@@ -79,7 +79,7 @@ bool dec_decode_symbol_flipping_threshold_recalculate_inplace(gf4_poly_t * maybe
     size_t min_iter = 0;
 
     for (size_t i = 0; i < num_iterations; ++i) {
-        long syndrome_weight = (long)utils_hamming_weight(&syndrome);
+        long syndrome_weight = (long) gf4_vector_hamming_weight(&syndrome);
         if (min_syndrome < 0) {
             min_syndrome = syndrome_weight;
             max_syndrome = syndrome_weight;
@@ -117,7 +117,7 @@ bool dec_decode_symbol_flipping_threshold_recalculate_inplace(gf4_poly_t * maybe
 
             if (sigma_max > threshold) {
                 dec_flip_symbol(h_block, &syndrome, maybe_decoded, a_max, actual_j, j, ctx);
-                syndrome_weight = (long)utils_hamming_weight(&syndrome);
+                syndrome_weight = (long) gf4_vector_hamming_weight(&syndrome);
                 threshold = ctx->threshold(syndrome_weight);
                 if (syndrome_weight < min_syndrome) {
                     min_syndrome = syndrome_weight;
@@ -150,7 +150,7 @@ bool dec_decode_symbol_flipping_threshold(gf4_vector_t *maybe_decoded, gf4_vecto
     gf4_poly_copy(maybe_decoded, in_vector);
 
     for (size_t i = 0; i < num_iterations; ++i) {
-        long syndrome_weight = (long)utils_hamming_weight(&syndrome);
+        long syndrome_weight = (long) gf4_vector_hamming_weight(&syndrome);
         if (0 == syndrome_weight) {
             gf4_poly_deinit(&syndrome);
             ctx->elapsed_iterations = i;

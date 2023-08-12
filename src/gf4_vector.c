@@ -49,6 +49,16 @@ void gf4_vector_deinit(gf4_vector_t * vector) {
     vector->length = 0;
 }
 
+// properties
+size_t gf4_vector_hamming_weight(gf4_vector_t *vector) {
+    size_t weight = 0;
+    for (size_t i = 0; i < vector->capacity; ++i) {
+        weight += (0 != vector->array[i]);
+    }
+    return weight;
+}
+
+// helpers
 void gf4_vector_print(gf4_vector_t * vector, size_t max, FILE * stream, const char * end) {
     assert(max <= vector->capacity);
     for (size_t i = 0; i < max; ++i) {

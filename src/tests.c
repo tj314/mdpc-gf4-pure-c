@@ -111,12 +111,12 @@ void test_gf4_div() {
 }
 
 // utils
-void test_utils_hamming_weight() {
-    fprintf(stderr, "test_utils_hamming_weight: ");
+void test_gf4_vector_hamming_weight() {
+    fprintf(stderr, "test_gf4_vector_hamming_weight: ");
 
     // test 1
     gf4_vector_t vector = gf4_vector_init_with_length(10, 10);
-    assert(0 == utils_hamming_weight(&vector));
+    assert(0 == gf4_vector_hamming_weight(&vector));
     assert(10 == vector.capacity);
 
     // test 2
@@ -128,7 +128,7 @@ void test_utils_hamming_weight() {
         gf4_t val = random_from_range(1, GF4_MAX_VALUE);
         vector.array[deg] = val;
     }
-    assert(4 == utils_hamming_weight(&vector));
+    assert(4 == gf4_vector_hamming_weight(&vector));
     assert(10 == vector.capacity);
 
     // cleanup

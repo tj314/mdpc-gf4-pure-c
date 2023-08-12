@@ -28,6 +28,17 @@ void gf4_vector_resize(gf4_vector_t * vector, size_t new_capacity, bool zero_out
 
 void gf4_vector_deinit(gf4_vector_t * vector);
 
+// properties
+/**
+ * @brief Find Hamming weight of a vector.
+ *
+ * vector must be initialized beforehand.
+ *
+ * @param vector pointer to a vector
+ * @return Hamming weight of vector
+ */
+size_t gf4_vector_hamming_weight(gf4_vector_t *vector);
+
 // helpers
 /**
  * @brief Print array up to max.

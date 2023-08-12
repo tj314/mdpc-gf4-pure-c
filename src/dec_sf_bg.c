@@ -19,7 +19,7 @@
 #include "dec.h"
 
 void dec_decode_symbol_flipping_bg_iteration(gf4_poly_t * maybe_decoded, gf4_poly_t * syndrome, decoding_context_t * ctx) {
-    long syndrome_weight = (long)utils_hamming_weight(syndrome);
+    long syndrome_weight = (long) gf4_vector_hamming_weight(syndrome);
     if (0 == syndrome_weight) {
         return;
     }
@@ -64,7 +64,7 @@ void dec_decode_symbol_flipping_bg_iteration(gf4_poly_t * maybe_decoded, gf4_pol
     //fprintf(stderr, "total flipped: %zu\n", total_flipped);
     gf4_poly_zero_out(syndrome);
     dec_calculate_syndrome(syndrome, maybe_decoded, ctx);
-    syndrome_weight = (long) utils_hamming_weight(syndrome);
+    syndrome_weight = (long) gf4_vector_hamming_weight(syndrome);
 
     // black
     // threshold = (long)(37.0/3);
@@ -90,7 +90,7 @@ void dec_decode_symbol_flipping_bg_iteration(gf4_poly_t * maybe_decoded, gf4_pol
     }
     gf4_poly_zero_out(syndrome);
     dec_calculate_syndrome(syndrome, maybe_decoded, ctx);
-    syndrome_weight = (long) utils_hamming_weight(syndrome);
+    syndrome_weight = (long) gf4_vector_hamming_weight(syndrome);
 
     //fprintf(stderr, "black flipped: %zu\n", black_flipped);
 
@@ -142,7 +142,7 @@ bool dec_decode_symbol_flipping_bg(gf4_vector_t *maybe_decoded, gf4_vector_t *in
     }
 
     for (size_t i = 0; i < num_iterations; ++i) {
-        long syndrome_weight = (long)utils_hamming_weight(&syndrome);
+        long syndrome_weight = (long) gf4_vector_hamming_weight(&syndrome);
         if (0 == syndrome_weight) {
             gf4_poly_deinit(&syndrome);
             ctx->elapsed_iterations = i;

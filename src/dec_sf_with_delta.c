@@ -39,7 +39,7 @@ bool dec_decode_symbol_flipping_delta(gf4_vector_t *maybe_decoded, gf4_vector_t 
     const long DELTA = ctx->delta_setting;
 
     for (size_t i = 0; i < num_iterations; ++i) {
-        long syndrome_weight = (long)utils_hamming_weight(&syndrome);
+        long syndrome_weight = (long) gf4_vector_hamming_weight(&syndrome);
         if (0 == syndrome_weight) {
             free(sigmas);
             free(values);

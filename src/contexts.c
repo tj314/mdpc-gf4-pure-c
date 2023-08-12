@@ -145,7 +145,7 @@ void contexts_save(const char * filename, encoding_context_t * enc_ctx, decoding
         }
     }
 
-    num_nonzero = utils_hamming_weight(&dec_ctx->h1);
+    num_nonzero = gf4_vector_hamming_weight(&dec_ctx->h1);
     fwrite(&num_nonzero, sizeof(size_t), 1, output);
     for (size_t i = 0; i <= dec_ctx->h1.degree; ++i) {
         if (0 != dec_ctx->h1.coefficients[i]) {
@@ -161,7 +161,7 @@ void contexts_save(const char * filename, encoding_context_t * enc_ctx, decoding
         fprintf(stderr, "contexts_save: Output file couldn't be created!\n");
         exit(-1);
     }
-    size_t num_nonzero = utils_hamming_weight(&enc_ctx->second_block_G);
+    size_t num_nonzero = gf4_vector_hamming_weight(&enc_ctx->second_block_G);
     fprintf(output, "%zu\n", num_nonzero);
     for (size_t i = 0; i < enc_ctx->second_block_G.length; ++i) {
         if (0 != enc_ctx->second_block_G.array[i]) {
@@ -169,7 +169,7 @@ void contexts_save(const char * filename, encoding_context_t * enc_ctx, decoding
         }
     }
 
-    num_nonzero = utils_hamming_weight(&dec_ctx->h0);
+    num_nonzero = gf4_vector_hamming_weight(&dec_ctx->h0);
     fprintf(output, "%zu\n", num_nonzero);
     for (size_t i = 0; i < dec_ctx->h0.length; ++i) {
         if (0 != dec_ctx->h0.array[i]) {
@@ -177,7 +177,7 @@ void contexts_save(const char * filename, encoding_context_t * enc_ctx, decoding
         }
     }
 
-    num_nonzero = utils_hamming_weight(&dec_ctx->h1);
+    num_nonzero = gf4_vector_hamming_weight(&dec_ctx->h1);
     fprintf(output, "%zu\n", num_nonzero);
     for (size_t i = 0; i < dec_ctx->h1.length; ++i) {
         if (0 != dec_ctx->h1.array[i]) {

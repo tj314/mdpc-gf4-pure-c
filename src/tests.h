@@ -46,8 +46,8 @@ void test_gf4_add();
 void test_gf4_mul();
 void test_gf4_div();
 
-// utils
-void test_test_utils_hamming_weight();
+// vector
+void test_gf4_vector_hamming_weight();
 
 // poly
 void test_gf4_poly_init_zero();

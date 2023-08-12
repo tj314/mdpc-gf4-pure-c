@@ -18,14 +18,6 @@
 
 #include "utils.h"
 
-size_t utils_hamming_weight(gf4_vector_t *vector) {
-    size_t weight = 0;
-    for (size_t i = 0; i < vector->capacity; ++i) {
-        weight += (0 != vector->array[i]);
-    }
-    return weight;
-}
-
 void utils_get_distance_multiplicities_h0(size_t ** multiplicities_same_symbols, size_t ** multiplicities_different_symbols, decoding_context_t * dc) {
     assert(NULL != multiplicities_same_symbols);
     assert(NULL != multiplicities_different_symbols);

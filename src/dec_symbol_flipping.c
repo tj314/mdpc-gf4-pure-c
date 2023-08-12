@@ -31,7 +31,7 @@ bool dec_decode_symbol_flipping(gf4_vector_t *maybe_decoded, gf4_vector_t *in_ve
     gf4_poly_copy(maybe_decoded, in_vector);
 
     for (size_t i = 0; i < num_iterations; ++i) {
-        long syndrome_weight = (long)utils_hamming_weight(&syndrome);
+        long syndrome_weight = (long) gf4_vector_hamming_weight(&syndrome);
         if (0 == syndrome_weight) {
             gf4_poly_deinit(&syndrome);
             ctx->elapsed_iterations = i;

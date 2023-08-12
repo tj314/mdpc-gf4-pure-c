@@ -10,7 +10,7 @@ int main() {
     test_gf4_add();
     test_gf4_mul();
     test_gf4_div();
-    test_utils_hamming_weight();
+    test_gf4_vector_hamming_weight();
     test_gf4_poly_init_zero();
     test_gf4_poly_zero_out();
     test_gf4_poly_deinit();
