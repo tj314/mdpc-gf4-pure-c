@@ -316,6 +316,7 @@ size_t gf4_poly_get_degree(gf4_poly_t * poly) {
 
 void gf4_poly_adjust_degree(gf4_poly_t * poly, size_t max_degree) {
     assert(NULL != poly);
+    assert(max_degree < poly->capacity);
     poly->length = 1;
     for (size_t i = max_degree; i != 0; --i) {
         if (0 != poly->array[i]) {
