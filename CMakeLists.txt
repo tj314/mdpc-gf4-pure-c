@@ -31,7 +31,7 @@ else()
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g")
 endif()
 
-set(SOURCES src/gf4.h src/gf4.c src/gf4_poly.h src/gf4_poly.c src/contexts.h src/contexts.c src/random.c src/random.h src/enc.c src/enc.h src/dec_symbol_flipping.c src/dec.h src/utils.h src/utils.c src/tests.c src/tests.h src/dec_threshold.c src/dec_sf_with_delta.c src/dec_utils.c src/dec_sf_bg.c src/gf4_matrix.c src/gf4_matrix.h)
+set(SOURCES src/gf4.h src/gf4.c src/gf4_poly.h src/gf4_poly.c src/contexts.h src/contexts.c src/random.c src/random.h src/enc.c src/enc.h src/dec_symbol_flipping.c src/dec.h src/utils.h src/utils.c src/tests.c src/tests.h src/dec_threshold.c src/dec_sf_with_delta.c src/dec_utils.c src/dec_sf_bg.c src/gf4_matrix.c src/gf4_matrix.h src/gf4_vector.c src/gf4_vector.h)
 
 if(CMAKE_BUILD_TYPE MATCHES GJS)
     add_executable(mdpc-gf4 main-gjs.c ${SOURCES})
