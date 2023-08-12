@@ -19,33 +19,33 @@
 #include "enc.h"
 
 
-void enc_encode(gf4_poly_t * out_encoded, gf4_poly_t * in_message, encoding_context_t * ctx) {
+void enc_encode(gf4_vector_t *out_encoded, gf4_vector_t *in_message, encoding_context_t * ctx) {
     assert(NULL != out_encoded);
     assert(NULL != in_message);
     assert(NULL != ctx);
     assert(out_encoded->capacity >= 2*ctx->block_size);
     assert(in_message->capacity >= ctx->block_size);
-    memcpy(out_encoded->coefficients, in_message->coefficients, ctx->block_size);
+    memcpy(out_encoded->array, in_message->array, ctx->block_size);
     for (size_t i = ctx->block_size; i > 0; --i) {
         gf4_t tmp = 0;
         for (size_t j = 0; j < ctx->block_size; ++j) {
-            tmp ^= gf4_mul(in_message->coefficients[j], ctx->second_block_G.coefficients[(i + j) % ctx->block_size]);
+            tmp ^= gf4_mul(in_message->array[j], ctx->second_block_G.array[(i + j) % ctx->block_size]);
         }
-        out_encoded->coefficients[2*ctx->block_size - i] = tmp;
+        out_encoded->array[2*ctx->block_size - i] = tmp;
     }
     gf4_poly_adjust_degree(out_encoded, out_encoded->capacity - 1);
 }
 
-void enc_encrypt(gf4_poly_t * out_encrypted, gf4_poly_t * in_message, size_t num_errors, encoding_context_t * ctx) {
+void enc_encrypt(gf4_vector_t *out_encrypted, gf4_vector_t *in_message, size_t num_errors, encoding_context_t * ctx) {
     enc_encode(out_encrypted, in_message, ctx);
     gf4_poly_t err = gf4_poly_init_zero(2*ctx->block_size);
-    random_weighted_gf4_poly(&err, 2*ctx->block_size, num_errors);
+    random_weighted_gf4_vector(&err, 2 * ctx->block_size, num_errors);
 #ifdef WRITE_WEIGHTS
     char fname[100] = {0};
     sprintf(fname, "errorvec-exp_%zu.txt", ctx->index);
     FILE * outfile = fopen(fname, "w");
     for (size_t i = 0; i < 2*ctx->block_size; ++i) {
-        fprintf(outfile, "%u;", err.coefficients[i]);
+        fprintf(outfile, "%u;", err.array[i]);
     }
     fprintf(outfile, "\n");
     fclose(outfile);

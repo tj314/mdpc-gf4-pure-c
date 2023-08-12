@@ -32,6 +32,7 @@
 #include "contexts.h"
 #include "enc.h"
 #include "gf4.h"
+#include "gf4_vector.h"
 #include "gf4_poly.h"
 #include "gf4_matrix.h"
 #include "random.h"
@@ -46,10 +47,30 @@ void test_gf4_mul();
 void test_gf4_div();
 
 // utils
-void test_utils_hamming_weight();
+void test_test_utils_hamming_weight();
 
-// gf4_poly
+// poly
+void test_gf4_poly_init_zero();
+void test_gf4_poly_zero_out();
+void test_gf4_poly_deinit();
+void test_gf4_poly_get_coefficient();
+void test_gf4_poly_set_coefficient();
+void test_gf4_poly_add();
+void test_gf4_poly_add_inplace();
+void test_gf4_poly_add_ax_to_deg_inplace();
+void test_gf4_poly_mul();
+void test_gf4_poly_div_x_to_deg();
+void test_gf4_poly_div_x_to_deg_inplace();
+void test_gf4_poly_div_rem();
+void test_gf4_poly_invert_slow();
+void test_gf4_poly_is_zero();
+void test_gf4_poly_equal();
 void test_gf4_poly_cyclic_shift_right_inplace();
+void test_gf4_poly_get_degree();
+void test_gf4_poly_adjust_degree();
+void test_gf4_poly_pretty_print();
+void test_gf4_poly_clone();
+void test_gf4_poly_copy();
 
 // gf4_matrix
 void test_gf4_square_matrix_init_cyclic_matrix();

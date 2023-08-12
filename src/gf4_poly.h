@@ -30,25 +30,19 @@
 #include <stdbool.h>
 #include <string.h>
 #include "gf4.h"
+#include "gf4_vector.h"
 
 /**
  * @brief Structure that represents a polynomial over GF4.
  *
  * A polynomial is represented as an array of coefficients.
- * coefficients[0] is the coefficient of x^0.
- * coefficient[degree] is the coefficient of x^degree.
- * It holds that capacity >= degree + 1.
+ * array[0] is the coefficient of x^0.
+ * The degree of polynomial is length-1.
+ * array[length - 1] is the coefficient of x^degree.
  * In Debug builds, operations over polynomials may resize coefficients array.
  * In Release builds, no resizing can occur! You must initialize polynomials with sufficient capacity in advance!
  */
-typedef struct {
-	gf4_t * coefficients; ///< an array of coefficients
-	size_t degree; ///< degree of the polynomial
-	size_t capacity; ///< number of allocated elements in the coefficients array
-	                 ///< capacity >= degree+1
-} gf4_poly_t;
-
-
+ typedef gf4_vector_t gf4_poly_t;
 // initialization
 /**
  * @brief Initialize a zero polynomial with the given capacity.
@@ -80,20 +74,6 @@ void gf4_poly_zero_out(gf4_poly_t * poly);
  * @param poly an initialized polynomial
  */
 void gf4_poly_deinit(gf4_poly_t * poly);
-
-#ifdef SAFE // can resize
-
-/**
- * @brief Change the capacity of an initialized polynomial.
- *
- * It is assumed that new_capacity > poly->capacity. Interally, realloc is called.
- *
- * @param poly an initialized polynomial
- * @param new_capacity required capacity after resizing
- */
-void gf4_poly_resize(gf4_poly_t * poly, size_t new_capacity);
-#endif // SAFE
-
 
 // coefficient access
 /**
@@ -274,6 +254,14 @@ void gf4_poly_cyclic_shift_right_inplace(gf4_poly_t * poly, size_t size);
 
 // helpers
 /**
+ * @brief Get the degree of the polynomial.
+ *
+ * @param poly a pointer to a polynomial
+ * @return the degree of this polynomial
+ */
+size_t gf4_poly_get_degree(gf4_poly_t * poly);
+
+/**
  * @brief Correctly set the degree of a polynomial.
  *
  * poly must be initialized beforehand.
@@ -300,21 +288,6 @@ void gf4_poly_adjust_degree(gf4_poly_t * poly, size_t max_degree);
  * @param end last character to be printed (e. g. line ending or space)
  */
 void gf4_poly_pretty_print(gf4_poly_t * poly, FILE * stream, const char * end);
-
-/**
- * @brief Print array of coefficients up to max.
- *
- * poly must be initialized beforehand.
- * max must be less or equal to poly->capacity
- * e.g.: [0, 1, 0, 2, 2, 1, 0], max=4 --> [0, 1, 0, (a+1)]
- *
- *
- * @param poly pointer to a polynomial to be printed
- * @param max integer, amount of
- * @param stream stream to be used (e.g. stdout, stderr...)
- * @param end last character to be printed (e. g. line ending or space)
- */
-void gf4_poly_coeff_print(gf4_poly_t * poly, size_t max, FILE * stream, const char * end);
 
 /**
  * @brief Clone a polynomial.

@@ -38,7 +38,7 @@
  * @param vector pointer to a vector
  * @return Hamming weight of vector
  */
-size_t utils_hamming_weight(gf4_poly_t * vector);
+size_t utils_hamming_weight(gf4_vector_t *vector);
 
 void utils_get_distance_multiplicities_h0(size_t ** multiplicities_same_symbols, size_t ** multiplicities_different_symbols, decoding_context_t * dc);
 

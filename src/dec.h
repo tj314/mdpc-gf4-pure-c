@@ -27,6 +27,7 @@
 #define MDPC_GF4_DEC_H
 
 #include "gf4.h"
+#include "gf4_vector.h"
 #include "gf4_poly.h"
 #include "contexts.h"
 #include "utils.h"
@@ -34,13 +35,13 @@
 /**
  * @brief Calculate the syndrome of a vector.
  *
- * out_syndrome must be initialized in advance. It must have capacity of at least block_size. It must be a zero polynomial.
+ * out_syndrome must be initialized in advance. It must have capacity of at least block_size. It must be a zero vector.
  *
- * @param out_syndrome pointer to a polynomial that will be used to store the calculated syndrome
- * @param in_vector pointer to a polynomial representing a vector
+ * @param out_syndrome pointer to a vector that will be used to store the calculated syndrome
+ * @param in_vector pointer to a vector
  * @param ctx a valid decoding context
  */
-void dec_calculate_syndrome(gf4_poly_t * out_syndrome, gf4_poly_t * in_vector, decoding_context_t * ctx);
+void dec_calculate_syndrome(gf4_vector_t *out_syndrome, gf4_vector_t *in_vector, decoding_context_t * ctx);
 
 /**
  * @brief Calculate adaptive threshold.
@@ -130,7 +131,7 @@ long dec_calculate_threshold_5(long syndrome_weight);
  * @param ctx a valid decoding context
  * @return calculated sigma_j
  */
-long dec_calculate_new_sigma(gf4_poly_t * h_block, gf4_poly_t * syndrome, long syndrome_weight, gf4_t a, size_t actual_j, decoding_context_t * ctx);
+long dec_calculate_new_sigma(gf4_poly_t * h_block, gf4_vector_t *syndrome, long syndrome_weight, gf4_t a, size_t actual_j, decoding_context_t * ctx);
 
 /**
  * @brief Flip the symbol in the output vector and update the syndrome.
@@ -146,7 +147,7 @@ long dec_calculate_new_sigma(gf4_poly_t * h_block, gf4_poly_t * syndrome, long s
  * @param j position to flip
  * @param ctx a valid decoding context
  */
-void dec_flip_symbol(gf4_poly_t * h_block, gf4_poly_t * syndrome, gf4_poly_t * maybe_decoded, gf4_t a, size_t actual_j,size_t j, decoding_context_t * ctx);
+void dec_flip_symbol(gf4_poly_t * h_block, gf4_vector_t *syndrome, gf4_vector_t *maybe_decoded, gf4_t a, size_t actual_j, size_t j, decoding_context_t * ctx);
 
 
 /**
@@ -161,25 +162,7 @@ void dec_flip_symbol(gf4_poly_t * h_block, gf4_poly_t * syndrome, gf4_poly_t * m
  * @param ctx a valid decoding context
  * @return true on successful decoding, false otherwise
  */
-bool dec_decode_symbol_flipping(gf4_poly_t * maybe_decoded, gf4_poly_t * in_vector, size_t num_iterations, decoding_context_t * ctx);
-
-/**
- * @brief Perform basic symbol-flipping decoding, version 2.
- *
- * maybe_decoded and in_vector must be initialized in advance and must have capacity at least 2*block_size.
- * ctx must a valid decoding_context_t.
- *
- * while symbol flipping thies to maximize w(s) - w(s-a*h_j), this version tries to minimize w(s-a*h_j).
- *
- * WARNING This version of SF decoder is DEPRECATED and will be removed. Do not use this!
- *
- * @param maybe_decoded pointer to a polynomial that will be used to store the decoded message
- * @param in_vector pointer to a polynomial representing the encoded message
- * @param num_iterations number of decoding iterations
- * @param ctx a valid decoding context
- * @return true on successful decoding, false otherwise
- */
-bool dec_decode_symbol_flipping_2(gf4_poly_t * maybe_decoded, gf4_poly_t * in_vector, size_t num_iterations, decoding_context_t * ctx);
+bool dec_decode_symbol_flipping(gf4_vector_t *maybe_decoded, gf4_vector_t *in_vector, size_t num_iterations, decoding_context_t * ctx);
 
 /**
  * @brief Perform symbol-flipping decoding with delta param.
@@ -198,7 +181,7 @@ bool dec_decode_symbol_flipping_2(gf4_poly_t * maybe_decoded, gf4_poly_t * in_ve
  * @param ctx a valid decoding context
  * @return true on successful decoding, false otherwise
  */
-bool dec_decode_symbol_flipping_delta(gf4_poly_t * maybe_decoded, gf4_poly_t * in_vector, size_t num_iterations, decoding_context_t * ctx);
+bool dec_decode_symbol_flipping_delta(gf4_vector_t *maybe_decoded, gf4_vector_t *in_vector, size_t num_iterations, decoding_context_t * ctx);
 
 /**
  * @brief Perform symbol-flipping decoding with adaptive threshold.
@@ -216,7 +199,7 @@ bool dec_decode_symbol_flipping_delta(gf4_poly_t * maybe_decoded, gf4_poly_t * i
  * @param ctx a valid decoding context
  * @return true on successful decoding, false otherwise
  */
-bool dec_decode_symbol_flipping_threshold(gf4_poly_t * maybe_decoded, gf4_poly_t * in_vector, size_t num_iterations, decoding_context_t * ctx);
+bool dec_decode_symbol_flipping_threshold(gf4_vector_t *maybe_decoded, gf4_vector_t *in_vector, size_t num_iterations, decoding_context_t * ctx);
 
 /**
  * @brief Perform symbol-flipping with black and gray symbols.
@@ -240,7 +223,7 @@ bool dec_decode_symbol_flipping_threshold(gf4_poly_t * maybe_decoded, gf4_poly_t
  * @param ctx a valid decoding context
  * @return true on successful decoding, false otherwise
  */
-bool dec_decode_symbol_flipping_bg(gf4_poly_t * maybe_decoded, gf4_poly_t * in_vector, size_t num_iterations, decoding_context_t * ctx);
+bool dec_decode_symbol_flipping_bg(gf4_vector_t *maybe_decoded, gf4_vector_t *in_vector, size_t num_iterations, decoding_context_t * ctx);
 
 /**
  * @brief Decrypt an encrypted message using specified decoder.
@@ -257,5 +240,5 @@ bool dec_decode_symbol_flipping_bg(gf4_poly_t * maybe_decoded, gf4_poly_t * in_v
  * @param ctx a valid decoding context
  * @return true on successful decryption, false otherwise
  */
-bool dec_decrypt(gf4_poly_t * out_decrypted, gf4_poly_t * in_encrypted, bool (*decode)(gf4_poly_t*, gf4_poly_t *, size_t, decoding_context_t *), size_t num_iterations, decoding_context_t * ctx);
+bool dec_decrypt(gf4_vector_t *out_decrypted, gf4_vector_t *in_encrypted, bool (*decode)(gf4_vector_t *, gf4_vector_t *, size_t, decoding_context_t *), size_t num_iterations, decoding_context_t * ctx);
 #endif //MDPC_GF4_DEC_H

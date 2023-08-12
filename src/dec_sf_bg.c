@@ -52,7 +52,7 @@ void dec_decode_symbol_flipping_bg_iteration(gf4_poly_t * maybe_decoded, gf4_pol
         }
 
         if (sigma_max > threshold) {
-            maybe_decoded->coefficients[j] ^= a_max;
+            maybe_decoded->array[j] ^= a_max;
             black[j] = a_max;
             total_flipped++;
         }
@@ -84,7 +84,7 @@ void dec_decode_symbol_flipping_bg_iteration(gf4_poly_t * maybe_decoded, gf4_pol
 
         long sigma = dec_calculate_new_sigma(h_block, syndrome, syndrome_weight, black[j], actual_j, ctx);
         if (sigma > threshold) {
-            maybe_decoded->coefficients[j] ^= black[j];
+            maybe_decoded->array[j] ^= black[j];
             black_flipped++;
         }
     }
@@ -111,7 +111,7 @@ void dec_decode_symbol_flipping_bg_iteration(gf4_poly_t * maybe_decoded, gf4_pol
 
         long sigma = dec_calculate_new_sigma(h_block, syndrome, syndrome_weight, gray[j], actual_j, ctx);
         if (sigma > threshold) {
-            maybe_decoded->coefficients[j] ^= gray[j];
+            maybe_decoded->array[j] ^= gray[j];
             gray_flipped++;
         }
     }
@@ -123,7 +123,7 @@ void dec_decode_symbol_flipping_bg_iteration(gf4_poly_t * maybe_decoded, gf4_pol
     free(gray);
 }
 
-bool dec_decode_symbol_flipping_bg(gf4_poly_t * maybe_decoded, gf4_poly_t * in_vector, size_t num_iterations, decoding_context_t * ctx) {
+bool dec_decode_symbol_flipping_bg(gf4_vector_t *maybe_decoded, gf4_vector_t *in_vector, size_t num_iterations, decoding_context_t * ctx) {
     assert(NULL != maybe_decoded);
     assert(NULL != in_vector);
     assert(NULL != ctx);

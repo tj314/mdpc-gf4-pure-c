@@ -5,15 +5,21 @@
 #include "gf4_vector.h"
 
 gf4_vector_t gf4_vector_init(size_t capacity) {
+    // no need to assert anything, gf4_vector_init_with_length will take care of it
+    return gf4_vector_init_with_length(capacity, 0);
+}
+
+gf4_vector_t gf4_vector_init_with_length(size_t capacity, size_t length) {
     assert(0 < capacity);
+    assert(length <= capacity);
     gf4_vector_t out;
-    out.capacity = capacity;
-    out.length = 0;
     out.array = calloc(capacity, sizeof(gf4_t));
     if (NULL == out.array) {
         fprintf(stderr, "gf4_vector_init: Allocation error!\n");
         exit(-1);
     }
+    out.capacity = capacity;
+    out.length = length;
     return out;
 }
 
@@ -41,4 +47,12 @@ void gf4_vector_deinit(gf4_vector_t * vector) {
     vector->array = NULL;
     vector->capacity = 0;
     vector->length = 0;
+}
+
+void gf4_vector_print(gf4_vector_t * vector, size_t max, FILE * stream, const char * end) {
+    assert(max <= vector->capacity);
+    for (size_t i = 0; i < max; ++i) {
+        fprintf(stream, "%u ", vector->array[i]);
+    }
+    fprintf(stream, "%s", end);
 }

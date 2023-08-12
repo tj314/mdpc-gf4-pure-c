@@ -137,7 +137,7 @@ bool dec_decode_symbol_flipping_threshold_recalculate_inplace(gf4_poly_t * maybe
     return false;
 }
 
-bool dec_decode_symbol_flipping_threshold(gf4_poly_t * maybe_decoded, gf4_poly_t * in_vector, size_t num_iterations, decoding_context_t * ctx) {
+bool dec_decode_symbol_flipping_threshold(gf4_vector_t *maybe_decoded, gf4_vector_t *in_vector, size_t num_iterations, decoding_context_t * ctx) {
     assert(NULL != maybe_decoded);
     assert(NULL != in_vector);
     assert(NULL != ctx);
@@ -178,7 +178,7 @@ bool dec_decode_symbol_flipping_threshold(gf4_poly_t * maybe_decoded, gf4_poly_t
             }
 
             if (sigma_max > threshold) {
-                maybe_decoded->coefficients[j] ^= a_max;
+                maybe_decoded->array[j] ^= a_max;
             }
         }
         gf4_poly_zero_out(&syndrome);

@@ -113,24 +113,105 @@ void test_gf4_div() {
 // utils
 void test_utils_hamming_weight() {
     fprintf(stderr, "test_utils_hamming_weight: ");
-    gf4_poly_t p = gf4_poly_init_zero(10);
-    assert(0 == utils_hamming_weight(&p));
-    assert(10 == p.capacity);
+
+    // test 1
+    gf4_vector_t vector = gf4_vector_init_with_length(10, 10);
+    assert(0 == utils_hamming_weight(&vector));
+    assert(10 == vector.capacity);
+
+    // test 2
     for (size_t i = 0; i < 4; ++i) {
         size_t deg = random_from_range(0, 9);
-        while (0 != p.coefficients[deg]) {
+        while (0 != vector.array[deg]) { // this index is already set, choose another one
             deg = random_from_range(0, 9);
         }
         gf4_t val = random_from_range(1, GF4_MAX_VALUE);
-        gf4_poly_set_coefficient(&p, deg, val);
+        vector.array[deg] = val;
     }
-    assert(4 == utils_hamming_weight(&p));
-    assert(10 == p.capacity);
-    gf4_poly_deinit(&p);
+    assert(4 == utils_hamming_weight(&vector));
+    assert(10 == vector.capacity);
+
+    // cleanup
+    gf4_vector_deinit(&vector);
     print_OK();
 }
 
 // gf4_poly
+void test_gf4_poly_init_zero(){
+    fprintf(stderr, "test_gf4_poly_init_zero: FAIL\n");
+    // print_OK();
+}
+
+void test_gf4_poly_zero_out(){
+    fprintf(stderr, "test_gf4_poly_zero_out: FAIL\n");
+    // print_OK();
+}
+
+void test_gf4_poly_deinit(){
+    fprintf(stderr, "test_gf4_poly_deinit: FAIL\n");
+    // print_OK();
+}
+
+void test_gf4_poly_get_coefficient(){
+    fprintf(stderr, "test_gf4_poly_get_coefficient: FAIL\n");
+    // print_OK();
+}
+
+void test_gf4_poly_set_coefficient(){
+    fprintf(stderr, "test_gf4_poly_set_coefficient: FAIL\n");
+    // print_OK();
+}
+
+void test_gf4_poly_add(){
+    fprintf(stderr, "test_gf4_poly_add: FAIL\n");
+    // print_OK();
+}
+
+void test_gf4_poly_add_inplace(){
+    fprintf(stderr, "test_gf4_poly_add_inplace: FAIL\n");
+    // print_OK();
+}
+
+void test_gf4_poly_add_ax_to_deg_inplace(){
+    fprintf(stderr, "test_gf4_poly_add_ax_to_deg_inplace: FAIL\n");
+    // print_OK();
+}
+
+void test_gf4_poly_mul(){
+    fprintf(stderr, "test_gf4_poly_mul: FAIL\n");
+    // print_OK();
+}
+
+void test_gf4_poly_div_x_to_deg(){
+    fprintf(stderr, "test_gf4_poly_div_x_to_deg: FAIL\n");
+    // print_OK();
+}
+
+void test_gf4_poly_div_x_to_deg_inplace(){
+    fprintf(stderr, "test_gf4_poly_div_x_to_deg_inplace: FAIL\n");
+    // print_OK();
+}
+
+void test_gf4_poly_div_rem(){
+    fprintf(stderr, "test_gf4_poly_div_rem: FAIL\n");
+    // print_OK();
+}
+
+void test_gf4_poly_invert_slow(){
+    fprintf(stderr, "test_gf4_poly_invert_slow: FAIL\n");
+    // print_OK();
+}
+
+void test_gf4_poly_is_zero(){
+    fprintf(stderr, "test_gf4_poly_is_zero: FAIL\n");
+    // print_OK();
+}
+
+void test_gf4_poly_equal(){
+    fprintf(stderr, "test_gf4_poly_equal: FAIL\n");
+    // print_OK();
+}
+
 void test_gf4_poly_cyclic_shift_right_inplace() {
     fprintf(stderr, "test_gf4_poly_cyclic_shift_right_inplace: ");
     // setup
@@ -140,46 +221,67 @@ void test_gf4_poly_cyclic_shift_right_inplace() {
     gf4_poly_set_coefficient(&poly, 3, 1);
     gf4_t expected_poly[5] = {1,1,0,1,0};
     assert(5 == poly.capacity);
-    assert(3 == poly.degree);
-    assert_compare_coeffs(poly.coefficients, expected_poly, 5);
+    assert(3 == gf4_poly_get_degree(&poly));
+    assert_compare_coeffs(poly.array, expected_poly, 5);
 
     // test 1
     // cyclic shift of 1 + x + x^3 with size=4 and capacity=5: [1, 1, 0, 1, 0] -> [1, 1, 1, 0, 0] -> 1 + x + x^2
     gf4_poly_t poly1 = gf4_poly_clone(&poly);
     gf4_t expected_poly1_after_shift[5] = {1,1,1,0,0};
     assert(5 == poly1.capacity);
-    assert(3 == poly1.degree);
-    assert_compare_coeffs(poly1.coefficients, expected_poly, 5);
+    assert(3 == gf4_poly_get_degree(&poly1));
+    assert_compare_coeffs(poly1.array, expected_poly, 5);
 
     gf4_poly_cyclic_shift_right_inplace(&poly1, 4);
     assert(5 == poly1.capacity);
-    assert(3 == poly1.degree);
+    assert(3 == gf4_poly_get_degree(&poly1));
     assert(5 == poly.capacity);
-    assert(3 == poly.degree);
-    assert_compare_coeffs(poly.coefficients, expected_poly, 5);
-    assert_compare_coeffs(poly1.coefficients, expected_poly1_after_shift, 5);
+    assert(3 == gf4_poly_get_degree(&poly));
+    assert_compare_coeffs(poly.array, expected_poly, 5);
+    assert_compare_coeffs(poly1.array, expected_poly1_after_shift, 5);
     gf4_poly_deinit(&poly1);
 
     // test 2
     // cyclic shift of 1 + x + x^3 with size=5 and capacity=5: [1, 1, 0, 1, 0] -> [0, 1, 1, 0, 1] -> x + x^2 + x^4
     gf4_poly_t poly2 = gf4_poly_clone(&poly);
     assert(5 == poly2.capacity);
-    assert(3 == poly2.degree);
-    assert_compare_coeffs(poly2.coefficients, expected_poly, 5);
+    assert(3 == gf4_poly_get_degree(&poly2));
+    assert_compare_coeffs(poly2.array, expected_poly, 5);
 
     gf4_t expected_poly2_after_shift[5] = {0, 1, 1, 0, 1};
     gf4_poly_cyclic_shift_right_inplace(&poly2, 5);
     assert(5 == poly2.capacity);
-    assert(3 == poly2.degree);
-    assert_compare_coeffs(poly2.coefficients, expected_poly2_after_shift, 5);
+    assert(3 == gf4_poly_get_degree(&poly2));
+    assert_compare_coeffs(poly2.array, expected_poly2_after_shift, 5);
     assert(5 == poly.capacity);
-    assert(3 == poly.degree);
-    assert_compare_coeffs(poly.coefficients, expected_poly, 5);
+    assert(3 == gf4_poly_get_degree(&poly));
+    assert_compare_coeffs(poly.array, expected_poly, 5);
     gf4_poly_deinit(&poly2);
 
     // cleanup
     gf4_poly_deinit(&poly);
     print_OK();
+}
+
+void test_gf4_poly_get_degree() {
+    fprintf(stderr, "test_gf4_poly_get_degree: FAIL\n");
+    // print_OK();
+}
+void test_gf4_poly_adjust_degree() {
+    fprintf(stderr, "test_gf4_poly_adjust_degree: FAIL\n");
+    // print_OK();
+}
+void test_gf4_poly_pretty_print() {
+    fprintf(stderr, "test_gf4_poly_pretty_print: FAIL\n");
+    // print_OK();
+}
+void test_gf4_poly_clone() {
+    fprintf(stderr, "test_gf4_poly_clone: FAIL\n");
+    // print_OK();
+}
+void test_gf4_poly_copy() {
+    fprintf(stderr, "test_gf4_poly_copy: FAIL\n");
+    // print_OK();
 }
 
 
@@ -531,31 +633,31 @@ void test_enc_encode() {
 
     // test 1
     enc_encode(&encoded, &msg, &ec);
-    assert(2 == ec.second_block_G.coefficients[0]);
-    assert(1 == ec.second_block_G.coefficients[1]);
-    assert(3 == ec.second_block_G.coefficients[2]);
+    assert(2 == ec.second_block_G.array[0]);
+    assert(1 == ec.second_block_G.array[1]);
+    assert(3 == ec.second_block_G.array[2]);
     assert(3 == ec.block_size);
     assert(3 == ec.second_block_G.capacity);
     assert(6 == encoded.capacity);
-    for (size_t i = 0; i < 6; ++i) assert(0 == encoded.coefficients[i]);
+    for (size_t i = 0; i < 6; ++i) assert(0 == encoded.array[i]);
 
     // test 2
     gf4_poly_set_coefficient(&msg, 0, 1);
     gf4_poly_set_coefficient(&msg, 2, 2);
     enc_encode(&encoded, &msg, &ec);
-    assert(2 == ec.second_block_G.coefficients[0]);
-    assert(1 == ec.second_block_G.coefficients[1]);
-    assert(3 == ec.second_block_G.coefficients[2]);
+    assert(2 == ec.second_block_G.array[0]);
+    assert(1 == ec.second_block_G.array[1]);
+    assert(3 == ec.second_block_G.array[2]);
     assert(3 == ec.block_size);
     assert(3 == ec.second_block_G.capacity);
     assert(3 == msg.capacity);
-    assert(1 == msg.coefficients[0]);
-    assert(0 == msg.coefficients[1]);
-    assert(2 == msg.coefficients[2]);
-    assert(0 == memcmp(encoded.coefficients, msg.coefficients, 3));
-    assert(3 == encoded.coefficients[3]);
-    assert(1 == encoded.coefficients[4]);
-    assert(2 == encoded.coefficients[5]);
+    assert(1 == msg.array[0]);
+    assert(0 == msg.array[1]);
+    assert(2 == msg.array[2]);
+    assert(0 == memcmp(encoded.array, msg.array, 3));
+    assert(3 == encoded.array[3]);
+    assert(1 == encoded.array[4]);
+    assert(2 == encoded.array[5]);
 
     // cleanup
     gf4_poly_deinit(&ec.second_block_G);
@@ -578,20 +680,20 @@ void test_enc_encrypt() {
 
     // 5 runs of test
     for (size_t i = 0; i < 5; ++i) {
-        random_gf4_poly(&msg, 3);
+        random_gf4_vector(&msg, 3);
         enc_encode(&encoded, &msg, &ec);
         enc_encrypt(&encrypted, &msg, 1, &ec);
 
         size_t differences = 0;
         for (size_t j = 0; j < 6; ++j) {
-            differences += (encoded.coefficients[j] != encrypted.coefficients[j]);
+            differences += (encoded.array[j] != encrypted.array[j]);
         }
 
         assert(1 == differences);
 
-        assert(0 == ec.second_block_G.coefficients[0]);
-        assert(2 == ec.second_block_G.coefficients[1]);
-        assert(3 == ec.second_block_G.coefficients[2]);
+        assert(0 == ec.second_block_G.array[0]);
+        assert(2 == ec.second_block_G.array[1]);
+        assert(3 == ec.second_block_G.array[2]);
         assert(3 == ec.block_size);
         assert(3 == ec.second_block_G.capacity);
         assert(6 == encoded.capacity);
@@ -621,24 +723,24 @@ void test_dec_calculate_syndrome() {
     // test 1
     gf4_poly_t vec = gf4_poly_init_zero(2*dc.block_size);
     dec_calculate_syndrome(&syndrome, &vec, &dc);
-    assert(0 == syndrome.coefficients[0]);
-    assert(0 == syndrome.coefficients[1]);
-    assert(0 == syndrome.coefficients[2]);
-    assert(0 == vec.coefficients[0]);
-    assert(0 == vec.coefficients[1]);
-    assert(0 == vec.coefficients[2]);
-    assert(0 == vec.coefficients[3]);
-    assert(0 == vec.coefficients[4]);
-    assert(0 == vec.coefficients[5]);
-    assert(1 == dc.h0.coefficients[0]);
-    assert(0 == dc.h0.coefficients[1]);
-    assert(0 == dc.h0.coefficients[2]);
-    assert(2 == dc.h1.coefficients[0]);
-    assert(0 == dc.h1.coefficients[1]);
-    assert(3 == dc.h1.coefficients[2]);
+    assert(0 == syndrome.array[0]);
+    assert(0 == syndrome.array[1]);
+    assert(0 == syndrome.array[2]);
+    assert(0 == vec.array[0]);
+    assert(0 == vec.array[1]);
+    assert(0 == vec.array[2]);
+    assert(0 == vec.array[3]);
+    assert(0 == vec.array[4]);
+    assert(0 == vec.array[5]);
+    assert(1 == dc.h0.array[0]);
+    assert(0 == dc.h0.array[1]);
+    assert(0 == dc.h0.array[2]);
+    assert(2 == dc.h1.array[0]);
+    assert(0 == dc.h1.array[1]);
+    assert(3 == dc.h1.array[2]);
     assert(3 == dc.block_size);
-    assert(0 == dc.h0.degree);
-    assert(2 == dc.h1.degree);
+    assert(0 == gf4_poly_get_degree(&dc.h0));
+    assert(2 == gf4_poly_get_degree(&dc.h1));
 
     // test 2
     gf4_poly_set_coefficient(&vec, 0, 1);
@@ -648,24 +750,24 @@ void test_dec_calculate_syndrome() {
 
     dec_calculate_syndrome(&syndrome, &vec, &dc);
 
-    assert(3 == syndrome.coefficients[0]);
-    assert(0 == syndrome.coefficients[1]);
-    assert(2 == syndrome.coefficients[2]);
-    assert(1 == vec.coefficients[0]);
-    assert(2 == vec.coefficients[1]);
-    assert(0 == vec.coefficients[2]);
-    assert(0 == vec.coefficients[3]);
-    assert(1 == vec.coefficients[4]);
-    assert(3 == vec.coefficients[5]);
-    assert(1 == dc.h0.coefficients[0]);
-    assert(0 == dc.h0.coefficients[1]);
-    assert(0 == dc.h0.coefficients[2]);
-    assert(2 == dc.h1.coefficients[0]);
-    assert(0 == dc.h1.coefficients[1]);
-    assert(3 == dc.h1.coefficients[2]);
+    assert(3 == syndrome.array[0]);
+    assert(0 == syndrome.array[1]);
+    assert(2 == syndrome.array[2]);
+    assert(1 == vec.array[0]);
+    assert(2 == vec.array[1]);
+    assert(0 == vec.array[2]);
+    assert(0 == vec.array[3]);
+    assert(1 == vec.array[4]);
+    assert(3 == vec.array[5]);
+    assert(1 == dc.h0.array[0]);
+    assert(0 == dc.h0.array[1]);
+    assert(0 == dc.h0.array[2]);
+    assert(2 == dc.h1.array[0]);
+    assert(0 == dc.h1.array[1]);
+    assert(3 == dc.h1.array[2]);
     assert(3 == dc.block_size);
-    assert(0 == dc.h0.degree);
-    assert(2 == dc.h1.degree);
+    assert(0 == gf4_poly_get_degree(&dc.h0));
+    assert(2 == gf4_poly_get_degree(&dc.h1));
 
     // cleanup
     gf4_poly_deinit(&vec);

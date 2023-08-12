@@ -59,64 +59,63 @@ void random_force_reseed();
 size_t random_from_range(size_t low_bound_inclusive, size_t top_bound_inclusive);
 
 /**
- * @brief Generate a random polynomial.
+ * @brief Generate a random vector.
  *
  * May also call random_init().
  * poly must be initialized beforehand.
  *
- * @param poly pointer to a polynomial to store the result in
- * @param size maximum size of the polynomial, size must be less or equal to the polynomial->capacity
- * @param weight number of nonzero coefficients, weight <= size
+ * @param vector pointer to a vector to store the result in
+ * @param size maximum size of the vector, size must be less or equal to the polynomial->capacity
  */
-void random_gf4_poly(gf4_poly_t * poly, size_t size);
+void random_gf4_vector(gf4_vector_t *vector, size_t size);
 
 /**
- * @brief Generate a polynomial of given weight.
+ * @brief Generate a random vector of given weight.
  *
  * May also call random_init().
  * poly must be initialized beforehand.
  *
- * @param poly pointer to a polynomial to store the result in
- * @param size maximum size of the polynomial, size <= polynomial->capacity
- * @param weight number of nonzero coefficients, weight <= size
+ * @param vector pointer to a vector to store the result in
+ * @param size maximum size of the vector, size <= vector->capacity
+ * @param weight number of nonzero items in the vector, weight <= size
  */
-void random_weighted_gf4_poly(gf4_poly_t * poly, size_t size, size_t weight);
+void random_weighted_gf4_vector(gf4_vector_t *vector, size_t size, size_t weight);
 
 
 /**
- * @brief Generate a polynomial of given weight such that at least weight/2 ones are placed exactly distance apart.
+ * @brief Generate a vector of given weight such that at least weight/2 ones are placed exactly distance apart.
  *
- * poly must be initialized beforehand.
+ * vector must be initialized beforehand.
  *
- * @param poly pointer to a polynomial to store the result in
- * @param size maximum size of the polynomial, size <= polynomial->capacity
- * @param weight number of nonzero coefficients, weight <= size
+ * @param vector pointer to a vector to store the result in
+ * @param size maximum size of the vector, size <= vector->capacity
+ * @param weight number of nonzero items in the vector, weight <= size
  * @param distance distance between pairs
  */
-void random_weighted_gf4_poly_pairs_of_ones(gf4_poly_t * poly, size_t size, size_t weight, size_t distance);
+void random_weighted_gf4_vector_pairs_of_ones(gf4_vector_t *vector, size_t size, size_t weight, size_t distance);
 
 /**
- * @brief Generate a polynomial of given weight such that at least weight/2 pairs of 1 and alpha are placed exactly distance apart.
+ * @brief Generate a vector of given weight such that at least weight/2 pairs of 1 and alpha are placed exactly distance apart.
  *
- * poly must be initialized beforehand.
+ * vector must be initialized beforehand.
  *
- * @param poly pointer to a polynomial to store the result in
- * @param size maximum size of the polynomial, size <= polynomial->capacity
- * @param weight number of nonzero coefficients, weight <= size
+ * @param vector pointer to a vector to store the result in
+ * @param size maximum size of the vector, size <= vector->capacity
+ * @param weight number of nonzero items in the vector, weight <= size
  * @param distance distance between pairs
  */
-void random_weighted_gf4_poly_pairs_of_one_alpha(gf4_poly_t * poly, size_t size, size_t weight, size_t distance);
+void random_weighted_gf4_vector_pairs_of_one_alpha(gf4_vector_t *vector, size_t size, size_t weight, size_t distance);
 
 /**
- * @brief Generate a polynomial of given weight such that at least weight/2 pairs of alpha and 1 are placed exactly distance apart.
+ * @brief Generate a vector of given weight such that at least weight/2 pairs of alpha and 1 are placed exactly distance apart.
  *
- * poly must be initialized beforehand.
+ * vector must be initialized beforehand.
  *
- * @param poly pointer to a polynomial to store the result in
- * @param size maximum size of the polynomial, size <= polynomial->capacity
- * @param weight number of nonzero coefficients, weight <= size
+ * @param vector pointer to a vector to store the result in
+ * @param size maximum size of the vector, size <= vector->capacity
+ * @param weight number of nonzero items in the vector, weight <= size
  * @param distance distance between pairs
  */
-void random_weighted_gf4_poly_pairs_of_alpha_one(gf4_poly_t * poly, size_t size, size_t weight, size_t distance);
+void random_weighted_gf4_vector_pairs_of_alpha_one(gf4_vector_t *vector, size_t size, size_t weight, size_t distance);
 
 #endif //MDPC_GF4_RANDOM_H

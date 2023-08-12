@@ -42,7 +42,7 @@ gf4_matrix_t gf4_matrix_init_cyclic_matrix(gf4_poly_t * first_row, size_t N) {
             exit(-1);
         }
         for (size_t col = 0; col < N; ++col) {
-            matrix.rows[N - row][col] = first_row->coefficients[(row + col) % N];
+            matrix.rows[N - row][col] = first_row->array[(row + col) % N];
         }
     }
     matrix.num_rows = N;
@@ -275,7 +275,11 @@ void gf4_matrix_remove_col_inplace(gf4_matrix_t * matrix, size_t col_index) {
 }
 
 void gf4_matrix_realloc_to_match_dimensions_inplace(gf4_matrix_t * matrix) {
+    assert(NULL != matrix);
+    assert(0 != matrix->num_rows);
+    assert(0 != matrix->num_cols);
     fprintf(stderr, "gf4_matrix_realloc_to_match_dimensions_inplace: Not yet implemented!\n");
+    gf4_matrix_deinit(matrix); // todo remove this line
     exit(-1);
 }
 

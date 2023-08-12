@@ -40,7 +40,7 @@
  * @param in_message vector containing a message to encode
  * @param ctx a valid encoding context
  */
-void enc_encode(gf4_poly_t * out_encoded, gf4_poly_t * in_message, encoding_context_t * ctx);
+void enc_encode(gf4_vector_t *out_encoded, gf4_vector_t *in_message, encoding_context_t * ctx);
 
 /**
  * @brief Encrypt a message.
@@ -55,6 +55,6 @@ void enc_encode(gf4_poly_t * out_encoded, gf4_poly_t * in_message, encoding_cont
  * @param num_errors hamming weight of the error vector to be used
  * @param ctx a valid encoding context
  */
-void enc_encrypt(gf4_poly_t * out_encrypted, gf4_poly_t * in_message, size_t num_errors, encoding_context_t * ctx);
+void enc_encrypt(gf4_vector_t *out_encrypted, gf4_vector_t *in_message, size_t num_errors, encoding_context_t * ctx);
 
 #endif //MDPC_GF4_ENC_H

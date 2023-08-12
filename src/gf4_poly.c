@@ -18,73 +18,53 @@
 
 #include "gf4_poly.h"
 
+// internal
+#define GF_4_POLY_GET_DEGREE_INTERNAL(poly) ((poly)->length - 1)
+
 // initialization
 gf4_poly_t gf4_poly_init_zero(size_t capacity) {
-    gf4_poly_t poly;
-    poly.coefficients = calloc(capacity, sizeof(gf4_t));
-    if (NULL == poly.coefficients) {
-        fprintf(stderr, "gf4_poly_init_zero: Memory allocation failed!\n");
-        exit(-1);
-    }
-    poly.capacity = capacity;
-    poly.degree = 0;
-    return poly;
+    assert(1 <= capacity);
+    return gf4_vector_init_with_length(capacity, 1); // length=1 => degree=0
 }
-
-#ifdef CANRESIZE
-void gf4_poly_resize(gf4_poly_t * poly, size_t new_capacity) {
-    assert(NULL != poly);
-    gf4_t * tmp = realloc(poly->coefficients, new_capacity*sizeof(gf4_t));
-    if (NULL == tmp) {
-        free(poly->coefficients);
-        fprintf(stderr, "gf4_poly_resize: Memory reallocation failed!\n");
-        exit(-1);
-    }
-    poly->coefficients = tmp;
-    poly->capacity = new_capacity;
-}
-#endif
 
 void gf4_poly_zero_out(gf4_poly_t * poly) {
     assert(NULL != poly);
-    memset(poly->coefficients, 0, poly->capacity);
-    poly->degree = 0;
+    memset(poly->array, 0, poly->capacity);
+    poly->length = 1;
 }
 
 void gf4_poly_deinit(gf4_poly_t * poly) {
-    assert(NULL != poly);
-    free(poly->coefficients);
-    poly->coefficients = NULL;
+    gf4_vector_deinit(poly);
 }
 
 
 // coefficient access
 gf4_t gf4_poly_get_coefficient(gf4_poly_t * poly, size_t deg) {
     assert(NULL != poly);
-    if (deg > poly->degree) {
+    if (deg > GF_4_POLY_GET_DEGREE_INTERNAL(poly)) {
         return 0;
     } else {
-        return poly->coefficients[deg];
+        return poly->array[deg];
     }
 }
 
 void gf4_poly_set_coefficient(gf4_poly_t * poly, size_t deg, gf4_t val) {
     assert(NULL != poly);
-    if (deg == poly->degree && 0 == val) {
-        poly->coefficients[deg] = 0;
+    if (deg == GF_4_POLY_GET_DEGREE_INTERNAL(poly) && 0 == val) {
+        poly->array[deg] = 0;
         gf4_poly_adjust_degree(poly, deg);
-    } else if (deg > poly->degree) {
+    } else if (deg > GF_4_POLY_GET_DEGREE_INTERNAL(poly)) {
         if (0 != val) {
 #ifdef CANRESIZE // can resize
             if (deg >= poly->capacity) {
-                gf4_poly_resize(poly, deg+1);
+                gf4_vector_resize(poly, deg+1);
 			}
 #endif // CANRESIZE
-            poly->degree = deg;
-            poly->coefficients[deg] = val;
+            poly->length = deg + 1;
+            poly->array[deg] = val;
         }
     } else {
-        poly->coefficients[deg] = val;
+        poly->array[deg] = val;
     }
 }
 
@@ -94,30 +74,30 @@ void gf4_poly_add(gf4_poly_t * out, gf4_poly_t * a, gf4_poly_t * b) {
     assert(NULL != out);
 	assert(NULL != a);
 	assert(NULL != b);
-    if (a->degree == b->degree) {
-        out->degree = 0;
-        for (size_t i = 0; i <= a->degree; ++i) {
-            out->coefficients[i] = a->coefficients[i] ^ b->coefficients[i];
-            if (0 != out->coefficients[i]) {
-                out->degree = i;
+    if (GF_4_POLY_GET_DEGREE_INTERNAL(a) == GF_4_POLY_GET_DEGREE_INTERNAL(b)) {
+        out->length = 1;
+        for (size_t i = 0; i < a->length; ++i) {
+            out->array[i] = a->array[i] ^ b->array[i];
+            if (0 != out->array[i]) {
+                out->length = i+1;
             }
         }
     } else {
         gf4_poly_t * longer;
         gf4_poly_t * shorter;
-        if (a->degree > b->degree) {
+        if (a->length > b->length) {
             longer = a;
             shorter = b;
         } else {
             longer = b;
             shorter = a;
         }
-        out->degree = longer->degree;
-        for (size_t i = 0; i <= shorter->degree; ++i) {
-            out->coefficients[i] = longer->coefficients[i] ^ shorter->coefficients[i];
+        out->length = longer->length;
+        for (size_t i = 0; i < shorter->length; ++i) {
+            out->array[i] = longer->array[i] ^ shorter->array[i];
         }
-        for (size_t i = shorter->degree + 1; i <= longer->degree; ++i) {
-            out->coefficients[i] = longer->coefficients[i];
+        for (size_t i = shorter->length; i < longer->length; ++i) {
+            out->array[i] = longer->array[i];
         }
     }
 }
@@ -126,13 +106,13 @@ void gf4_poly_add_inplace(gf4_poly_t * a, gf4_poly_t * b) {
     assert(NULL != a);
     assert(NULL != b);
     assert(a->capacity >= b->capacity);
-    for (size_t i = 0; i <= b->degree; ++i) {
-        a->coefficients[i] ^= b->coefficients[i];
+    for (size_t i = 0; i < b->length; ++i) {
+        a->array[i] ^= b->array[i];
     }
-    if (b->degree > a->degree) {
-        a->degree = b->degree;
-    } else if (b->degree == a->degree) {
-        gf4_poly_adjust_degree(a, a->degree);
+    if (b->length > a->length) {
+        a->length = b->length;
+    } else if (b->length == a->length) {
+        gf4_poly_adjust_degree(a, GF_4_POLY_GET_DEGREE_INTERNAL(a));
     }
 }
 
@@ -140,13 +120,13 @@ void gf4_poly_add_ax_to_deg_inplace(gf4_poly_t * poly, size_t deg, gf4_t a) {
     assert(NULL != poly);
 #ifdef CANRESIZE
     if (deg >= poly->capacity) {
-        gf4_poly_resize(poly, deg + 1);
+        gf4_vector_resize(poly, deg + 1);
     }
 #endif // CANRESIZE
-    poly->coefficients[deg] = poly->coefficients[deg] ^ a;
-    if (deg > poly->degree && 0 != poly->coefficients[deg]) {
-        poly->degree = deg;
-    } else if (deg == poly->degree && 0 == poly->coefficients[deg]) {
+    poly->array[deg] = poly->array[deg] ^ a;
+    if (deg > GF_4_POLY_GET_DEGREE_INTERNAL(poly) && 0 != poly->array[deg]) {
+        poly->length = deg + 1;
+    } else if (deg == GF_4_POLY_GET_DEGREE_INTERNAL(poly) && 0 == poly->array[deg]) {
         gf4_poly_adjust_degree(poly, deg);
     }
 }
@@ -156,12 +136,12 @@ void gf4_poly_mul(gf4_poly_t * out, gf4_poly_t * a, gf4_poly_t * b) {
     assert(NULL != out);
 	assert(NULL != a);
 	assert(NULL != b);
-    for (size_t i = 0; i <= a->degree; ++i) {
-        for (size_t j = 0; j <= b->degree; ++j) {
-            out->coefficients[i+j] ^= gf4_mul(a->coefficients[i], b->coefficients[j]);
+    for (size_t i = 0; i < a->length; ++i) {
+        for (size_t j = 0; j < b->length; ++j) {
+            out->array[i+j] ^= gf4_mul(a->array[i], b->array[j]);
         }
     }
-    gf4_poly_adjust_degree(out, a->degree + b->degree);
+    gf4_poly_adjust_degree(out, GF_4_POLY_GET_DEGREE_INTERNAL(a) + GF_4_POLY_GET_DEGREE_INTERNAL(b));
 }
 
 
@@ -169,34 +149,34 @@ void gf4_poly_mul(gf4_poly_t * out, gf4_poly_t * a, gf4_poly_t * b) {
 void gf4_poly_div_x_to_deg(gf4_poly_t * out, gf4_poly_t * poly, size_t deg) {
     assert(NULL != out);
 	assert(NULL != poly);
-	assert(poly->degree >= deg);
-    size_t diff = poly->degree - deg;
+	assert(GF_4_POLY_GET_DEGREE_INTERNAL(poly) >= deg);
+    size_t diff = GF_4_POLY_GET_DEGREE_INTERNAL(poly) - deg;
     for (size_t i = 0; i <= diff; ++i) {
-        out->coefficients[i] = poly->coefficients[i + deg];
+        out->array[i] = poly->array[i + deg];
     }
-    for (size_t i = diff + 1; i <= poly->degree; ++i) {
-        out->coefficients[i] = 0;
+    for (size_t i = diff + 1; i < poly->length; ++i) {
+        out->array[i] = 0;
     }
-    out->degree = diff;
+    out->length = diff + 1;
 }
 
 void gf4_poly_div_x_to_deg_inplace(gf4_poly_t * poly, size_t deg) {
 	assert(NULL != poly);
-	assert(poly->degree >= deg);
-    size_t diff = poly->degree - deg;
+	assert(GF_4_POLY_GET_DEGREE_INTERNAL(poly) >= deg);
+    size_t diff = GF_4_POLY_GET_DEGREE_INTERNAL(poly) - deg;
     for (size_t i = 0; i <= diff; ++i) {
-        poly->coefficients[i] = poly->coefficients[i + deg];
+        poly->array[i] = poly->array[i + deg];
     }
-    for (size_t i = diff + 1; i <= poly->degree; ++i) {
-        poly->coefficients[i] = 0;
+    for (size_t i = diff + 1; i < poly->length; ++i) {
+        poly->array[i] = 0;
     }
-    poly->degree = diff;
+    poly->length = diff + 1;
 }
 
 void gf4_poly_div_rem(gf4_poly_t * div, gf4_poly_t * rem, gf4_poly_t * a, gf4_poly_t * b) {
     assert(!gf4_poly_is_zero(b));
 
-    if (a->degree < b->degree) {
+    if (a->length < b->length) {
         gf4_poly_zero_out(div);
         gf4_poly_copy(rem, a);
         return;
@@ -204,20 +184,20 @@ void gf4_poly_div_rem(gf4_poly_t * div, gf4_poly_t * rem, gf4_poly_t * a, gf4_po
         gf4_poly_zero_out(div);
         gf4_poly_copy(rem, a);
 
-        gf4_t b_lead = b->coefficients[b->degree];
+        gf4_t b_lead = b->array[GF_4_POLY_GET_DEGREE_INTERNAL(b)];
 
-        while (!gf4_poly_is_zero(rem) && rem->degree >= b->degree) {
-            size_t deg = rem->degree - b->degree;
-            gf4_t tmp = gf4_div(rem->coefficients[rem->degree], b_lead);
+        while (!gf4_poly_is_zero(rem) && GF_4_POLY_GET_DEGREE_INTERNAL(rem) >= GF_4_POLY_GET_DEGREE_INTERNAL(b)) {
+            size_t deg = GF_4_POLY_GET_DEGREE_INTERNAL(rem) - GF_4_POLY_GET_DEGREE_INTERNAL(b);
+            gf4_t tmp = gf4_div(rem->array[GF_4_POLY_GET_DEGREE_INTERNAL(rem)], b_lead);
             gf4_poly_add_ax_to_deg_inplace(div, deg, tmp);
 
-            for (size_t i = 0; i <= b->degree; ++i) {
-                gf4_t delta = gf4_mul(b->coefficients[i], tmp);
-                rem->coefficients[i+deg] ^= delta;
+            for (size_t i = 0; i < b->length; ++i) {
+                gf4_t delta = gf4_mul(b->array[i], tmp);
+                rem->array[i+deg] ^= delta;
             }
 
-            if (0 == rem->coefficients[rem->degree]) {
-                gf4_poly_adjust_degree(rem, rem->degree);
+            if (0 == rem->array[GF_4_POLY_GET_DEGREE_INTERNAL(rem)]) {
+                gf4_poly_adjust_degree(rem, GF_4_POLY_GET_DEGREE_INTERNAL(rem));
             }
         }
         return;
@@ -250,7 +230,7 @@ bool gf4_poly_invert_slow(gf4_poly_t * maybe_inverse, gf4_poly_t * poly, gf4_pol
     gf4_poly_t rem = gf4_poly_init_zero(modulus->capacity);
 #endif
     gf4_poly_t tmp;
-    s.coefficients[0] = 1;
+    s.array[0] = 1;
     while (!gf4_poly_is_zero(&b)) {
         gf4_poly_div_rem(&div, &rem, &a, &b);
 
@@ -275,10 +255,10 @@ bool gf4_poly_invert_slow(gf4_poly_t * maybe_inverse, gf4_poly_t * poly, gf4_pol
     }
 
     bool ret_value = false;
-    if(0 == a.degree) {
-        gf4_t a_abs = a.coefficients[0];
-        for (size_t i = 0; i <= s.degree; ++i) {
-            s.coefficients[i] = gf4_div(s.coefficients[i], a_abs);
+    if(0 == GF_4_POLY_GET_DEGREE_INTERNAL(&a)) {
+        gf4_t a_abs = a.array[0];
+        for (size_t i = 0; i < s.length; ++i) {
+            s.array[i] = gf4_div(s.array[i], a_abs);
         }
         gf4_poly_copy(maybe_inverse, &s);
         ret_value = true;
@@ -295,17 +275,17 @@ bool gf4_poly_invert_slow(gf4_poly_t * maybe_inverse, gf4_poly_t * poly, gf4_pol
 // properties
 bool gf4_poly_is_zero(gf4_poly_t * poly) {
     assert(NULL != poly);
-    return 0 == poly->degree && 0 == poly->coefficients[0];
+    return 0 == GF_4_POLY_GET_DEGREE_INTERNAL(poly) && 0 == poly->array[0];
 }
 
 bool gf4_poly_equal(gf4_poly_t * poly1, gf4_poly_t * poly2) {
     assert(NULL != poly1);
     assert(NULL != poly2);
-    if (poly1->degree != poly2->degree) {
+    if (poly1->length != poly2->length) {
         return false;
     } else {
-        for (size_t i = 0; i <= poly1->degree; ++i) {
-            if (poly1->coefficients[i] != poly2->coefficients[i]) {
+        for (size_t i = 0; i < poly1->length; ++i) {
+            if (poly1->array[i] != poly2->array[i]) {
                 return false;
             }
         }
@@ -319,22 +299,27 @@ bool gf4_poly_equal(gf4_poly_t * poly1, gf4_poly_t * poly2) {
 void gf4_poly_cyclic_shift_right_inplace(gf4_poly_t * poly, size_t size) {
     assert(NULL != poly);
     assert(size <= poly->capacity);
-    gf4_t last = poly->coefficients[size - 1];
+    gf4_t last = poly->array[size - 1];
     for (size_t i = size - 1; i > 0; --i) {
-        poly->coefficients[i] = poly->coefficients[i-1];
+        poly->array[i] = poly->array[i-1];
     }
-    poly->coefficients[0] = last;
+    poly->array[0] = last;
 }
 
 
 
 // helpers
+size_t gf4_poly_get_degree(gf4_poly_t * poly) {
+    assert(NULL != poly);
+    return GF_4_POLY_GET_DEGREE_INTERNAL(poly);
+}
+
 void gf4_poly_adjust_degree(gf4_poly_t * poly, size_t max_degree) {
     assert(NULL != poly);
-    poly->degree = 0;
+    poly->length = 1;
     for (size_t i = max_degree; i != 0; --i) {
-        if (0 != poly->coefficients[i]) {
-            poly->degree = i;
+        if (0 != poly->array[i]) {
+            poly->length = i + 1;
             break;
         }
     }
@@ -343,27 +328,27 @@ void gf4_poly_adjust_degree(gf4_poly_t * poly, size_t max_degree) {
 void gf4_poly_pretty_print(gf4_poly_t * poly, FILE * stream, const char * end) {
     assert(NULL != poly);
     assert(NULL != end);
-    if (0 == poly->degree && 0 == poly->coefficients[0]) {
+    if (0 == GF_4_POLY_GET_DEGREE_INTERNAL(poly) && 0 == poly->array[0]) {
         fprintf(stream, "0\n");
     } else {
         char * sep = "";
-        if (1 <= poly->coefficients[0]) {
-            fprintf(stream, "%s", gf4_to_str(poly->coefficients[0]));
+        if (1 <= poly->array[0]) {
+            fprintf(stream, "%s", gf4_to_str(poly->array[0]));
             sep = " + ";
         }
-        if (1 <= poly->degree && 1 == poly->coefficients[1]) {
+        if (1 <= GF_4_POLY_GET_DEGREE_INTERNAL(poly) && 1 == poly->array[1]) {
             fprintf(stream, "%sx", sep);
             sep = " + ";
-        } else if (1 <= poly->degree && 1 < poly->coefficients[1]) {
-            fprintf(stream, "%s%s*x", sep, gf4_to_str(poly->coefficients[1]));
+        } else if (1 <= GF_4_POLY_GET_DEGREE_INTERNAL(poly) && 1 < poly->array[1]) {
+            fprintf(stream, "%s%s*x", sep, gf4_to_str(poly->array[1]));
             sep = " + ";
         }
-        for (size_t i = 2; i <= poly->degree; ++i) {
-            if (1 == poly->coefficients[i]) {
+        for (size_t i = 2; i < poly->length; ++i) {
+            if (1 == poly->array[i]) {
                 fprintf(stream, "%sx^%zu", sep, i);
                 sep = " + ";
-            } else if (1 < poly->coefficients[i]) {
-                fprintf(stream, "%s%s*x^%zu", sep, gf4_to_str(poly->coefficients[i]), i);
+            } else if (1 < poly->array[i]) {
+                fprintf(stream, "%s%s*x^%zu", sep, gf4_to_str(poly->array[i]), i);
                 sep = " + ";
             }
         }
@@ -371,24 +356,17 @@ void gf4_poly_pretty_print(gf4_poly_t * poly, FILE * stream, const char * end) {
     }
 }
 
-void gf4_poly_coeff_print(gf4_poly_t * poly, size_t max, FILE * stream, const char * end) {
-    for (size_t i = 0; i < max; ++i) {
-        fprintf(stream, "%u ", poly->coefficients[i]);
-    }
-    fprintf(stream, "%s", end);
-}
-
 gf4_poly_t gf4_poly_clone(gf4_poly_t * poly) {
     assert(NULL != poly);
     gf4_poly_t clone;
-    clone.degree = poly->degree;
+    clone.length = poly->length;
     clone.capacity = poly->capacity;
-    clone.coefficients = calloc(clone.capacity, sizeof(gf4_t));
-    if (NULL == clone.coefficients) {
+    clone.array = calloc(clone.capacity, sizeof(gf4_t));
+    if (NULL == clone.array) {
         fprintf(stderr, "gf4_poly_clone: Memory allocation failed!\n");
         exit(-1);
     }
-    memcpy(clone.coefficients, poly->coefficients, clone.degree+1);
+    memcpy(clone.array, poly->array, sizeof(gf4_t) * clone.length);
     return clone;
 }
 
@@ -397,9 +375,9 @@ void gf4_poly_copy(gf4_poly_t * out, gf4_poly_t * in) {
     assert(NULL != in);
 #ifdef CANRESIZE
     if (out->capacity < in->capacity) {
-        gf4_poly_resize(out, in->capacity);
+        gf4_vector_resize(out, in->capacity);
     }
 #endif
-    out->degree = in->degree;
-    memcpy(out->coefficients, in->coefficients, out->capacity);
+    out->length = in->length;
+    memcpy(out->array, in->array, sizeof(gf4_t)*out->capacity);
 }

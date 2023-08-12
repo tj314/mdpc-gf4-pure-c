@@ -21,11 +21,11 @@
 
 
 // helper function
-gf4_t poly_sum(gf4_poly_t * poly) {
+gf4_t contexts_poly_sum(gf4_poly_t * poly) {
     assert(NULL != poly);
     gf4_t sum = 0;
-    for (size_t i = 0; i <= poly->degree; ++i) {
-        sum ^= poly->coefficients[i];
+    for (size_t i = 0; i < poly->length; ++i) {
+        sum ^= poly->array[i];
     }
     return sum;
 }
@@ -49,15 +49,15 @@ void contexts_init(encoding_context_t * out_enc_ctx, decoding_context_t * out_de
     gf4_poly_t h0 = gf4_poly_init_zero(capacity);
     gf4_poly_t h1 = gf4_poly_init_zero(capacity);
     gf4_poly_t maybe_inverse = gf4_poly_init_zero(2*capacity);
-    random_weighted_gf4_poly(&h0, block_size, block_weight);
-    random_weighted_gf4_poly(&h1, block_size, block_weight);
+    random_weighted_gf4_vector(&h0, block_size, block_weight);
+    random_weighted_gf4_vector(&h1, block_size, block_weight);
 
     int repetitions = 0;
 
     while (true) {
-        while (0 == poly_sum(&h1)) {
+        while (0 == contexts_poly_sum(&h1)) {
             gf4_poly_zero_out(&h1);
-            random_weighted_gf4_poly(&h1, block_size, block_weight);
+            random_weighted_gf4_vector(&h1, block_size, block_weight);
         }
         bool inverted = gf4_poly_invert_slow(&maybe_inverse, &h1, &modulus);
         if (inverted) {
@@ -66,7 +66,7 @@ void contexts_init(encoding_context_t * out_enc_ctx, decoding_context_t * out_de
             gf4_poly_t rem = gf4_poly_init_zero(2*capacity);
             gf4_poly_mul(&tmp, &h1, &maybe_inverse);
             gf4_poly_div_rem(&div, &rem, &tmp, &modulus);
-            bool correct_inverse = 0 == rem.degree && 1 == rem.coefficients[0];
+            bool correct_inverse = 0 == gf4_poly_get_degree(&rem) && 1 == rem.array[0];
             if (!correct_inverse) {
                 // WTF???? this means invert function is incorrectly implemented
                 fprintf(stderr, "contexts_init: WTF? invert function is incorrectly implemented!\n");
@@ -163,25 +163,25 @@ void contexts_save(const char * filename, encoding_context_t * enc_ctx, decoding
     }
     size_t num_nonzero = utils_hamming_weight(&enc_ctx->second_block_G);
     fprintf(output, "%zu\n", num_nonzero);
-    for (size_t i = 0; i <= enc_ctx->second_block_G.degree; ++i) {
-        if (0 != enc_ctx->second_block_G.coefficients[i]) {
-            fprintf(output, "%zu %hhu\n", i, enc_ctx->second_block_G.coefficients[i]);
+    for (size_t i = 0; i < enc_ctx->second_block_G.length; ++i) {
+        if (0 != enc_ctx->second_block_G.array[i]) {
+            fprintf(output, "%zu %hhu\n", i, enc_ctx->second_block_G.array[i]);
         }
     }
 
     num_nonzero = utils_hamming_weight(&dec_ctx->h0);
     fprintf(output, "%zu\n", num_nonzero);
-    for (size_t i = 0; i <= dec_ctx->h0.degree; ++i) {
-        if (0 != dec_ctx->h0.coefficients[i]) {
-            fprintf(output, "%zu %hhu\n", i, dec_ctx->h0.coefficients[i]);
+    for (size_t i = 0; i < dec_ctx->h0.length; ++i) {
+        if (0 != dec_ctx->h0.array[i]) {
+            fprintf(output, "%zu %hhu\n", i, dec_ctx->h0.array[i]);
         }
     }
 
     num_nonzero = utils_hamming_weight(&dec_ctx->h1);
     fprintf(output, "%zu\n", num_nonzero);
-    for (size_t i = 0; i <= dec_ctx->h1.degree; ++i) {
-        if (0 != dec_ctx->h1.coefficients[i]) {
-            fprintf(output, "%zu %hhu\n", i, dec_ctx->h1.coefficients[i]);
+    for (size_t i = 0; i < dec_ctx->h1.length; ++i) {
+        if (0 != dec_ctx->h1.array[i]) {
+            fprintf(output, "%zu %hhu\n", i, dec_ctx->h1.array[i]);
         }
     }
 
@@ -256,8 +256,8 @@ void contexts_load(const char * filename, size_t block_size, encoding_context_t 
         fscanf(input, "%zu", &deg);
         fscanf(input, "%hhu", &coeff);
         fgetc(input); // remove line ending
-        enc_ctx->second_block_G.coefficients[deg] = coeff;
-        enc_ctx->second_block_G.degree = deg;
+        enc_ctx->second_block_G.array[deg] = coeff;
+        enc_ctx->second_block_G.length = deg + 1;
     }
 
     fscanf(input, "%zu", &num_nonzero);
@@ -266,8 +266,8 @@ void contexts_load(const char * filename, size_t block_size, encoding_context_t 
         fscanf(input, "%zu", &deg);
         fscanf(input, "%hhu", &coeff);
         fgetc(input); // remove line ending
-        dec_ctx->h0.coefficients[deg] = coeff;
-        dec_ctx->h0.degree = deg;
+        dec_ctx->h0.array[deg] = coeff;
+        dec_ctx->h0.length = deg + 1;
     }
 
     fscanf(input, "%zu", &num_nonzero);
@@ -276,8 +276,8 @@ void contexts_load(const char * filename, size_t block_size, encoding_context_t 
         fscanf(input, "%zu", &deg);
         fscanf(input, "%hhu", &coeff);
         fgetc(input); // remove line ending
-        dec_ctx->h1.coefficients[deg] = coeff;
-        dec_ctx->h1.degree = deg;
+        dec_ctx->h1.array[deg] = coeff;
+        dec_ctx->h1.length = deg + 1;
     }
 
     fclose(input);
