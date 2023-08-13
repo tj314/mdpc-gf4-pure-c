@@ -88,4 +88,8 @@ void test_enc_encrypt();
 // dec
 void test_dec_calculate_syndrome();
 
+
+// test runner
+void run_unit_tests();
+
 #endif

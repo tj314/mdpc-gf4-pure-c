@@ -41,9 +41,9 @@ typedef struct {
 } gf4_vector_t;
 
 // initialization
-gf4_vector_t gf4_vector_init(size_t capacity);
+gf4_vector_t gf4_vector_init(size_t capacity, bool zero_out_new_memory);
 
-gf4_vector_t gf4_vector_init_with_length(size_t capacity, size_t length);
+gf4_vector_t gf4_vector_init_with_length(size_t capacity, size_t length, bool zero_out_new_memory);
 
 void gf4_vector_resize(gf4_vector_t * vector, size_t new_capacity, bool zero_out_new_memory);
 

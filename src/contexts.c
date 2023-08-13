@@ -50,7 +50,9 @@ void contexts_init(encoding_context_t * out_enc_ctx, decoding_context_t * out_de
     gf4_poly_t h1 = gf4_poly_init_zero(capacity);
     gf4_poly_t maybe_inverse = gf4_poly_init_zero(2*capacity);
     random_weighted_gf4_vector(&h0, block_size, block_weight);
+    gf4_poly_adjust_degree(&h0, block_size - 1);
     random_weighted_gf4_vector(&h1, block_size, block_weight);
+    gf4_poly_adjust_degree(&h1, block_size - 1);
 
     int repetitions = 0;
 
@@ -58,6 +60,7 @@ void contexts_init(encoding_context_t * out_enc_ctx, decoding_context_t * out_de
         while (0 == contexts_poly_sum(&h1)) {
             gf4_poly_zero_out(&h1);
             random_weighted_gf4_vector(&h1, block_size, block_weight);
+            gf4_poly_adjust_degree(&h1, block_size - 1);
         }
         bool inverted = gf4_poly_invert_slow(&maybe_inverse, &h1, &modulus);
         if (inverted) {

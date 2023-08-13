@@ -25,21 +25,25 @@
 
 #include "gf4_vector.h"
 
-gf4_vector_t gf4_vector_init(size_t capacity) {
-    // no need to assert anything, gf4_vector_init_with_length will take care of it
-    return gf4_vector_init_with_length(capacity, 0);
-}
-
-gf4_vector_t gf4_vector_init_with_length(size_t capacity, size_t length) {
+gf4_vector_t gf4_vector_init(size_t capacity, bool zero_out_new_memory) {
     assert(0 < capacity);
-    assert(length <= capacity);
     gf4_vector_t out;
-    out.array = calloc(capacity, sizeof(gf4_t));
+    if (zero_out_new_memory) {
+        out.array = calloc(capacity, sizeof(gf4_t));
+    } else {
+        out.array = malloc(capacity * sizeof(gf4_t));
+    }
     if (NULL == out.array) {
         fprintf(stderr, "gf4_vector_init: Allocation error!\n");
         exit(-1);
     }
     out.capacity = capacity;
+    return out;
+}
+
+gf4_vector_t gf4_vector_init_with_length(size_t capacity, size_t length, bool zero_out_new_memory) {
+    assert(length <= capacity);
+    gf4_vector_t out = gf4_vector_init(capacity, zero_out_new_memory);
     out.length = length;
     return out;
 }

@@ -51,15 +51,20 @@ void random_gf4_vector(gf4_vector_t *vector, size_t size) {
             break;
         }
     }
+    if (1 == vector->length && 0 == vector->array[0]) {
+        vector->length = 0;
+    }
 }
 
 void random_weighted_gf4_vector(gf4_vector_t *vector, size_t size, size_t weight) {
     assert(NULL != vector);
     assert(size <= vector->capacity);
     assert(weight <= size);
+    // place weight nonzero entries on the first weight positions
     for (size_t i = 0; i < weight; ++i) {
         vector->array[i] = (gf4_t) random_from_range(1, GF4_MAX_VALUE);
     }
+    // shuffle
     for (size_t i = 0; i < size - 1; ++i) {
         size_t j = (size_t)random_from_range(i, size - 1);
         gf4_t tmp = vector->array[i];
@@ -73,34 +78,44 @@ void random_weighted_gf4_vector(gf4_vector_t *vector, size_t size, size_t weight
             break;
         }
     }
+    if (1 == vector->length && 0 == vector->array[0]) {
+        vector->length = 0;
+    }
 }
 
-void random_weighted_gf4_pairs_common(gf4_poly_t * poly, size_t size, size_t weight, size_t distance, gf4_t first, gf4_t second) {
-    assert(NULL != poly);
-    assert(poly->capacity >= size);
+void random_weighted_gf4_vector_pairs_common(gf4_vector_t *vector, size_t size, size_t weight, size_t distance, gf4_t first, gf4_t second) {
+    assert(NULL != vector);
+    assert(vector->capacity >= size);
     assert(size > weight);
     size_t num_pairs = weight / 2;
+    size_t vector_max_index = 0;
     for (size_t i = 0; i < num_pairs; ++i) {
         size_t index = random_from_range(0, size - 1);
         size_t second_index = (index + distance) % size;
-        while (poly->array[index] > 0 || poly->array[second_index] > 0) {
+        while (vector->array[index] > 0 || vector->array[second_index] > 0) {
             index = random_from_range(0, size - 1);
             second_index = (index + distance) % size;
         }
-        poly->array[index] = first;
-        poly->array[second_index] = second;
+        vector->array[index] = first;
+        vector->array[second_index] = second;
+        if (index > vector_max_index) {
+            vector_max_index = index;
+        }
+        if (second_index > vector_max_index) {
+            vector_max_index = second_index;
+        }
     }
-    gf4_poly_adjust_degree(poly, size - 1);
+    vector->length = vector_max_index + 1;
 }
 
 void random_weighted_gf4_vector_pairs_of_ones(gf4_vector_t *vector, size_t size, size_t weight, size_t distance) {
-    random_weighted_gf4_pairs_common(vector, size, weight, distance, 1, 1);
+    random_weighted_gf4_vector_pairs_common(vector, size, weight, distance, 1, 1);
 }
 
 void random_weighted_gf4_vector_pairs_of_one_alpha(gf4_vector_t *vector, size_t size, size_t weight, size_t distance) {
-    random_weighted_gf4_pairs_common(vector, size, weight, distance, 1, 2);
+    random_weighted_gf4_vector_pairs_common(vector, size, weight, distance, 1, 2);
 }
 
 void random_weighted_gf4_vector_pairs_of_alpha_one(gf4_vector_t *vector, size_t size, size_t weight, size_t distance) {
-    random_weighted_gf4_pairs_common(vector, size, weight, distance, 2, 1);
+    random_weighted_gf4_vector_pairs_common(vector, size, weight, distance, 2, 1);
 }

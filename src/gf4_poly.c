@@ -24,7 +24,7 @@
 // initialization
 gf4_poly_t gf4_poly_init_zero(size_t capacity) {
     assert(1 <= capacity);
-    return gf4_vector_init_with_length(capacity, 1); // length=1 => degree=0
+    return gf4_vector_init_with_length(capacity, 1, true); // length=1 => degree=0
 }
 
 void gf4_poly_zero_out(gf4_poly_t * poly) {

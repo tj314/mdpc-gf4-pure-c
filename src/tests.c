@@ -115,7 +115,7 @@ void test_gf4_vector_hamming_weight() {
     fprintf(stderr, "test_gf4_vector_hamming_weight: ");
 
     // test 1
-    gf4_vector_t vector = gf4_vector_init_with_length(10, 10);
+    gf4_vector_t vector = gf4_vector_init_with_length(10, 10, true);
     assert(0 == gf4_vector_hamming_weight(&vector));
     assert(10 == vector.capacity);
 
@@ -775,4 +775,52 @@ void test_dec_calculate_syndrome() {
     gf4_poly_deinit(&dc.h1);
     gf4_poly_deinit(&syndrome);
     print_OK();
+}
+
+// runner
+void run_unit_tests() {
+    void (*tests_list[])() = {
+            test_gf4_is_in_range,
+            test_gf4_to_str,
+            test_gf4_add,
+            test_gf4_mul,
+            test_gf4_div,
+            test_gf4_vector_hamming_weight,
+            test_gf4_poly_init_zero,
+            test_gf4_poly_zero_out,
+            test_gf4_poly_deinit,
+            test_gf4_poly_get_coefficient,
+            test_gf4_poly_set_coefficient,
+            test_gf4_poly_add,
+            test_gf4_poly_add_inplace,
+            test_gf4_poly_add_ax_to_deg_inplace,
+            test_gf4_poly_mul,
+            test_gf4_poly_div_x_to_deg,
+            test_gf4_poly_div_x_to_deg_inplace,
+            test_gf4_poly_div_rem,
+            test_gf4_poly_invert_slow,
+            test_gf4_poly_is_zero,
+            test_gf4_poly_equal,
+            test_gf4_poly_cyclic_shift_right_inplace,
+            test_gf4_poly_get_degree,
+            test_gf4_poly_adjust_degree,
+            test_gf4_poly_pretty_print,
+            test_gf4_poly_clone,
+            test_gf4_poly_copy,
+            test_gf4_square_matrix_init_cyclic_matrix,
+            test_gf4_matrix_gaussian_elimination_inplace,
+            test_gf4_matrix_solve_homogenous_linear_system,
+            test_contexts_init,
+            test_contexts_save_load,
+            test_enc_encode,
+            test_enc_encrypt,
+            test_dec_calculate_syndrome
+    };
+    size_t num_tests = sizeof(tests_list) / sizeof(tests_list[0]);
+    for (size_t i = 0; i < num_tests; ++i) {
+        fprintf(stderr, "====================\n");
+        (*tests_list[i])();
+        fprintf(stderr, "\n");
+    }
+    fprintf(stderr, "All tests passed!\n");
 }

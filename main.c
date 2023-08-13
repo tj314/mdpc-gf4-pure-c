@@ -1,46 +1,11 @@
 #define GJS
 
-#ifdef RUNTESTS // run unit tests defined in test.h (new tests must be called here manually!)
+#ifdef RUNTESTS // run unit tests defined in test.h (new tests must be added to run_unit_tests function)
 #include <stdio.h>
 #include "src/tests.h"
 
 int main() {
-    test_gf4_is_in_range();
-    test_gf4_to_str();
-    test_gf4_add();
-    test_gf4_mul();
-    test_gf4_div();
-    test_gf4_vector_hamming_weight();
-    test_gf4_poly_init_zero();
-    test_gf4_poly_zero_out();
-    test_gf4_poly_deinit();
-    test_gf4_poly_get_coefficient();
-    test_gf4_poly_set_coefficient();
-    test_gf4_poly_add();
-    test_gf4_poly_add_inplace();
-    test_gf4_poly_add_ax_to_deg_inplace();
-    test_gf4_poly_mul();
-    test_gf4_poly_div_x_to_deg();
-    test_gf4_poly_div_x_to_deg_inplace();
-    test_gf4_poly_div_rem();
-    test_gf4_poly_invert_slow();
-    test_gf4_poly_is_zero();
-    test_gf4_poly_equal();
-    test_gf4_poly_cyclic_shift_right_inplace();
-    test_gf4_poly_get_degree();
-    test_gf4_poly_adjust_degree();
-    test_gf4_poly_pretty_print();
-    test_gf4_poly_clone();
-    test_gf4_poly_copy();
-    test_gf4_square_matrix_init_cyclic_matrix();
-    test_gf4_matrix_gaussian_elimination_inplace();
-    test_gf4_matrix_solve_homogenous_linear_system();
-    test_contexts_init();
-    test_contexts_save_load();
-    test_enc_encode();
-    test_enc_encrypt();
-    test_dec_calculate_syndrome();
-    fprintf(stderr, "All tests passed!\n");
+    run_unit_tests();
     return 0;
 }
 
