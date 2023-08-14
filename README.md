@@ -26,7 +26,15 @@ cmake --build .
 ./mdpc-gf4
 ```
 
-The default mode is `Release`. There is also a `Testing` mode to run unit tests.
+The default mode is `Release`. There is also a `Testing` mode to run unit tests:
+
+```bash
+mkdir build-testing
+cd build-testing
+cmake -DCMAKE_BUILD_TYPE=Testing ..
+cmake --build .
+./mdpc-gf4
+```
 
 ## What is implemented?
 
