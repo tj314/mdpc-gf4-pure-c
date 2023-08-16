@@ -17,6 +17,7 @@
 */
 
 #include "gf4_poly.h"
+#include "utils.h"
 
 // internal
 #define GF_4_POLY_GET_DEGREE_INTERNAL(poly) ((poly)->length - 1)
@@ -149,8 +150,8 @@ void gf4_poly_mul(gf4_poly_t * out, gf4_poly_t * a, gf4_poly_t * b) {
 void gf4_poly_div_x_to_deg(gf4_poly_t * out, gf4_poly_t * poly, size_t deg) {
     assert(NULL != out);
 	assert(NULL != poly);
-	assert(GF_4_POLY_GET_DEGREE_INTERNAL(poly) >= deg);
-    size_t diff = GF_4_POLY_GET_DEGREE_INTERNAL(poly) - deg;
+	assert(out->capacity > UTILS_SUBTRACT_OR_ZERO(GF_4_POLY_GET_DEGREE_INTERNAL(poly), deg));
+    size_t diff = UTILS_SUBTRACT_OR_ZERO(GF_4_POLY_GET_DEGREE_INTERNAL(poly), deg);
     for (size_t i = 0; i <= diff; ++i) {
         out->array[i] = poly->array[i + deg];
     }
@@ -162,8 +163,8 @@ void gf4_poly_div_x_to_deg(gf4_poly_t * out, gf4_poly_t * poly, size_t deg) {
 
 void gf4_poly_div_x_to_deg_inplace(gf4_poly_t * poly, size_t deg) {
 	assert(NULL != poly);
-	assert(GF_4_POLY_GET_DEGREE_INTERNAL(poly) >= deg);
-    size_t diff = GF_4_POLY_GET_DEGREE_INTERNAL(poly) - deg;
+    assert(poly->capacity > UTILS_SUBTRACT_OR_ZERO(GF_4_POLY_GET_DEGREE_INTERNAL(poly), deg));
+    size_t diff = UTILS_SUBTRACT_OR_ZERO(GF_4_POLY_GET_DEGREE_INTERNAL(poly), deg);
     for (size_t i = 0; i <= diff; ++i) {
         poly->array[i] = poly->array[i + deg];
     }

@@ -163,7 +163,7 @@ void gf4_poly_mul(gf4_poly_t * out, gf4_poly_t * a, gf4_poly_t * b);
  * out and poly must be initialized beforehand.
  *
  * If resizing is enabled, out may be resized to fit the result of multiplication.
- * If it is not enabled, out must have capacity >= poly->degree.
+ * If it is not enabled, out must have capacity > max(poly->degree - deg, 0).
  *
  * @param out pointer to a polynomial to be divided
  * @param poly polynomial to be divided

@@ -31,6 +31,8 @@
 
 void utils_get_distance_multiplicities_h0(size_t ** multiplicities_same_symbols, size_t ** multiplicities_different_symbols, decoding_context_t * dc);
 
-
 size_t utils_binary_pow(size_t x, size_t n);
+
+#define UTILS_SUBTRACT_OR_ZERO(a, b) ((a >= b) ? (a - b) : 0)
+
 #endif //MDPC_GF4_UTILS_H
