@@ -32,7 +32,7 @@
 #include "contexts.h"
 #include "enc.h"
 #include "gf4.h"
-#include "gf4_vector.h"
+#include "gf4_array.h"
 #include "gf4_poly.h"
 #include "gf4_matrix.h"
 #include "random.h"
@@ -68,7 +68,6 @@ void test_gf4_poly_equal();
 void test_gf4_poly_cyclic_shift_right_inplace();
 void test_gf4_poly_get_degree();
 void test_gf4_poly_adjust_degree();
-void test_gf4_poly_pretty_print();
 void test_gf4_poly_clone();
 void test_gf4_poly_copy();
 
