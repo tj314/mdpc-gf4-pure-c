@@ -27,19 +27,19 @@ void utils_get_distance_multiplicities_h0(size_t ** multiplicities_same_symbols,
     assert(NULL != same_symbols_dists);
     size_t * diff_symbols_dists = calloc(dc->block_size, sizeof(size_t));
     assert(NULL != diff_symbols_dists);
-    for (long i = 0; i < (long)dc->h0.capacity; ++i) {
-        if (0 == dc->h0.array[i]) {
+    for (long i = 0; i < (long)dc->h0.coefficients.capacity; ++i) {
+        if (0 == dc->h0.coefficients.array[i]) {
             continue;
         }
-        for (long j = i + 1; j < (long)dc->h0.capacity; ++j) {
-            if (0 == dc->h0.array[j]) {
+        for (long j = i + 1; j < (long)dc->h0.coefficients.capacity; ++j) {
+            if (0 == dc->h0.coefficients.array[j]) {
                 continue;
             }
             size_t dist_a = j - i;
             size_t dist_b = i + dc->block_size;
             dist_b -= j;
             size_t dist = (dist_a < dist_b) ? dist_a : dist_b;
-            if (dc->h0.array[i] == dc->h0.array[j]) {
+            if (dc->h0.coefficients.array[i] == dc->h0.coefficients.array[j]) {
                 same_symbols_dists[dist] += 1;
             } else {
                 diff_symbols_dists[dist] += 1;

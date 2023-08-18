@@ -27,21 +27,21 @@
 #define MDPC_GF4_DEC_H
 
 #include "gf4.h"
-#include "gf4_vector.h"
+#include "gf4_array.h"
 #include "gf4_poly.h"
 #include "contexts.h"
 #include "utils.h"
 
 /**
- * @brief Calculate the syndrome of a vector.
+ * @brief Calculate the syndrome of an array.
  *
  * out_syndrome must be initialized in advance. It must have capacity of at least block_size. It must be a zero vector.
  *
- * @param out_syndrome pointer to a vector that will be used to store the calculated syndrome
- * @param in_vector pointer to a vector
+ * @param out_syndrome pointer to an array that will be used to store the calculated syndrome
+ * @param in_message pointer to an array
  * @param ctx a valid decoding context
  */
-void dec_calculate_syndrome(gf4_vector_t *out_syndrome, gf4_vector_t *in_vector, decoding_context_t * ctx);
+void dec_calculate_syndrome(gf4_array_t *out_syndrome, gf4_array_t *in_message, decoding_context_t * ctx);
 
 /**
  * @brief Calculate adaptive threshold.
@@ -131,7 +131,7 @@ long dec_calculate_threshold_5(long syndrome_weight);
  * @param ctx a valid decoding context
  * @return calculated sigma_j
  */
-long dec_calculate_new_sigma(gf4_poly_t * h_block, gf4_vector_t *syndrome, long syndrome_weight, gf4_t a, size_t actual_j, decoding_context_t * ctx);
+long dec_calculate_new_sigma(gf4_poly_t * h_block, gf4_array_t *syndrome, long syndrome_weight, gf4_t a, size_t actual_j, decoding_context_t * ctx);
 
 /**
  * @brief Flip the symbol in the output vector and update the syndrome.
@@ -147,27 +147,27 @@ long dec_calculate_new_sigma(gf4_poly_t * h_block, gf4_vector_t *syndrome, long 
  * @param j position to flip
  * @param ctx a valid decoding context
  */
-void dec_flip_symbol(gf4_poly_t * h_block, gf4_vector_t *syndrome, gf4_vector_t *maybe_decoded, gf4_t a, size_t actual_j, size_t j, decoding_context_t * ctx);
+void dec_flip_symbol(gf4_poly_t * h_block, gf4_array_t *syndrome, gf4_array_t *maybe_decoded, gf4_t a, size_t actual_j, size_t j, decoding_context_t * ctx);
 
 
 /**
  * @brief Perform basic symbol-flipping decoding.
  *
- * maybe_decoded and in_vector must be initialized in advance and must have capacity at least 2*block_size.
+ * maybe_decoded and in_array must be initialized in advance and must have capacity at least 2*block_size.
  * ctx must a valid decoding_context_t.
  *
- * @param maybe_decoded pointer to a polynomial that will be used to store the decoded message
- * @param in_vector pointer to a polynomial representing the encoded message
+ * @param maybe_decoded pointer to an array that will be used to store the decoded message
+ * @param in_array pointer to an array representing the encoded message
  * @param num_iterations number of decoding iterations
  * @param ctx a valid decoding context
  * @return true on successful decoding, false otherwise
  */
-bool dec_decode_symbol_flipping(gf4_vector_t *maybe_decoded, gf4_vector_t *in_vector, size_t num_iterations, decoding_context_t * ctx);
+bool dec_decode_symbol_flipping(gf4_array_t *maybe_decoded, gf4_array_t *in_array, size_t num_iterations, decoding_context_t * ctx);
 
 /**
  * @brief Perform symbol-flipping decoding with delta param.
  *
- * maybe_decoded and in_vector must be initialized in advance and must have capacity = 2*block_size.
+ * maybe_decoded and in_array must be initialized in advance and must have capacity = 2*block_size.
  * ctx must a valid decoding_context_t.
  *
  * Symbol flipping searches maximum positive value of maximize w(s) - w(s-a*h_j) = sigma_max.
@@ -175,36 +175,36 @@ bool dec_decode_symbol_flipping(gf4_vector_t *maybe_decoded, gf4_vector_t *in_ve
  * The required value of DELTA must be set in ctx before calling this decoder!
  * For instance, setting the value to 3: ctx->delta_setting = 3
  *
- * @param maybe_decoded pointer to a vector that will be used to store the decoded message
- * @param in_vector pointer to a vector representing the encoded message
+ * @param maybe_decoded pointer to an array that will be used to store the decoded message
+ * @param in_array pointer to an array representing the encoded message
  * @param num_iterations number of decoding iterations
  * @param ctx a valid decoding context
  * @return true on successful decoding, false otherwise
  */
-bool dec_decode_symbol_flipping_delta(gf4_vector_t *maybe_decoded, gf4_vector_t *in_vector, size_t num_iterations, decoding_context_t * ctx);
+bool dec_decode_symbol_flipping_delta(gf4_array_t *maybe_decoded, gf4_array_t *in_array, size_t num_iterations, decoding_context_t * ctx);
 
 /**
  * @brief Perform symbol-flipping decoding with adaptive threshold.
  *
- * maybe_decoded and in_vector must be initialized in advance and must have capacity = 2*block_size.
+ * maybe_decoded and in_array must be initialized in advance and must have capacity = 2*block_size.
  * ctx must a valid decoding_context_t.
  *
  * This decoder calculates adaptive threshold T and then flips all positions where sigma_j > T.
  * The function to calculate the threshold value must be set in the decoding context prior to calling this function!
  * For instance, ctx->threshold = &dec_calculate_threshold_1;
  *
- * @param maybe_decoded pointer to a vector that will be used to store the decoded message
- * @param in_vector pointer to a vector representing the encoded message
+ * @param maybe_decoded pointer to an array that will be used to store the decoded message
+ * @param in_array pointer to an array representing the encoded message
  * @param num_iterations number of decoding iterations
  * @param ctx a valid decoding context
  * @return true on successful decoding, false otherwise
  */
-bool dec_decode_symbol_flipping_threshold(gf4_vector_t *maybe_decoded, gf4_vector_t *in_vector, size_t num_iterations, decoding_context_t * ctx);
+bool dec_decode_symbol_flipping_threshold(gf4_array_t *maybe_decoded, gf4_array_t *in_array, size_t num_iterations, decoding_context_t * ctx);
 
 /**
  * @brief Perform symbol-flipping with black and gray symbols.
  *
- * maybe_decoded and in_vector must be initialized in advance and must have capacity = 2*block_size.
+ * maybe_decoded and in_array must be initialized in advance and must have capacity = 2*block_size.
  * ctx must a valid decoding_context_t.
  *
  * This decoder calculates adaptive threshold T and then flips all positions where sigma_j > T.
@@ -217,13 +217,13 @@ bool dec_decode_symbol_flipping_threshold(gf4_vector_t *maybe_decoded, gf4_vecto
  *
  * WARNING: This function is under development and is not tested. Do not use it!
  *
- * @param maybe_decoded pointer to a vector that will be used to store the decoded message
- * @param in_vector pointer to a vector representing the encoded message
+ * @param maybe_decoded pointer to an array that will be used to store the decoded message
+ * @param in_array pointer to an array representing the encoded message
  * @param num_iterations number of decoding iterations
  * @param ctx a valid decoding context
  * @return true on successful decoding, false otherwise
  */
-bool dec_decode_symbol_flipping_bg(gf4_vector_t *maybe_decoded, gf4_vector_t *in_vector, size_t num_iterations, decoding_context_t * ctx);
+bool dec_decode_symbol_flipping_bg(gf4_array_t *maybe_decoded, gf4_array_t *in_array, size_t num_iterations, decoding_context_t * ctx);
 
 /**
  * @brief Decrypt an encrypted message using specified decoder.
@@ -233,12 +233,12 @@ bool dec_decode_symbol_flipping_bg(gf4_vector_t *maybe_decoded, gf4_vector_t *in
  * The remaining ctx->block_size symbols are set to 0. out_decrypted->degree MAY NOT be set!
  * In the case of unsuccessful decryption (decoding failure was encountered), all symbols in out_decrypted are set to 0.
  *
- * @param out_decrypted pointer a polynomial that will be used to store the decrypted message
- * @param in_encrypted pointer to a polynomial representing the ciphertext
+ * @param out_decrypted pointer an array that will be used to store the decrypted message
+ * @param in_encrypted pointer to an array representing the ciphertext
  * @param decode pointer to the decoder function to be used
  * @param num_iterations number of decoding iterations
  * @param ctx a valid decoding context
  * @return true on successful decryption, false otherwise
  */
-bool dec_decrypt(gf4_vector_t *out_decrypted, gf4_vector_t *in_encrypted, bool (*decode)(gf4_vector_t *, gf4_vector_t *, size_t, decoding_context_t *), size_t num_iterations, decoding_context_t * ctx);
+bool dec_decrypt(gf4_array_t *out_decrypted, gf4_array_t *in_encrypted, bool (*decode)(gf4_array_t *, gf4_array_t *, size_t, decoding_context_t *), size_t num_iterations, decoding_context_t * ctx);
 #endif //MDPC_GF4_DEC_H

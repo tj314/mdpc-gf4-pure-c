@@ -1,6 +1,6 @@
 /**
- *  @file   gf4_vector.h
- *  @brief  Vectors over GF(4).
+ *  @file   gf4_array.h
+ *  @brief  Arrays over GF(4).
  *  @author Tomáš Vavro
  *  @date   2023-08-12
  ***********************************************/
@@ -23,56 +23,64 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MDPC_GF4_GF4_VECTOR_H
-#define MDPC_GF4_GF4_VECTOR_H
+#ifndef MDPC_GF4_GF4_ARRAY_H
+#define MDPC_GF4_GF4_ARRAY_H
 
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 #include "gf4.h"
+
 /**
- * @brief Structure that represents a vector over GF4.
- *
- * It holds that capacity >= length.
+ * @brief Structure that represents a array over GF4.
  */
 typedef struct {
     gf4_t * array; ///< an array
-    size_t length; ///< actual used length of the array
     size_t capacity; ///< allocated amount of memory
-} gf4_vector_t;
+} gf4_array_t;
 
 // initialization
-gf4_vector_t gf4_vector_init(size_t capacity, bool zero_out_new_memory);
+gf4_array_t gf4_array_init(size_t capacity, bool zero_out_new_memory);
 
-gf4_vector_t gf4_vector_init_with_length(size_t capacity, size_t length, bool zero_out_new_memory);
+gf4_array_t gf4_array_clone(gf4_array_t * in_array);
 
-void gf4_vector_resize(gf4_vector_t * vector, size_t new_capacity, bool zero_out_new_memory);
+void gf4_array_resize(gf4_array_t * array, size_t new_capacity, bool zero_out_new_memory);
 
-void gf4_vector_deinit(gf4_vector_t * vector);
+void gf4_array_deinit(gf4_array_t * array);
 
 // properties
 /**
- * @brief Find Hamming weight of a vector.
+ * @brief Find Hamming weight of an array.
  *
- * vector must be initialized beforehand.
+ * array must be initialized beforehand.
  *
- * @param vector pointer to a vector
- * @return Hamming weight of vector
+ * @param array pointer to an array
+ * @return Hamming weight of array
  */
-size_t gf4_vector_hamming_weight(gf4_vector_t *vector);
+size_t gf4_array_hamming_weight(gf4_array_t *array);
 
 // helpers
 /**
  * @brief Print array up to max.
  *
- * vector must be initialized beforehand.
- * max must be less or equal to vector->capacity
+ * array must be initialized beforehand.
+ * max must be less or equal to array->capacity
  * e.g.: [0, 1, 0, 2, 2, 1, 0], max=4 --> [0, 1, 0, (a+1)]
  *
- * @param vector pointer to a vector to be printed
- * @param max integer, amount of items to be printed
+ * @param array pointer to an array to be printed
  * @param stream stream to be used (e.g. stdout, stderr...)
  * @param end last character to be printed (e. g. line ending or space)
  */
-void gf4_vector_print(gf4_vector_t * vector, size_t max, FILE * stream, const char * end);
+void gf4_array_print(gf4_array_t * array, FILE * stream, const char * end);
 
-#endif //MDPC_GF4_GF4_VECTOR_H
+/**
+ * @brief Calculate the sum of all the elements in the array.
+ *
+ * @param array a pointer to an array to be summed
+ * @return sum of all elements in the array
+ */
+gf4_t gf4_array_sum(gf4_array_t * array);
+
+void gf4_array_zero_out(gf4_array_t * array);
+
+#endif //MDPC_GF4_GF4_ARRAY_H

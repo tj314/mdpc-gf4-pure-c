@@ -137,31 +137,31 @@ void test_gf4_div() {
 }
 
 // utils
-void test_gf4_vector_hamming_weight() {
+void test_gf4_array_hamming_weight() {
     fprintf(stderr, "%s: \n", __func__);
 
     {
         test_print_test_number_str("1");
-        gf4_vector_t vector = gf4_vector_init_with_length(10, 10, true);
-        assert(0 == gf4_vector_hamming_weight(&vector));
-        assert(10 == vector.capacity);
+        gf4_array_t array = gf4_array_init(10, true);
+        assert(0 == gf4_array_hamming_weight(&array));
+        assert(10 == array.capacity);
         test_print_OK();
 
         test_print_test_number_str("2");
         for (size_t i = 0; i < 4; ++i) {
             size_t deg = random_from_range(0, 9);
-            while (0 != vector.array[deg]) { // this index is already set, choose another one
+            while (0 != array.array[deg]) { // this index is already set, choose another one
                 deg = random_from_range(0, 9);
             }
             gf4_t val = random_from_range(1, GF4_MAX_VALUE);
-            vector.array[deg] = val;
+            array.array[deg] = val;
         }
-        assert(4 == gf4_vector_hamming_weight(&vector));
-        assert(10 == vector.capacity);
+        assert(4 == gf4_array_hamming_weight(&array));
+        assert(10 == array.capacity);
         test_print_OK();
 
         // cleanup
-        gf4_vector_deinit(&vector);
+        gf4_array_deinit(&array);
     }
 }
 
@@ -173,10 +173,10 @@ void test_gf4_poly_init_zero(){
         test_print_test_number_str("1");
         gf4_poly_t poly = gf4_poly_init_zero(10);
         gf4_t expected_coefficients[10] = {0};
-        assert(test_compare_coeffs(poly.array, expected_coefficients, 10));
+        assert(test_compare_coeffs(poly.coefficients.array, expected_coefficients, 10));
         assert(0 == gf4_poly_get_degree(&poly));
-        assert(1 == poly.length);
-        assert(10 == poly.capacity);
+        assert(0 == gf4_poly_get_degree(&poly));
+        assert(10 == poly.coefficients.capacity);
         gf4_poly_deinit(&poly);
         test_print_OK();
     }
@@ -189,15 +189,15 @@ void test_gf4_poly_zero_out(){
         test_print_test_number_str("1");
         gf4_poly_t poly = gf4_poly_init_zero(10);
         gf4_t expected_coefficients[10] = {0};
-        assert(test_compare_coeffs(poly.array, expected_coefficients, 10));
+        assert(test_compare_coeffs(poly.coefficients.array, expected_coefficients, 10));
         assert(0 == gf4_poly_get_degree(&poly));
-        assert(1 == poly.length);
-        assert(10 == poly.capacity);
+        assert(0 == gf4_poly_get_degree(&poly));
+        assert(10 == poly.coefficients.capacity);
         gf4_poly_zero_out(&poly);
-        assert(test_compare_coeffs(poly.array, expected_coefficients, 10));
+        assert(test_compare_coeffs(poly.coefficients.array, expected_coefficients, 10));
         assert(0 == gf4_poly_get_degree(&poly));
-        assert(1 == poly.length);
-        assert(10 == poly.capacity);
+        assert(0 == gf4_poly_get_degree(&poly));
+        assert(10 == poly.coefficients.capacity);
         gf4_poly_deinit(&poly);
         test_print_OK();
     }
@@ -211,15 +211,15 @@ void test_gf4_poly_zero_out(){
         gf4_poly_set_coefficient(&poly, 3, 2);
 
         gf4_t expected_coefficients_before[10] = {1, 0, 0, 2, 0, 0, 0, 0, 2, 0};
-        assert(test_compare_coeffs(expected_coefficients_before, poly.array, 10));
+        assert(test_compare_coeffs(expected_coefficients_before, poly.coefficients.array, 10));
         assert(8 == gf4_poly_get_degree(&poly));
-        assert(10 == poly.capacity);
+        assert(10 == poly.coefficients.capacity);
 
         gf4_t expected_coefficients_after[10] = {0};
         gf4_poly_zero_out(&poly);
-        assert(test_compare_coeffs(poly.array, expected_coefficients_after, 10));
+        assert(test_compare_coeffs(poly.coefficients.array, expected_coefficients_after, 10));
         assert(0 == gf4_poly_get_degree(&poly));
-        assert(10 == poly.capacity);
+        assert(10 == poly.coefficients.capacity);
 
         gf4_poly_deinit(&poly);
         test_print_OK();
@@ -230,14 +230,14 @@ void test_gf4_poly_zero_out(){
         test_print_test_number_str("3");
         gf4_poly_t poly = gf4_poly_init_zero(1);
         gf4_poly_set_coefficient(&poly, 0, 1);
-        assert(1 == poly.array[0]);
+        assert(1 == poly.coefficients.array[0]);
         assert(0 == gf4_poly_get_degree(&poly));
-        assert(1 == poly.capacity);
+        assert(1 == poly.coefficients.capacity);
 
         gf4_poly_zero_out(&poly);
-        assert(0 == poly.array[0]);
+        assert(0 == poly.coefficients.array[0]);
         assert(0 == gf4_poly_get_degree(&poly));
-        assert(1 == poly.capacity);
+        assert(1 == poly.coefficients.capacity);
 
         gf4_poly_deinit(&poly);
         test_print_OK();
@@ -250,14 +250,14 @@ void test_gf4_poly_deinit(){
         test_print_test_number_str("1");
         gf4_poly_t poly = gf4_poly_init_zero(5);
         gf4_t expected_coefficients[5] = {0};
-        assert(test_compare_coeffs(expected_coefficients, poly.array, 5));
-        assert(5 == poly.capacity);
+        assert(test_compare_coeffs(expected_coefficients, poly.coefficients.array, 5));
+        assert(5 == poly.coefficients.capacity);
         assert(0 == gf4_poly_get_degree(&poly));
 
         gf4_poly_deinit(&poly);
 
-        assert(NULL == poly.array);
-        assert(0 == poly.capacity);
+        assert(NULL == poly.coefficients.array);
+        assert(0 == poly.coefficients.capacity);
 
         test_print_OK();
     }
@@ -273,8 +273,8 @@ void test_gf4_poly_get_coefficient(){
         gf4_poly_set_coefficient(&poly, 7, 2);
 
         gf4_t expected_coefficients[10] = {3, 3, 0, 0, 0, 0, 0, 2, 0, 0};
-        assert(test_compare_coeffs(expected_coefficients, poly.array, 10));
-        assert(10 == poly.capacity);
+        assert(test_compare_coeffs(expected_coefficients, poly.coefficients.array, 10));
+        assert(10 == poly.coefficients.capacity);
         assert(7 == gf4_poly_get_degree(&poly));
 
         for (size_t i = 0; i < 12; ++i) {
@@ -299,8 +299,8 @@ void test_gf4_poly_set_coefficient(){
         gf4_poly_set_coefficient(&poly, 7, 2);
 
         gf4_t expected_coefficients[10] = {3, 3, 0, 0, 0, 0, 0, 2, 0, 0};
-        assert(test_compare_coeffs(expected_coefficients, poly.array, 10));
-        assert(10 == poly.capacity);
+        assert(test_compare_coeffs(expected_coefficients, poly.coefficients.array, 10));
+        assert(10 == poly.coefficients.capacity);
         assert(7 == gf4_poly_get_degree(&poly));
         test_print_OK();
     }
@@ -312,8 +312,8 @@ void test_gf4_poly_set_coefficient(){
         gf4_poly_set_coefficient(&poly, 0, 3);
 
         gf4_t expected_coefficients[10] = {3, 3, 0, 0, 0, 0, 0, 2, 0, 0};
-        assert(test_compare_coeffs(expected_coefficients, poly.array, 10));
-        assert(10 == poly.capacity);
+        assert(test_compare_coeffs(expected_coefficients, poly.coefficients.array, 10));
+        assert(10 == poly.coefficients.capacity);
         assert(7 == gf4_poly_get_degree(&poly));
         test_print_OK();
     }
@@ -325,20 +325,20 @@ void test_gf4_poly_set_coefficient(){
         gf4_poly_set_coefficient(&poly, 1, 3);
 
         gf4_t expected_coefficients[10] = {3, 3, 0, 0, 0, 0, 0, 2, 0, 0};
-        assert(test_compare_coeffs(expected_coefficients, poly.array, 10));
-        assert(10 == poly.capacity);
+        assert(test_compare_coeffs(expected_coefficients, poly.coefficients.array, 10));
+        assert(10 == poly.coefficients.capacity);
         assert(7 == gf4_poly_get_degree(&poly));
 
         gf4_poly_set_coefficient(&poly, 1, 2);
         expected_coefficients[1] = 2;
-        assert(test_compare_coeffs(expected_coefficients, poly.array, 10));
-        assert(10 == poly.capacity);
+        assert(test_compare_coeffs(expected_coefficients, poly.coefficients.array, 10));
+        assert(10 == poly.coefficients.capacity);
         assert(7 == gf4_poly_get_degree(&poly));
 
         gf4_poly_set_coefficient(&poly, 7, 0);
         expected_coefficients[7] = 0;
-        assert(test_compare_coeffs(expected_coefficients, poly.array, 10));
-        assert(10 == poly.capacity);
+        assert(test_compare_coeffs(expected_coefficients, poly.coefficients.array, 10));
+        assert(10 == poly.coefficients.capacity);
         assert(1 == gf4_poly_get_degree(&poly));
 
         test_print_OK();
@@ -354,15 +354,15 @@ void test_gf4_poly_add(){
         gf4_poly_t result = gf4_poly_init_zero(10);
         gf4_poly_add(&result, &poly1, &poly2);
         gf4_t expected[10]= {0};
-        assert(10 == result.capacity);
-        assert(10 == poly1.capacity);
-        assert(10 == poly2.capacity);
+        assert(10 == result.coefficients.capacity);
+        assert(10 == poly1.coefficients.capacity);
+        assert(10 == poly2.coefficients.capacity);
         assert(0 == gf4_poly_get_degree(&result));
         assert(0 == gf4_poly_get_degree(&poly1));
         assert(0 == gf4_poly_get_degree(&poly2));
-        assert(test_compare_coeffs(expected, result.array, 10));
-        assert(test_compare_coeffs(expected, poly1.array, 10));
-        assert(test_compare_coeffs(expected, poly2.array, 10));
+        assert(test_compare_coeffs(expected, result.coefficients.array, 10));
+        assert(test_compare_coeffs(expected, poly1.coefficients.array, 10));
+        assert(test_compare_coeffs(expected, poly2.coefficients.array, 10));
         gf4_poly_deinit(&result);
         gf4_poly_deinit(&poly1);
         gf4_poly_deinit(&poly2);
@@ -378,15 +378,15 @@ void test_gf4_poly_add(){
         gf4_t expected_poly2[10]= {0};
         gf4_t expected_result_and_poly1[10] = {0};
         expected_result_and_poly1[0] = 1;
-        assert(10 == result.capacity);
-        assert(10 == poly1.capacity);
-        assert(10 == poly2.capacity);
+        assert(10 == result.coefficients.capacity);
+        assert(10 == poly1.coefficients.capacity);
+        assert(10 == poly2.coefficients.capacity);
         assert(0 == gf4_poly_get_degree(&result));
         assert(0 == gf4_poly_get_degree(&poly1));
         assert(0 == gf4_poly_get_degree(&poly2));
-        assert(test_compare_coeffs(expected_result_and_poly1, result.array, 10));
-        assert(test_compare_coeffs(expected_result_and_poly1, poly1.array, 10));
-        assert(test_compare_coeffs(expected_poly2, poly2.array, 10));
+        assert(test_compare_coeffs(expected_result_and_poly1, result.coefficients.array, 10));
+        assert(test_compare_coeffs(expected_result_and_poly1, poly1.coefficients.array, 10));
+        assert(test_compare_coeffs(expected_poly2, poly2.coefficients.array, 10));
         gf4_poly_deinit(&result);
         gf4_poly_deinit(&poly1);
         gf4_poly_deinit(&poly2);
@@ -406,15 +406,15 @@ void test_gf4_poly_add(){
         expected_poly1_and_poly2[0] = 1;
         expected_poly1_and_poly2[2] = 2;
         gf4_t expected_result[10] = {0};
-        assert(10 == result.capacity);
-        assert(10 == poly1.capacity);
-        assert(10 == poly2.capacity);
+        assert(10 == result.coefficients.capacity);
+        assert(10 == poly1.coefficients.capacity);
+        assert(10 == poly2.coefficients.capacity);
         assert(0 == gf4_poly_get_degree(&result));
         assert(2 == gf4_poly_get_degree(&poly1));
         assert(2 == gf4_poly_get_degree(&poly2));
-        assert(test_compare_coeffs(expected_result, result.array, 10));
-        assert(test_compare_coeffs(expected_poly1_and_poly2, poly1.array, 10));
-        assert(test_compare_coeffs(expected_poly1_and_poly2, poly2.array, 10));
+        assert(test_compare_coeffs(expected_result, result.coefficients.array, 10));
+        assert(test_compare_coeffs(expected_poly1_and_poly2, poly1.coefficients.array, 10));
+        assert(test_compare_coeffs(expected_poly1_and_poly2, poly2.coefficients.array, 10));
         gf4_poly_deinit(&result);
         gf4_poly_deinit(&poly1);
         gf4_poly_deinit(&poly2);
@@ -443,15 +443,15 @@ void test_gf4_poly_add(){
         expected_result[2] = 2;
         expected_result[4] = 2;
         expected_result[7] = 1;
-        assert(10 == result.capacity);
-        assert(10 == poly1.capacity);
-        assert(10 == poly2.capacity);
+        assert(10 == result.coefficients.capacity);
+        assert(10 == poly1.coefficients.capacity);
+        assert(10 == poly2.coefficients.capacity);
         assert(7 == gf4_poly_get_degree(&result));
         assert(2 == gf4_poly_get_degree(&poly1));
         assert(7 == gf4_poly_get_degree(&poly2));
-        assert(test_compare_coeffs(expected_result, result.array, 10));
-        assert(test_compare_coeffs(expected_poly1, poly1.array, 10));
-        assert(test_compare_coeffs(expected_poly2, poly2.array, 10));
+        assert(test_compare_coeffs(expected_result, result.coefficients.array, 10));
+        assert(test_compare_coeffs(expected_poly1, poly1.coefficients.array, 10));
+        assert(test_compare_coeffs(expected_poly2, poly2.coefficients.array, 10));
         gf4_poly_deinit(&result);
         gf4_poly_deinit(&poly1);
         gf4_poly_deinit(&poly2);
@@ -467,12 +467,12 @@ void test_gf4_poly_add_inplace(){
         gf4_poly_t poly2 = gf4_poly_init_zero(10);
         gf4_poly_add_inplace(&poly1, &poly2);
         gf4_t expected[10]= {0};
-        assert(10 == poly1.capacity);
-        assert(10 == poly2.capacity);
+        assert(10 == poly1.coefficients.capacity);
+        assert(10 == poly2.coefficients.capacity);
         assert(0 == gf4_poly_get_degree(&poly1));
         assert(0 == gf4_poly_get_degree(&poly2));
-        assert(test_compare_coeffs(expected, poly1.array, 10));
-        assert(test_compare_coeffs(expected, poly2.array, 10));
+        assert(test_compare_coeffs(expected, poly1.coefficients.array, 10));
+        assert(test_compare_coeffs(expected, poly2.coefficients.array, 10));
         gf4_poly_deinit(&poly1);
         gf4_poly_deinit(&poly2);
         test_print_OK();
@@ -486,12 +486,12 @@ void test_gf4_poly_add_inplace(){
         gf4_t expected_poly2[10]= {0};
         gf4_t expected_poly1[10] = {0};
         expected_poly1[0] = 1;
-        assert(10 == poly1.capacity);
-        assert(10 == poly2.capacity);
+        assert(10 == poly1.coefficients.capacity);
+        assert(10 == poly2.coefficients.capacity);
         assert(0 == gf4_poly_get_degree(&poly1));
         assert(0 == gf4_poly_get_degree(&poly2));
-        assert(test_compare_coeffs(expected_poly1, poly1.array, 10));
-        assert(test_compare_coeffs(expected_poly2, poly2.array, 10));
+        assert(test_compare_coeffs(expected_poly1, poly1.coefficients.array, 10));
+        assert(test_compare_coeffs(expected_poly2, poly2.coefficients.array, 10));
         gf4_poly_deinit(&poly1);
         gf4_poly_deinit(&poly2);
         test_print_OK();
@@ -509,12 +509,12 @@ void test_gf4_poly_add_inplace(){
         expected_poly2[0] = 1;
         expected_poly2[2] = 2;
         gf4_t expected_poly1[10] = {0};
-        assert(10 == poly1.capacity);
-        assert(10 == poly2.capacity);
+        assert(10 == poly1.coefficients.capacity);
+        assert(10 == poly2.coefficients.capacity);
         assert(0 == gf4_poly_get_degree(&poly1));
         assert(2 == gf4_poly_get_degree(&poly2));
-        assert(test_compare_coeffs(expected_poly1, poly1.array, 10));
-        assert(test_compare_coeffs(expected_poly2, poly2.array, 10));
+        assert(test_compare_coeffs(expected_poly1, poly1.coefficients.array, 10));
+        assert(test_compare_coeffs(expected_poly2, poly2.coefficients.array, 10));
         gf4_poly_deinit(&poly1);
         gf4_poly_deinit(&poly2);
         test_print_OK();
@@ -538,12 +538,12 @@ void test_gf4_poly_add_inplace(){
         expected_poly1[2] = 2;
         expected_poly1[4] = 2;
         expected_poly1[7] = 1;
-        assert(10 == poly1.capacity);
-        assert(10 == poly2.capacity);
+        assert(10 == poly1.coefficients.capacity);
+        assert(10 == poly2.coefficients.capacity);
         assert(7 == gf4_poly_get_degree(&poly1));
         assert(7 == gf4_poly_get_degree(&poly2));
-        assert(test_compare_coeffs(expected_poly1, poly1.array, 10));
-        assert(test_compare_coeffs(expected_poly2, poly2.array, 10));
+        assert(test_compare_coeffs(expected_poly1, poly1.coefficients.array, 10));
+        assert(test_compare_coeffs(expected_poly2, poly2.coefficients.array, 10));
         gf4_poly_deinit(&poly1);
         gf4_poly_deinit(&poly2);
         test_print_OK();
@@ -557,9 +557,9 @@ void test_gf4_poly_add_ax_to_deg_inplace(){
         gf4_poly_t poly = gf4_poly_init_zero(10);
         gf4_poly_add_ax_to_deg_inplace(&poly, 9, 0);
         gf4_t expected_poly[10] = {0};
-        assert(10 == poly.capacity);
+        assert(10 == poly.coefficients.capacity);
         assert(0 == gf4_poly_get_degree(&poly));
-        assert(test_compare_coeffs(expected_poly, poly.array, 10));
+        assert(test_compare_coeffs(expected_poly, poly.coefficients.array, 10));
         gf4_poly_deinit(&poly);
         test_print_OK();
     }
@@ -569,9 +569,9 @@ void test_gf4_poly_add_ax_to_deg_inplace(){
         gf4_poly_add_ax_to_deg_inplace(&poly, 9, 2);
         gf4_t expected_poly[10] = {0};
         expected_poly[9] = 2;
-        assert(10 == poly.capacity);
+        assert(10 == poly.coefficients.capacity);
         assert(9 == gf4_poly_get_degree(&poly));
-        assert(test_compare_coeffs(expected_poly, poly.array, 10));
+        assert(test_compare_coeffs(expected_poly, poly.coefficients.array, 10));
         gf4_poly_deinit(&poly);
         test_print_OK();
     }
@@ -581,9 +581,9 @@ void test_gf4_poly_add_ax_to_deg_inplace(){
         gf4_poly_set_coefficient(&poly, 9, 2);
         gf4_poly_add_ax_to_deg_inplace(&poly, 9, 2);
         gf4_t expected_poly[10] = {0};
-        assert(10 == poly.capacity);
+        assert(10 == poly.coefficients.capacity);
         assert(0 == gf4_poly_get_degree(&poly));
-        assert(test_compare_coeffs(expected_poly, poly.array, 10));
+        assert(test_compare_coeffs(expected_poly, poly.coefficients.array, 10));
         gf4_poly_deinit(&poly);
         test_print_OK();
     }
@@ -594,9 +594,9 @@ void test_gf4_poly_add_ax_to_deg_inplace(){
         gf4_poly_add_ax_to_deg_inplace(&poly, 9, 1);
         gf4_t expected_poly[10] = {0};
         expected_poly[9] = 3;
-        assert(10 == poly.capacity);
+        assert(10 == poly.coefficients.capacity);
         assert(9 == gf4_poly_get_degree(&poly));
-        assert(test_compare_coeffs(expected_poly, poly.array, 10));
+        assert(test_compare_coeffs(expected_poly, poly.coefficients.array, 10));
         gf4_poly_deinit(&poly);
         test_print_OK();
     }
@@ -611,15 +611,15 @@ void test_gf4_poly_mul(){
         gf4_poly_t result = gf4_poly_init_zero(10);
         gf4_poly_mul(&result, &poly1, &poly2);
         gf4_t expected[10]= {0};
-        assert(10 == result.capacity);
-        assert(10 == poly1.capacity);
-        assert(10 == poly2.capacity);
+        assert(10 == result.coefficients.capacity);
+        assert(10 == poly1.coefficients.capacity);
+        assert(10 == poly2.coefficients.capacity);
         assert(0 == gf4_poly_get_degree(&result));
         assert(0 == gf4_poly_get_degree(&poly1));
         assert(0 == gf4_poly_get_degree(&poly2));
-        assert(test_compare_coeffs(expected, result.array, 10));
-        assert(test_compare_coeffs(expected, poly1.array, 10));
-        assert(test_compare_coeffs(expected, poly2.array, 10));
+        assert(test_compare_coeffs(expected, result.coefficients.array, 10));
+        assert(test_compare_coeffs(expected, poly1.coefficients.array, 10));
+        assert(test_compare_coeffs(expected, poly2.coefficients.array, 10));
         gf4_poly_deinit(&result);
         gf4_poly_deinit(&poly1);
         gf4_poly_deinit(&poly2);
@@ -635,15 +635,15 @@ void test_gf4_poly_mul(){
         gf4_t expected_result_and_poly2[10]= {0};
         gf4_t expected_poly1[10] = {0};
         expected_poly1[0] = 1;
-        assert(10 == result.capacity);
-        assert(10 == poly1.capacity);
-        assert(10 == poly2.capacity);
+        assert(10 == result.coefficients.capacity);
+        assert(10 == poly1.coefficients.capacity);
+        assert(10 == poly2.coefficients.capacity);
         assert(0 == gf4_poly_get_degree(&result));
         assert(0 == gf4_poly_get_degree(&poly1));
         assert(0 == gf4_poly_get_degree(&poly2));
-        assert(test_compare_coeffs(expected_result_and_poly2, result.array, 10));
-        assert(test_compare_coeffs(expected_poly1, poly1.array, 10));
-        assert(test_compare_coeffs(expected_result_and_poly2, poly2.array, 10));
+        assert(test_compare_coeffs(expected_result_and_poly2, result.coefficients.array, 10));
+        assert(test_compare_coeffs(expected_poly1, poly1.coefficients.array, 10));
+        assert(test_compare_coeffs(expected_result_and_poly2, poly2.coefficients.array, 10));
         gf4_poly_deinit(&result);
         gf4_poly_deinit(&poly1);
         gf4_poly_deinit(&poly2);
@@ -663,15 +663,15 @@ void test_gf4_poly_mul(){
         expected_poly1_and_result[9] = 2;
         gf4_t expected_poly2[10] = {0};
         expected_poly2[0] = 1;
-        assert(10 == result.capacity);
-        assert(10 == poly1.capacity);
-        assert(10 == poly2.capacity);
+        assert(10 == result.coefficients.capacity);
+        assert(10 == poly1.coefficients.capacity);
+        assert(10 == poly2.coefficients.capacity);
         assert(9 == gf4_poly_get_degree(&result));
         assert(9 == gf4_poly_get_degree(&poly1));
         assert(0 == gf4_poly_get_degree(&poly2));
-        assert(test_compare_coeffs(expected_poly1_and_result, result.array, 10));
-        assert(test_compare_coeffs(expected_poly1_and_result, poly1.array, 10));
-        assert(test_compare_coeffs(expected_poly2, poly2.array, 10));
+        assert(test_compare_coeffs(expected_poly1_and_result, result.coefficients.array, 10));
+        assert(test_compare_coeffs(expected_poly1_and_result, poly1.coefficients.array, 10));
+        assert(test_compare_coeffs(expected_poly2, poly2.coefficients.array, 10));
         gf4_poly_deinit(&result);
         gf4_poly_deinit(&poly1);
         gf4_poly_deinit(&poly2);
@@ -704,15 +704,15 @@ void test_gf4_poly_mul(){
         expected_poly2[4] = 1;
         expected_poly2[5] = 2;
         gf4_t expected_result[10] = {1, 1, 2, 3, 3, 2, 1, 1, 1, 2};
-        assert(10 == result.capacity);
-        assert(10 == poly1.capacity);
-        assert(10 == poly2.capacity);
+        assert(10 == result.coefficients.capacity);
+        assert(10 == poly1.coefficients.capacity);
+        assert(10 == poly2.coefficients.capacity);
         assert(9 == gf4_poly_get_degree(&result));
         assert(4 == gf4_poly_get_degree(&poly1));
         assert(5 == gf4_poly_get_degree(&poly2));
-        assert(test_compare_coeffs(expected_result, result.array, 10));
-        assert(test_compare_coeffs(expected_poly1, poly1.array, 10));
-        assert(test_compare_coeffs(expected_poly2, poly2.array, 10));
+        assert(test_compare_coeffs(expected_result, result.coefficients.array, 10));
+        assert(test_compare_coeffs(expected_poly1, poly1.coefficients.array, 10));
+        assert(test_compare_coeffs(expected_poly2, poly2.coefficients.array, 10));
         gf4_poly_deinit(&result);
         gf4_poly_deinit(&poly1);
         gf4_poly_deinit(&poly2);
@@ -728,12 +728,12 @@ void test_gf4_poly_div_x_to_deg(){
         gf4_poly_t result = gf4_poly_init_zero(10);
         gf4_poly_div_x_to_deg(&result, &poly, 9);
         gf4_t expected_poly_and_result[10] = {0};
-        assert(10 == poly.capacity);
+        assert(10 == poly.coefficients.capacity);
         assert(0 == gf4_poly_get_degree(&poly));
-        assert(test_compare_coeffs(expected_poly_and_result, poly.array, 10));
-        assert(10 == result.capacity);
+        assert(test_compare_coeffs(expected_poly_and_result, poly.coefficients.array, 10));
+        assert(10 == result.coefficients.capacity);
         assert(0 == gf4_poly_get_degree(&result));
-        assert(test_compare_coeffs(expected_poly_and_result, result.array, 10));
+        assert(test_compare_coeffs(expected_poly_and_result, result.coefficients.array, 10));
         gf4_poly_deinit(&result);
         gf4_poly_deinit(&poly);
         test_print_OK();
@@ -750,12 +750,12 @@ void test_gf4_poly_div_x_to_deg(){
         gf4_poly_set_coefficient(&poly, 4, 2);
         gf4_poly_set_coefficient(&poly, 9, 3);
         gf4_poly_div_x_to_deg(&result, &poly, 0);
-        assert(10 == poly.capacity);
+        assert(10 == poly.coefficients.capacity);
         assert(9 == gf4_poly_get_degree(&poly));
-        assert(test_compare_coeffs(expected_poly_and_result, poly.array, 10));
-        assert(10 == result.capacity);
+        assert(test_compare_coeffs(expected_poly_and_result, poly.coefficients.array, 10));
+        assert(10 == result.coefficients.capacity);
         assert(9 == gf4_poly_get_degree(&result));
-        assert(test_compare_coeffs(expected_poly_and_result, result.array, 10));
+        assert(test_compare_coeffs(expected_poly_and_result, result.coefficients.array, 10));
         gf4_poly_deinit(&result);
         gf4_poly_deinit(&poly);
         test_print_OK();
@@ -774,12 +774,12 @@ void test_gf4_poly_div_x_to_deg(){
         gf4_t expected_result[10] = {0};
         expected_result[0] = 3;
         gf4_poly_div_x_to_deg(&result, &poly, 9);
-        assert(10 == poly.capacity);
+        assert(10 == poly.coefficients.capacity);
         assert(9 == gf4_poly_get_degree(&poly));
-        assert(test_compare_coeffs(expected_poly, poly.array, 10));
-        assert(10 == result.capacity);
+        assert(test_compare_coeffs(expected_poly, poly.coefficients.array, 10));
+        assert(10 == result.coefficients.capacity);
         assert(0 == gf4_poly_get_degree(&result));
-        assert(test_compare_coeffs(expected_result, result.array, 10));
+        assert(test_compare_coeffs(expected_result, result.coefficients.array, 10));
         gf4_poly_deinit(&result);
         gf4_poly_deinit(&poly);
         test_print_OK();
@@ -793,9 +793,9 @@ void test_gf4_poly_div_x_to_deg_inplace(){
         gf4_poly_t poly = gf4_poly_init_zero(10);
         gf4_poly_div_x_to_deg_inplace(&poly, 9);
         gf4_t expected_poly[10] = {0};
-        assert(10 == poly.capacity);
+        assert(10 == poly.coefficients.capacity);
         assert(0 == gf4_poly_get_degree(&poly));
-        assert(test_compare_coeffs(expected_poly, poly.array, 10));
+        assert(test_compare_coeffs(expected_poly, poly.coefficients.array, 10));
         gf4_poly_deinit(&poly);
         test_print_OK();
     }
@@ -810,9 +810,9 @@ void test_gf4_poly_div_x_to_deg_inplace(){
         gf4_poly_set_coefficient(&poly, 4, 2);
         gf4_poly_set_coefficient(&poly, 9, 3);
         gf4_poly_div_x_to_deg_inplace(&poly, 0);
-        assert(10 == poly.capacity);
+        assert(10 == poly.coefficients.capacity);
         assert(9 == gf4_poly_get_degree(&poly));
-        assert(test_compare_coeffs(expected_poly, poly.array, 10));
+        assert(test_compare_coeffs(expected_poly, poly.coefficients.array, 10));
         gf4_poly_deinit(&poly);
         test_print_OK();
     }
@@ -825,9 +825,9 @@ void test_gf4_poly_div_x_to_deg_inplace(){
         gf4_t expected_poly[10] = {0};
         expected_poly[0] = 3;
         gf4_poly_div_x_to_deg_inplace(&poly, 9);
-        assert(10 == poly.capacity);
+        assert(10 == poly.coefficients.capacity);
         assert(0 == gf4_poly_get_degree(&poly));
-        assert(test_compare_coeffs(expected_poly, poly.array, 10));
+        assert(test_compare_coeffs(expected_poly, poly.coefficients.array, 10));
         gf4_poly_deinit(&poly);
         test_print_OK();
     }
@@ -899,23 +899,23 @@ void test_gf4_poly_cyclic_shift_right_inplace() {
         gf4_poly_set_coefficient(&poly, 1, 1);
         gf4_poly_set_coefficient(&poly, 3, 1);
         gf4_t expected_poly[5] = {1,1,0,1,0};
-        assert(5 == poly.capacity);
+        assert(5 == poly.coefficients.capacity);
         assert(3 == gf4_poly_get_degree(&poly));
-        assert(test_compare_coeffs(poly.array, expected_poly, 5));
+        assert(test_compare_coeffs(poly.coefficients.array, expected_poly, 5));
 
         gf4_poly_t poly1 = gf4_poly_clone(&poly);
         gf4_t expected_poly1_after_shift[5] = {1, 1, 1, 0, 0};
-        assert(5 == poly1.capacity);
+        assert(5 == poly1.coefficients.capacity);
         assert(3 == gf4_poly_get_degree(&poly1));
-        assert(test_compare_coeffs(poly1.array, expected_poly, 5));
+        assert(test_compare_coeffs(poly1.coefficients.array, expected_poly, 5));
 
         gf4_poly_cyclic_shift_right_inplace(&poly1, 4);
-        assert(5 == poly1.capacity);
+        assert(5 == poly1.coefficients.capacity);
         assert(3 == gf4_poly_get_degree(&poly1));
-        assert(5 == poly.capacity);
+        assert(5 == poly.coefficients.capacity);
         assert(3 == gf4_poly_get_degree(&poly));
-        assert(test_compare_coeffs(poly.array, expected_poly, 5));
-        assert(test_compare_coeffs(poly1.array, expected_poly1_after_shift, 5));
+        assert(test_compare_coeffs(poly.coefficients.array, expected_poly, 5));
+        assert(test_compare_coeffs(poly1.coefficients.array, expected_poly1_after_shift, 5));
         gf4_poly_deinit(&poly1);
         gf4_poly_deinit(&poly);
         test_print_OK();
@@ -930,23 +930,23 @@ void test_gf4_poly_cyclic_shift_right_inplace() {
         gf4_poly_set_coefficient(&poly, 1, 1);
         gf4_poly_set_coefficient(&poly, 3, 1);
         gf4_t expected_poly[5] = {1, 1, 0, 1, 0};
-        assert(5 == poly.capacity);
+        assert(5 == poly.coefficients.capacity);
         assert(3 == gf4_poly_get_degree(&poly));
-        assert(test_compare_coeffs(poly.array, expected_poly, 5));
+        assert(test_compare_coeffs(poly.coefficients.array, expected_poly, 5));
 
         gf4_poly_t poly2 = gf4_poly_clone(&poly);
-        assert(5 == poly2.capacity);
+        assert(5 == poly2.coefficients.capacity);
         assert(3 == gf4_poly_get_degree(&poly2));
-        assert(test_compare_coeffs(poly2.array, expected_poly, 5));
+        assert(test_compare_coeffs(poly2.coefficients.array, expected_poly, 5));
 
         gf4_t expected_poly2_after_shift[5] = {0, 1, 1, 0, 1};
         gf4_poly_cyclic_shift_right_inplace(&poly2, 5);
-        assert(5 == poly2.capacity);
+        assert(5 == poly2.coefficients.capacity);
         assert(3 == gf4_poly_get_degree(&poly2));
-        assert(test_compare_coeffs(poly2.array, expected_poly2_after_shift, 5));
-        assert(5 == poly.capacity);
+        assert(test_compare_coeffs(poly2.coefficients.array, expected_poly2_after_shift, 5));
+        assert(5 == poly.coefficients.capacity);
         assert(3 == gf4_poly_get_degree(&poly));
-        assert(test_compare_coeffs(poly.array, expected_poly, 5));
+        assert(test_compare_coeffs(poly.coefficients.array, expected_poly, 5));
         gf4_poly_deinit(&poly2);
 
         // cleanup
@@ -1014,7 +1014,7 @@ void test_gf4_poly_adjust_degree() {
         test_print_test_number_str("4");
         gf4_poly_t poly = gf4_poly_init_zero(10);
         gf4_poly_set_coefficient(&poly, 4, 3);
-        poly.length = 10;
+        poly.degree = 9;
         gf4_poly_adjust_degree(&poly, 9);
         assert(4 == gf4_poly_get_degree(&poly));
         gf4_poly_deinit(&poly);
@@ -1028,11 +1028,11 @@ void test_gf4_poly_clone() {
         test_print_test_number_str("1");
         gf4_poly_t poly = gf4_poly_init_zero(10);
         gf4_poly_t clone = gf4_poly_clone(&poly);
-        assert(10 == poly.capacity);
+        assert(10 == poly.coefficients.capacity);
         assert(0 == gf4_poly_get_degree(&poly));
-        assert(10 == clone.capacity);
+        assert(10 == clone.coefficients.capacity);
         assert(0 == gf4_poly_get_degree(&clone));
-        assert(test_compare_coeffs(poly.array, clone.array, 10));
+        assert(test_compare_coeffs(poly.coefficients.array, clone.coefficients.array, 10));
         gf4_poly_deinit(&poly);
         gf4_poly_deinit(&clone);
         test_print_OK();
@@ -1042,11 +1042,11 @@ void test_gf4_poly_clone() {
         gf4_poly_t poly = gf4_poly_init_zero(10);
         gf4_poly_set_coefficient(&poly, 9, 3);
         gf4_poly_t clone = gf4_poly_clone(&poly);
-        assert(10 == poly.capacity);
+        assert(10 == poly.coefficients.capacity);
         assert(9 == gf4_poly_get_degree(&poly));
-        assert(10 == clone.capacity);
+        assert(10 == clone.coefficients.capacity);
         assert(9 == gf4_poly_get_degree(&clone));
-        assert(test_compare_coeffs(poly.array, clone.array, 10));
+        assert(test_compare_coeffs(poly.coefficients.array, clone.coefficients.array, 10));
         gf4_poly_deinit(&poly);
         gf4_poly_deinit(&clone);
         test_print_OK();
@@ -1056,13 +1056,13 @@ void test_gf4_poly_clone() {
         gf4_poly_t poly = gf4_poly_init_zero(10);
         gf4_poly_t clone = gf4_poly_clone(&poly);
         gf4_poly_set_coefficient(&poly, 9, 3);
-        assert(10 == poly.capacity);
+        assert(10 == poly.coefficients.capacity);
         assert(9 == gf4_poly_get_degree(&poly));
-        assert(10 == clone.capacity);
+        assert(10 == clone.coefficients.capacity);
         assert(0 == gf4_poly_get_degree(&clone));
-        assert(test_compare_coeffs(poly.array, clone.array, 9));
-        assert(3 == poly.array[9]);
-        assert(0 == clone.array[9]);
+        assert(test_compare_coeffs(poly.coefficients.array, clone.coefficients.array, 9));
+        assert(3 == poly.coefficients.array[9]);
+        assert(0 == clone.coefficients.array[9]);
         gf4_poly_deinit(&poly);
         gf4_poly_deinit(&clone);
         test_print_OK();
@@ -1076,11 +1076,11 @@ void test_gf4_poly_copy() {
         gf4_poly_t poly = gf4_poly_init_zero(10);
         gf4_poly_t copy = gf4_poly_init_zero(10);
         gf4_poly_copy(&copy, &poly);
-        assert(10 == poly.capacity);
+        assert(10 == poly.coefficients.capacity);
         assert(0 == gf4_poly_get_degree(&poly));
-        assert(10 == copy.capacity);
+        assert(10 == copy.coefficients.capacity);
         assert(0 == gf4_poly_get_degree(&copy));
-        assert(test_compare_coeffs(poly.array, copy.array, 10));
+        assert(test_compare_coeffs(poly.coefficients.array, copy.coefficients.array, 10));
         gf4_poly_deinit(&poly);
         gf4_poly_deinit(&copy);
         test_print_OK();
@@ -1091,11 +1091,11 @@ void test_gf4_poly_copy() {
         gf4_poly_set_coefficient(&poly, 9, 3);
         gf4_poly_t copy = gf4_poly_init_zero(10);
         gf4_poly_copy(&copy, &poly);
-        assert(10 == poly.capacity);
+        assert(10 == poly.coefficients.capacity);
         assert(9 == gf4_poly_get_degree(&poly));
-        assert(10 == copy.capacity);
+        assert(10 == copy.coefficients.capacity);
         assert(9 == gf4_poly_get_degree(&copy));
-        assert(test_compare_coeffs(poly.array, copy.array, 10));
+        assert(test_compare_coeffs(poly.coefficients.array, copy.coefficients.array, 10));
         gf4_poly_deinit(&poly);
         gf4_poly_deinit(&copy);
         test_print_OK();
@@ -1106,13 +1106,13 @@ void test_gf4_poly_copy() {
         gf4_poly_t copy = gf4_poly_init_zero(10);
         gf4_poly_copy(&copy, &poly);
         gf4_poly_set_coefficient(&poly, 9, 3);
-        assert(10 == poly.capacity);
+        assert(10 == poly.coefficients.capacity);
         assert(9 == gf4_poly_get_degree(&poly));
-        assert(10 == copy.capacity);
+        assert(10 == copy.coefficients.capacity);
         assert(0 == gf4_poly_get_degree(&copy));
-        assert(test_compare_coeffs(poly.array, copy.array, 9));
-        assert(3 == poly.array[9]);
-        assert(0 == copy.array[9]);
+        assert(test_compare_coeffs(poly.coefficients.array, copy.coefficients.array, 9));
+        assert(3 == poly.coefficients.array[9]);
+        assert(0 == copy.coefficients.array[9]);
         gf4_poly_deinit(&poly);
         gf4_poly_deinit(&copy);
         test_print_OK();
@@ -1478,23 +1478,23 @@ void test_enc_encode() {
         encoding_context_t ec;
         ec.block_size = 3;
         ec.second_block_G = gf4_poly_init_zero(ec.block_size);
-        gf4_vector_t msg = gf4_vector_init(ec.block_size, true);
-        gf4_vector_t encoded = gf4_vector_init(2 * ec.block_size, true);
+        gf4_array_t msg = gf4_array_init(ec.block_size, true);
+        gf4_array_t encoded = gf4_array_init(2 * ec.block_size, true);
         gf4_poly_set_coefficient(&ec.second_block_G, 0, 2);
         gf4_poly_set_coefficient(&ec.second_block_G, 1, 1);
         gf4_poly_set_coefficient(&ec.second_block_G, 2, 3);
 
         enc_encode(&encoded, &msg, &ec);
-        assert(2 == ec.second_block_G.array[0]);
-        assert(1 == ec.second_block_G.array[1]);
-        assert(3 == ec.second_block_G.array[2]);
+        assert(2 == ec.second_block_G.coefficients.array[0]);
+        assert(1 == ec.second_block_G.coefficients.array[1]);
+        assert(3 == ec.second_block_G.coefficients.array[2]);
         assert(3 == ec.block_size);
-        assert(3 == ec.second_block_G.capacity);
+        assert(3 == ec.second_block_G.coefficients.capacity);
         assert(6 == encoded.capacity);
         for (size_t i = 0; i < 6; ++i) assert(0 == encoded.array[i]);
 
-        gf4_vector_deinit(&msg);
-        gf4_vector_deinit(&encoded);
+        gf4_array_deinit(&msg);
+        gf4_array_deinit(&encoded);
         test_print_OK();
     }
 
@@ -1505,8 +1505,8 @@ void test_enc_encode() {
         encoding_context_t ec;
         ec.block_size = 3;
         ec.second_block_G = gf4_poly_init_zero(ec.block_size);
-        gf4_vector_t msg = gf4_vector_init(ec.block_size, true);
-        gf4_vector_t encoded = gf4_vector_init(2 * ec.block_size, true);
+        gf4_array_t msg = gf4_array_init(ec.block_size, true);
+        gf4_array_t encoded = gf4_array_init(2 * ec.block_size, true);
         gf4_poly_set_coefficient(&ec.second_block_G, 0, 2);
         gf4_poly_set_coefficient(&ec.second_block_G, 1, 1);
         gf4_poly_set_coefficient(&ec.second_block_G, 2, 3);
@@ -1514,11 +1514,11 @@ void test_enc_encode() {
         msg.array[0] = 1;
         msg.array[2] = 2;
         enc_encode(&encoded, &msg, &ec);
-        assert(2 == ec.second_block_G.array[0]);
-        assert(1 == ec.second_block_G.array[1]);
-        assert(3 == ec.second_block_G.array[2]);
+        assert(2 == ec.second_block_G.coefficients.array[0]);
+        assert(1 == ec.second_block_G.coefficients.array[1]);
+        assert(3 == ec.second_block_G.coefficients.array[2]);
         assert(3 == ec.block_size);
-        assert(3 == ec.second_block_G.capacity);
+        assert(3 == ec.second_block_G.coefficients.capacity);
         assert(3 == msg.capacity);
         assert(1 == msg.array[0]);
         assert(0 == msg.array[1]);
@@ -1529,8 +1529,8 @@ void test_enc_encode() {
         assert(2 == encoded.array[5]);
 
         gf4_poly_deinit(&ec.second_block_G);
-        gf4_poly_deinit(&msg);
-        gf4_poly_deinit(&encoded);
+        gf4_array_deinit(&msg);
+        gf4_array_deinit(&encoded);
         test_print_OK();
     }
 }
@@ -1541,16 +1541,16 @@ void test_enc_encrypt() {
     encoding_context_t ec;
     ec.block_size = 3;
     ec.second_block_G = gf4_poly_init_zero(ec.block_size);
-    gf4_vector_t msg = gf4_vector_init(ec.block_size, true);
-    gf4_vector_t encoded = gf4_vector_init(2*ec.block_size, true);
-    gf4_vector_t encrypted = gf4_vector_init(2*ec.block_size, true);
+    gf4_array_t msg = gf4_array_init(ec.block_size, true);
+    gf4_array_t encoded = gf4_array_init(2 * ec.block_size, true);
+    gf4_array_t encrypted = gf4_array_init(2 * ec.block_size, true);
     gf4_poly_set_coefficient(&ec.second_block_G, 1, 2);
     gf4_poly_set_coefficient(&ec.second_block_G, 2, 3);
 
     // 5 runs of test
     for (size_t i = 0; i < 5; ++i) {
         test_print_test_number_int(i);
-        random_gf4_vector(&msg, 3);
+        random_gf4_array(&msg, 3);
         enc_encode(&encoded, &msg, &ec);
         enc_encrypt(&encrypted, &msg, 1, &ec);
 
@@ -1561,19 +1561,19 @@ void test_enc_encrypt() {
 
         assert(1 == differences);
 
-        assert(0 == ec.second_block_G.array[0]);
-        assert(2 == ec.second_block_G.array[1]);
-        assert(3 == ec.second_block_G.array[2]);
+        assert(0 == ec.second_block_G.coefficients.array[0]);
+        assert(2 == ec.second_block_G.coefficients.array[1]);
+        assert(3 == ec.second_block_G.coefficients.array[2]);
         assert(3 == ec.block_size);
-        assert(3 == ec.second_block_G.capacity);
+        assert(3 == ec.second_block_G.coefficients.capacity);
         assert(6 == encoded.capacity);
         assert(6 == encrypted.capacity);
         test_print_OK();
     }
     gf4_poly_deinit(&ec.second_block_G);
-    gf4_vector_deinit(&msg);
-    gf4_vector_deinit(&encoded);
-    gf4_vector_deinit(&encrypted);
+    gf4_array_deinit(&msg);
+    gf4_array_deinit(&encoded);
+    gf4_array_deinit(&encrypted);
 }
 
 
@@ -1591,9 +1591,9 @@ void test_dec_calculate_syndrome() {
         gf4_poly_set_coefficient(&dc.h0, 0, 1);
         gf4_poly_set_coefficient(&dc.h1, 0, 2);
         gf4_poly_set_coefficient(&dc.h1, 2, 3);
-        gf4_vector_t syndrome = gf4_vector_init(dc.block_size, true);
+        gf4_array_t syndrome = gf4_array_init(dc.block_size, true);
 
-        gf4_vector_t vec = gf4_vector_init(2 * dc.block_size, true);
+        gf4_array_t vec = gf4_array_init(2 * dc.block_size, true);
         dec_calculate_syndrome(&syndrome, &vec, &dc);
         assert(0 == syndrome.array[0]);
         assert(0 == syndrome.array[1]);
@@ -1604,19 +1604,19 @@ void test_dec_calculate_syndrome() {
         assert(0 == vec.array[3]);
         assert(0 == vec.array[4]);
         assert(0 == vec.array[5]);
-        assert(1 == dc.h0.array[0]);
-        assert(0 == dc.h0.array[1]);
-        assert(0 == dc.h0.array[2]);
-        assert(2 == dc.h1.array[0]);
-        assert(0 == dc.h1.array[1]);
-        assert(3 == dc.h1.array[2]);
+        assert(1 == dc.h0.coefficients.array[0]);
+        assert(0 == dc.h0.coefficients.array[1]);
+        assert(0 == dc.h0.coefficients.array[2]);
+        assert(2 == dc.h1.coefficients.array[0]);
+        assert(0 == dc.h1.coefficients.array[1]);
+        assert(3 == dc.h1.coefficients.array[2]);
         assert(3 == dc.block_size);
         assert(0 == gf4_poly_get_degree(&dc.h0));
         assert(2 == gf4_poly_get_degree(&dc.h1));
-        gf4_poly_deinit(&vec);
+        gf4_array_deinit(&vec);
         gf4_poly_deinit(&dc.h0);
         gf4_poly_deinit(&dc.h1);
-        gf4_poly_deinit(&syndrome);
+        gf4_array_deinit(&syndrome);
         test_print_OK();
     }
 
@@ -1630,8 +1630,8 @@ void test_dec_calculate_syndrome() {
         gf4_poly_set_coefficient(&dc.h0, 0, 1);
         gf4_poly_set_coefficient(&dc.h1, 0, 2);
         gf4_poly_set_coefficient(&dc.h1, 2, 3);
-        gf4_vector_t syndrome = gf4_vector_init(dc.block_size, true);
-        gf4_vector_t vec = gf4_vector_init(2 * dc.block_size, true);
+        gf4_array_t syndrome = gf4_array_init(dc.block_size, true);
+        gf4_array_t vec = gf4_array_init(2 * dc.block_size, true);
 
         vec.array[0] = 1;
         vec.array[1] = 2;
@@ -1649,20 +1649,20 @@ void test_dec_calculate_syndrome() {
         assert(0 == vec.array[3]);
         assert(1 == vec.array[4]);
         assert(3 == vec.array[5]);
-        assert(1 == dc.h0.array[0]);
-        assert(0 == dc.h0.array[1]);
-        assert(0 == dc.h0.array[2]);
-        assert(2 == dc.h1.array[0]);
-        assert(0 == dc.h1.array[1]);
-        assert(3 == dc.h1.array[2]);
+        assert(1 == dc.h0.coefficients.array[0]);
+        assert(0 == dc.h0.coefficients.array[1]);
+        assert(0 == dc.h0.coefficients.array[2]);
+        assert(2 == dc.h1.coefficients.array[0]);
+        assert(0 == dc.h1.coefficients.array[1]);
+        assert(3 == dc.h1.coefficients.array[2]);
         assert(3 == dc.block_size);
         assert(0 == gf4_poly_get_degree(&dc.h0));
         assert(2 == gf4_poly_get_degree(&dc.h1));
 
-        gf4_poly_deinit(&vec);
+        gf4_array_deinit(&vec);
         gf4_poly_deinit(&dc.h0);
         gf4_poly_deinit(&dc.h1);
-        gf4_poly_deinit(&syndrome);
+        gf4_array_deinit(&syndrome);
         test_print_OK();
     }
 }
@@ -1675,7 +1675,7 @@ void run_unit_tests() {
             test_gf4_add,
             test_gf4_mul,
             test_gf4_div,
-            test_gf4_vector_hamming_weight,
+            test_gf4_array_hamming_weight,
             test_gf4_poly_init_zero,
             test_gf4_poly_zero_out,
             test_gf4_poly_deinit,

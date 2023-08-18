@@ -59,63 +59,63 @@ void random_force_reseed();
 size_t random_from_range(size_t low_bound_inclusive, size_t top_bound_inclusive);
 
 /**
- * @brief Generate a random vector.
+ * @brief Generate a random array.
  *
  * May also call random_init().
  * poly must be initialized beforehand.
  *
- * @param vector pointer to a vector to store the result in
- * @param size maximum size of the vector, size must be less or equal to the polynomial->capacity
+ * @param array pointer to a array to store the result in
+ * @param size maximum size of the array, size must be less or equal to the polynomial->capacity
  */
-void random_gf4_vector(gf4_vector_t *vector, size_t size);
+void random_gf4_array(gf4_array_t *array, size_t size);
 
 /**
- * @brief Generate a random vector of given weight.
+ * @brief Generate a random array of given hamming weight.
  *
  * May also call random_init().
  * poly must be initialized beforehand.
  *
- * @param vector pointer to a vector to store the result in
- * @param size maximum size of the vector, size <= vector->capacity
- * @param weight number of nonzero items in the vector, weight <= size
+ * @param array pointer to a array to store the result in
+ * @param size maximum size of the array, size <= array->capacity
+ * @param weight number of nonzero items in the array, weight <= size
  */
-void random_weighted_gf4_vector(gf4_vector_t *vector, size_t size, size_t weight);
+void random_weighted_gf4_array(gf4_array_t *array, size_t size, size_t weight);
 
 
 /**
- * @brief Generate a vector of given weight such that at least weight/2 ones are placed exactly distance apart.
+ * @brief Generate a array of given weight such that at least weight/2 ones are placed exactly distance apart.
  *
- * vector must be initialized beforehand.
+ * array must be initialized beforehand.
  *
- * @param vector pointer to a vector to store the result in
- * @param size maximum size of the vector, size <= vector->capacity
- * @param weight number of nonzero items in the vector, weight <= size
+ * @param array pointer to a array to store the result in
+ * @param size maximum size of the array, size <= array->capacity
+ * @param weight number of nonzero items in the array, weight <= size
  * @param distance distance between pairs
  */
-void random_weighted_gf4_vector_pairs_of_ones(gf4_vector_t *vector, size_t size, size_t weight, size_t distance);
+void random_weighted_gf4_array_pairs_of_ones(gf4_array_t *array, size_t size, size_t weight, size_t distance);
 
 /**
- * @brief Generate a vector of given weight such that at least weight/2 pairs of 1 and alpha are placed exactly distance apart.
+ * @brief Generate a array of given weight such that at least weight/2 pairs of 1 and alpha are placed exactly distance apart.
  *
- * vector must be initialized beforehand.
+ * array must be initialized beforehand.
  *
- * @param vector pointer to a vector to store the result in
- * @param size maximum size of the vector, size <= vector->capacity
- * @param weight number of nonzero items in the vector, weight <= size
+ * @param array pointer to a array to store the result in
+ * @param size maximum size of the array, size <= array->capacity
+ * @param weight number of nonzero items in the array, weight <= size
  * @param distance distance between pairs
  */
-void random_weighted_gf4_vector_pairs_of_one_alpha(gf4_vector_t *vector, size_t size, size_t weight, size_t distance);
+void random_weighted_gf4_array_pairs_of_one_alpha(gf4_array_t *array, size_t size, size_t weight, size_t distance);
 
 /**
- * @brief Generate a vector of given weight such that at least weight/2 pairs of alpha and 1 are placed exactly distance apart.
+ * @brief Generate a array of given weight such that at least weight/2 pairs of alpha and 1 are placed exactly distance apart.
  *
- * vector must be initialized beforehand.
+ * array must be initialized beforehand.
  *
- * @param vector pointer to a vector to store the result in
- * @param size maximum size of the vector, size <= vector->capacity
- * @param weight number of nonzero items in the vector, weight <= size
+ * @param array pointer to a array to store the result in
+ * @param size maximum size of the array, size <= array->capacity
+ * @param weight number of nonzero items in the array, weight <= size
  * @param distance distance between pairs
  */
-void random_weighted_gf4_vector_pairs_of_alpha_one(gf4_vector_t *vector, size_t size, size_t weight, size_t distance);
+void random_weighted_gf4_array_pairs_of_alpha_one(gf4_array_t *array, size_t size, size_t weight, size_t distance);
 
 #endif //MDPC_GF4_RANDOM_H

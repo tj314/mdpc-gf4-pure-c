@@ -30,7 +30,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include "gf4.h"
-#include "gf4_vector.h"
+#include "gf4_array.h"
 
 /**
  * @brief Structure that represents a polynomial over GF4.
@@ -42,7 +42,10 @@
  * In Debug builds, operations over polynomials may resize coefficients array.
  * In Release builds, no resizing can occur! You must initialize polynomials with sufficient capacity in advance!
  */
- typedef gf4_vector_t gf4_poly_t;
+ typedef struct {
+     gf4_array_t coefficients;
+     size_t degree;
+ } gf4_poly_t;
 // initialization
 /**
  * @brief Initialize a zero polynomial with the given capacity.

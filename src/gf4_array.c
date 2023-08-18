@@ -1,6 +1,6 @@
 /**
- *  @file   gf4_vector.c
- *  @brief  Vectors over GF(4).
+ *  @file   gf4_array.c
+ *  @brief  Arrays over GF(4).
  *  @author Tomáš Vavro
  *  @date   2023-08-12
  ***********************************************/
@@ -23,71 +23,96 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "gf4_vector.h"
+#include "gf4_array.h"
 
-gf4_vector_t gf4_vector_init(size_t capacity, bool zero_out_new_memory) {
+gf4_array_t gf4_array_init(size_t capacity, bool zero_out_new_memory) {
     assert(0 < capacity);
-    gf4_vector_t out;
+    gf4_array_t out;
     if (zero_out_new_memory) {
         out.array = calloc(capacity, sizeof(gf4_t));
     } else {
         out.array = malloc(capacity * sizeof(gf4_t));
     }
     if (NULL == out.array) {
-        fprintf(stderr, "gf4_vector_init: Allocation error!\n");
+        fprintf(stderr, "%s: Allocation error!\n", __func__);
         exit(-1);
     }
     out.capacity = capacity;
     return out;
 }
 
-gf4_vector_t gf4_vector_init_with_length(size_t capacity, size_t length, bool zero_out_new_memory) {
-    assert(length <= capacity);
-    gf4_vector_t out = gf4_vector_init(capacity, zero_out_new_memory);
-    out.length = length;
-    return out;
+gf4_array_t gf4_array_clone(gf4_array_t * in_array) {
+    gf4_array_t clone;
+    clone.capacity = in_array->capacity;
+    clone.array = calloc(clone.capacity, sizeof(gf4_t));
+    if (NULL == clone.array) {
+        fprintf(stderr, "%s: Memory allocation failed!\n", __func__);
+        exit(-1);
+    }
+    memcpy(clone.array, in_array->array, sizeof(gf4_t) * clone.capacity);
+    return clone;
 }
 
-void gf4_vector_resize(gf4_vector_t * vector, size_t new_capacity, bool zero_out_new_memory) {
-    assert(NULL != vector);
-    assert(vector->length <= new_capacity);
-    gf4_t * tmp = realloc(vector->array, new_capacity*sizeof(gf4_t));
+void gf4_array_resize(gf4_array_t * array, size_t new_capacity, bool zero_out_new_memory) {
+    assert(NULL != array);
+    gf4_t * tmp = realloc(array->array, new_capacity * sizeof(gf4_t));
     if (NULL == tmp) {
-        free(vector->array);
-        fprintf(stderr, "gf4_vector_resize: Memory reallocation failed!\n");
+        free(array->array);
+        fprintf(stderr, "gf4_array_resize: Memory reallocation failed!\n");
         exit(-1);
     }
     if (zero_out_new_memory) {
-        for (size_t i = vector->capacity; i < new_capacity; ++i) {
+        for (size_t i = array->capacity; i < new_capacity; ++i) {
             tmp[i] = 0;
         }
     }
-    vector->array = tmp;
-    vector->capacity = new_capacity;
+    array->array = tmp;
+    array->capacity = new_capacity;
 }
 
-void gf4_vector_deinit(gf4_vector_t * vector) {
-    assert(NULL != vector);
-    free(vector->array);
-    vector->array = NULL;
-    vector->capacity = 0;
-    vector->length = 0;
+void gf4_array_deinit(gf4_array_t * array) {
+    assert(NULL != array);
+    free(array->array);
+    array->array = NULL;
+    array->capacity = 0;
 }
 
 // properties
-size_t gf4_vector_hamming_weight(gf4_vector_t *vector) {
+size_t gf4_array_hamming_weight(gf4_array_t *array) {
+    assert(NULL != array);
     size_t weight = 0;
-    for (size_t i = 0; i < vector->capacity; ++i) {
-        weight += (0 != vector->array[i]);
+    for (size_t i = 0; i < array->capacity; ++i) {
+        weight += (0 != array->array[i]);
     }
     return weight;
 }
 
 // helpers
-void gf4_vector_print(gf4_vector_t * vector, size_t max, FILE * stream, const char * end) {
-    assert(max <= vector->capacity);
-    for (size_t i = 0; i < max; ++i) {
-        fprintf(stream, "%u ", vector->array[i]);
+void gf4_array_print(gf4_array_t * array, FILE * stream, const char * end) {
+    assert(NULL != array);
+    assert(NULL != array->array);
+    assert(NULL != stream);
+    assert(NULL != end);
+    for (size_t i = 0; i < array->capacity; ++i) {
+        fprintf(stream, "%u ", array->array[i]);
     }
     fprintf(stream, "%s", end);
+}
+
+gf4_t gf4_array_sum(gf4_array_t * array) {
+    assert(NULL != array);
+    assert(NULL != array->array);
+    gf4_t sum = 0;
+    for (size_t i = 0; i < array->capacity; ++i) {
+        sum = gf4_add(sum, array->array[i]);
+    }
+    return sum;
+}
+
+void gf4_array_zero_out(gf4_array_t * array) {
+    assert(NULL != array);
+    assert(NULL != array->array);
+    for (size_t i = 0; i < array->capacity; ++i) {
+        array->array[i] = 0;
+    }
 }

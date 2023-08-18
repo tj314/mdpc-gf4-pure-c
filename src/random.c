@@ -38,57 +38,36 @@ size_t random_from_range(size_t low_bound_inclusive, size_t top_bound_inclusive)
     return low_bound_inclusive + (rand() % (top_bound_inclusive - low_bound_inclusive + 1));
 }
 
-void random_gf4_vector(gf4_vector_t *vector, size_t size) {
-    assert(NULL != vector);
-    assert(size <= vector->capacity);
+void random_gf4_array(gf4_array_t *array, size_t size) {
+    assert(NULL != array);
+    assert(size <= array->capacity);
     for (size_t i = 0; i < size; ++i) {
-        vector->array[i] = (gf4_t) random_from_range(0, GF4_MAX_VALUE);
-    }
-    vector->length = 1;
-    for (size_t i = size - 1; i != 0; --i) {
-        if (0 != vector->array[i]) {
-            vector->length = i + 1;
-            break;
-        }
-    }
-    if (1 == vector->length && 0 == vector->array[0]) {
-        vector->length = 0;
+        array->array[i] = (gf4_t) random_from_range(0, GF4_MAX_VALUE);
     }
 }
 
-void random_weighted_gf4_vector(gf4_vector_t *vector, size_t size, size_t weight) {
-    assert(NULL != vector);
-    assert(size <= vector->capacity);
+void random_weighted_gf4_array(gf4_array_t *array, size_t size, size_t weight) {
+    assert(NULL != array);
+    assert(size <= array->capacity);
     assert(weight <= size);
     // place weight nonzero entries on the first weight positions
     for (size_t i = 0; i < weight; ++i) {
-        vector->array[i] = (gf4_t) random_from_range(1, GF4_MAX_VALUE);
+        array->array[i] = (gf4_t) random_from_range(1, GF4_MAX_VALUE);
     }
     // shuffle
     for (size_t i = 0; i < size - 1; ++i) {
         size_t j = (size_t)random_from_range(i, size - 1);
-        gf4_t tmp = vector->array[i];
-        vector->array[i] = vector->array[j];
-        vector->array[j] = tmp;
-    }
-    vector->length = 1;
-    for (size_t i = size - 1; i != 0; --i) {
-        if (0 != vector->array[i]) {
-            vector->length = i + 1;
-            break;
-        }
-    }
-    if (1 == vector->length && 0 == vector->array[0]) {
-        vector->length = 0;
+        gf4_t tmp = array->array[i];
+        array->array[i] = array->array[j];
+        array->array[j] = tmp;
     }
 }
 
-void random_weighted_gf4_vector_pairs_common(gf4_vector_t *vector, size_t size, size_t weight, size_t distance, gf4_t first, gf4_t second) {
+void random_weighted_gf4_vector_pairs_common(gf4_array_t *vector, size_t size, size_t weight, size_t distance, gf4_t first, gf4_t second) {
     assert(NULL != vector);
     assert(vector->capacity >= size);
     assert(size > weight);
     size_t num_pairs = weight / 2;
-    size_t vector_max_index = 0;
     for (size_t i = 0; i < num_pairs; ++i) {
         size_t index = random_from_range(0, size - 1);
         size_t second_index = (index + distance) % size;
@@ -98,24 +77,17 @@ void random_weighted_gf4_vector_pairs_common(gf4_vector_t *vector, size_t size, 
         }
         vector->array[index] = first;
         vector->array[second_index] = second;
-        if (index > vector_max_index) {
-            vector_max_index = index;
-        }
-        if (second_index > vector_max_index) {
-            vector_max_index = second_index;
-        }
     }
-    vector->length = vector_max_index + 1;
 }
 
-void random_weighted_gf4_vector_pairs_of_ones(gf4_vector_t *vector, size_t size, size_t weight, size_t distance) {
-    random_weighted_gf4_vector_pairs_common(vector, size, weight, distance, 1, 1);
+void random_weighted_gf4_array_pairs_of_ones(gf4_array_t *array, size_t size, size_t weight, size_t distance) {
+    random_weighted_gf4_vector_pairs_common(array, size, weight, distance, 1, 1);
 }
 
-void random_weighted_gf4_vector_pairs_of_one_alpha(gf4_vector_t *vector, size_t size, size_t weight, size_t distance) {
-    random_weighted_gf4_vector_pairs_common(vector, size, weight, distance, 1, 2);
+void random_weighted_gf4_array_pairs_of_one_alpha(gf4_array_t *array, size_t size, size_t weight, size_t distance) {
+    random_weighted_gf4_vector_pairs_common(array, size, weight, distance, 1, 2);
 }
 
-void random_weighted_gf4_vector_pairs_of_alpha_one(gf4_vector_t *vector, size_t size, size_t weight, size_t distance) {
-    random_weighted_gf4_vector_pairs_common(vector, size, weight, distance, 2, 1);
+void random_weighted_gf4_array_pairs_of_alpha_one(gf4_array_t *array, size_t size, size_t weight, size_t distance) {
+    random_weighted_gf4_vector_pairs_common(array, size, weight, distance, 2, 1);
 }

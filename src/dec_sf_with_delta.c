@@ -18,17 +18,17 @@
 
 #include "dec.h"
 
-bool dec_decode_symbol_flipping_delta(gf4_vector_t *maybe_decoded, gf4_vector_t *in_vector, size_t num_iterations, decoding_context_t * ctx) {
+bool dec_decode_symbol_flipping_delta(gf4_array_t *maybe_decoded, gf4_array_t *in_array, size_t num_iterations, decoding_context_t * ctx) {
     assert(NULL != maybe_decoded);
-    assert(NULL != in_vector);
+    assert(NULL != in_array);
     assert(NULL != ctx);
     assert(maybe_decoded->capacity >= 2*ctx->block_size);
-    assert(in_vector->capacity >= 2*ctx->block_size);
+    assert(in_array->capacity >= 2 * ctx->block_size);
     assert(ctx->delta_setting >= 0);
 
-    gf4_poly_t syndrome = gf4_poly_init_zero(ctx->block_size);
-    dec_calculate_syndrome(&syndrome, in_vector, ctx);
-    gf4_poly_copy(maybe_decoded, in_vector);
+    gf4_array_t syndrome = gf4_array_init(ctx->block_size, true);
+    dec_calculate_syndrome(&syndrome, in_array, ctx);
+    memcpy(maybe_decoded->array, in_array->array, sizeof(gf4_t)*in_array->capacity);
     ctx->elapsed_iterations = 0;
 
     long * sigmas = calloc(2 * ctx->block_size, sizeof(long));
@@ -39,11 +39,11 @@ bool dec_decode_symbol_flipping_delta(gf4_vector_t *maybe_decoded, gf4_vector_t 
     const long DELTA = ctx->delta_setting;
 
     for (size_t i = 0; i < num_iterations; ++i) {
-        long syndrome_weight = (long) gf4_vector_hamming_weight(&syndrome);
+        long syndrome_weight = (long) gf4_array_hamming_weight(&syndrome);
         if (0 == syndrome_weight) {
             free(sigmas);
             free(values);
-            gf4_poly_deinit(&syndrome);
+            gf4_array_deinit(&syndrome);
             ctx->elapsed_iterations = i;
             return true;
         }
@@ -66,7 +66,7 @@ bool dec_decode_symbol_flipping_delta(gf4_vector_t *maybe_decoded, gf4_vector_t 
                 size_t idx = 0;
                 long new_syndrome_weight = 0; // hamming weight of s-a*h_j
                 do {
-                    gf4_t tmp = syndrome.array[idx] ^ gf4_mul(h_block->array[x], a);
+                    gf4_t tmp = syndrome.array[idx] ^ gf4_mul(h_block->coefficients.array[x], a);
                     if (0 != tmp) {
                         new_syndrome_weight += 1;
                     }
@@ -100,7 +100,7 @@ bool dec_decode_symbol_flipping_delta(gf4_vector_t *maybe_decoded, gf4_vector_t 
             size_t x = actual_j;
             size_t idx = 0;
             do {
-                syndrome.array[idx] ^= gf4_mul(h_block->array[x], values[j]);
+                syndrome.array[idx] ^= gf4_mul(h_block->coefficients.array[x], values[j]);
                 x = (0 == x) ? ctx->block_size - 1 : x-1;
                 ++idx;
             } while (x != actual_j);
@@ -109,7 +109,7 @@ bool dec_decode_symbol_flipping_delta(gf4_vector_t *maybe_decoded, gf4_vector_t 
     }
     free(sigmas);
     free(values);
-    gf4_poly_deinit(&syndrome);
+    gf4_array_deinit(&syndrome);
     ctx->elapsed_iterations = num_iterations;
     return false;
 }
