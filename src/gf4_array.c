@@ -55,6 +55,7 @@ gf4_array_t gf4_array_clone(gf4_array_t * in_array) {
 
 void gf4_array_resize(gf4_array_t * array, size_t new_capacity, bool zero_out_new_memory) {
     assert(NULL != array);
+    assert(0 < new_capacity);
     gf4_t * tmp = realloc(array->array, new_capacity * sizeof(gf4_t));
     if (NULL == tmp) {
         free(array->array);
