@@ -50,6 +50,27 @@ gf4_matrix_t gf4_matrix_init_cyclic_matrix(gf4_poly_t * first_row, size_t N) {
     return matrix;
 }
 
+gf4_matrix_t gf4_matrix_clone(gf4_matrix_t * matrix) {
+    assert(NULL != matrix);
+    gf4_matrix_t out;
+    out.num_rows = matrix->num_rows;
+    out.num_cols = matrix->num_cols;
+    out.rows = malloc(out.num_rows * sizeof(gf4_t *));
+    if (NULL == out.rows) {
+        fprintf(stderr, "%s: Memory allocation failed!\n", __func__);
+        exit(-1);
+    }
+    for (size_t row = 0; row < out.num_rows; ++row) {
+        out.rows[row] = malloc(out.num_cols * sizeof(gf4_t));
+        if (NULL == out.rows[row]) {
+            fprintf(stderr, "gf4_matrix_init_cyclic_matrix: Memory allocation failed!\n");
+            exit(-1);
+        }
+        memcpy(out.rows[row], matrix->rows[row], out.num_cols);
+    }
+    return out;
+}
+
 bool gf4_matrix_find_pivot_index(gf4_matrix_t * matrix, size_t row_index, size_t * out_pivot_index) {
     // find the index of pivot in the given row
     for (size_t col = 0; col < matrix->num_cols; ++col) {

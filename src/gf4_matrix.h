@@ -54,6 +54,17 @@ typedef struct {
 gf4_matrix_t gf4_matrix_init_cyclic_matrix(gf4_poly_t * first_row, size_t N);
 
 /**
+ * @brief Clone a matrix.
+ *
+ * This function allocates memory! Caller is the owner of the newly created matrix.
+ * Initialized matrix must be cleaned up using gf4_matrix_deinit function if no longer needed!
+ *
+ * @param matrix an initialized matrix
+ * @return a clone of matrix
+ */
+gf4_matrix_t gf4_matrix_clone(gf4_matrix_t * matrix);
+
+/**
  * @brief Destroy a matrix.
  *
  * Free all the rows of the matrix and the rows array itself.
