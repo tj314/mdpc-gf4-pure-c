@@ -90,11 +90,22 @@ void gen_keys(const char * keys_fname, const char * mults_fname) {
 
 void collect_syndrome_weights(const size_t id) {
     size_t half_block_size = (block_size / 2) + 1; // half of the block size rounded up
-    size_t * weights_distances_ones = calloc(half_block_size, sizeof(size_t));
-    size_t * weights_distances_alpha_multiple_right = calloc(half_block_size, sizeof(size_t));
-    size_t * weights_distances_alpha_multiple_left = calloc(half_block_size, sizeof(size_t));
-    if (NULL == weights_distances_ones || NULL == weights_distances_alpha_multiple_right || NULL == weights_distances_alpha_multiple_left) {
-        fprintf(stderr, "%s: Allocation error!\n", __func__);
+
+    size_t * weights_distances_same_e0 = calloc(half_block_size, sizeof(size_t));
+    size_t * weights_distances_alpha_multiple_right_e0 = calloc(half_block_size, sizeof(size_t));
+    size_t * weights_distances_alpha_multiple_left_e0 = calloc(half_block_size, sizeof(size_t));
+
+    size_t * weights_distances_same_e1 = calloc(half_block_size, sizeof(size_t));
+    size_t * weights_distances_alpha_multiple_right_e1 = calloc(half_block_size, sizeof(size_t));
+    size_t * weights_distances_alpha_multiple_left_e1 = calloc(half_block_size, sizeof(size_t));
+
+    if (NULL == weights_distances_same_e0
+        || NULL == weights_distances_alpha_multiple_right_e0
+        || NULL == weights_distances_alpha_multiple_left_e0
+        || NULL == weights_distances_same_e1
+        || NULL == weights_distances_alpha_multiple_right_e1
+        || NULL == weights_distances_alpha_multiple_left_e1) {
+        fprintf(stderr, "%s (%d): Allocation error!\n", __func__, __LINE__);
         exit(-1);
     }
 
@@ -114,13 +125,25 @@ void collect_syndrome_weights(const size_t id) {
         for (size_t i = 0; i < block_size; ++i) {
             for (size_t j = i + 1; j < block_size; ++j) {
                 size_t distance = (j - i) < half_block_size ? j - i : block_size - (j - i);
-                gf4_t a = err.array[i], b = err.array[j];
-                if (1 == a && 1 == b) {
-                    weights_distances_ones[distance] += syndrome_weight;
-                } else if (IS_ALPHA_MULT_RIGHT(a, b)) {
-                    weights_distances_alpha_multiple_right[distance] += syndrome_weight;
-                } else if (IS_ALPHA_MULT_LEFT(a, b)) {
-                    weights_distances_alpha_multiple_left[distance] += syndrome_weight;
+
+                // first half of err (e0)
+                gf4_t a_e0 = err.array[i], b_e0 = err.array[j];
+                if (0 != a_e0 && a_e0 == b_e0) {
+                    weights_distances_same_e0[distance] += syndrome_weight;
+                } else if (IS_ALPHA_MULT_RIGHT(a_e0, b_e0)) {
+                    weights_distances_alpha_multiple_right_e0[distance] += syndrome_weight;
+                } else if (IS_ALPHA_MULT_LEFT(a_e0, b_e0)) {
+                    weights_distances_alpha_multiple_left_e0[distance] += syndrome_weight;
+                }
+
+                // second half of err (e1)
+                gf4_t a_e1 = err.array[block_size + i], b_e1 = err.array[block_size + j];
+                if (0 != a_e1 && a_e1 == b_e1) {
+                    weights_distances_same_e1[distance] += syndrome_weight;
+                } else if (IS_ALPHA_MULT_RIGHT(a_e1, b_e1)) {
+                    weights_distances_alpha_multiple_right_e1[distance] += syndrome_weight;
+                } else if (IS_ALPHA_MULT_LEFT(a_e1, b_e1)) {
+                    weights_distances_alpha_multiple_left_e1[distance] += syndrome_weight;
                 }
             }
         }
@@ -133,59 +156,98 @@ void collect_syndrome_weights(const size_t id) {
 
     // number of trials
     sprintf(buffer, "num_trials_%zu.txt", id);
-    FILE * file = fopen(buffer, "w");
+    FILE * file = fopen(buffer, "w+");
     if (NULL == file) {
-        fprintf(stderr, "%s: Fopen error!\n", __func__);
+        fprintf(stderr, "%s (%d): Fopen error!\n", __func__, __LINE__);
         exit(-1);
     }
     fprintf(file, "%zu\n", M);
     fclose(file);
 
-    // ones
-    memset(buffer, 0, 100* sizeof(char));
-    sprintf(buffer, "weights_ones_%zu.txt", id);
-    file = fopen(buffer, "w");
+    // same symbols
+    memset(buffer, 0, 100 * sizeof(char));
+    sprintf(buffer, "weights_same_e0_%zu.txt", id);
+    file = fopen(buffer, "w+");
     if (NULL == file) {
-        fprintf(stderr, "%s: Fopen error!\n", __func__);
+        fprintf(stderr, "%s (%d): Fopen error!\n", __func__, __LINE__);
         exit(-1);
     }
     for (size_t dist = 1; dist < half_block_size; ++dist) {
-        fprintf(file, "%zu %zu\n", dist, weights_distances_ones[dist]);
+        fprintf(file, "%zu %zu\n", dist, weights_distances_same_e0[dist]);
     }
     fclose(file);
 
-    // one-alpha
-    sprintf(buffer, "weights_one_alpha_%zu.txt", id);
-    memset(buffer, 0, 100* sizeof(char));
-    file = fopen(buffer, "w");
+    memset(buffer, 0, 100 * sizeof(char));
+    sprintf(buffer, "weights_same_e1_%zu.txt", id);
+    file = fopen(buffer, "w+");
     if (NULL == file) {
-        fprintf(stderr, "%s: Fopen error!\n", __func__);
+        fprintf(stderr, "%s (%d): Fopen error!\n", __func__, __LINE__);
         exit(-1);
     }
     for (size_t dist = 1; dist < half_block_size; ++dist) {
-        fprintf(file, "%zu %zu\n", dist, weights_distances_alpha_multiple_right[dist]);
+        fprintf(file, "%zu %zu\n", dist, weights_distances_same_e1[dist]);
     }
     fclose(file);
 
-    // alpha-one
-    sprintf(buffer, "weights_alpha_one_%zu.txt", id);
-    memset(buffer, 0, 100* sizeof(char));
-    file = fopen(buffer, "w");
+    // alpha mult right
+    memset(buffer, 0, 100 * sizeof(char));
+    sprintf(buffer, "weights_alpha_mult_right_e0_%zu.txt", id);
+    file = fopen(buffer, "w+");
     if (NULL == file) {
-        fprintf(stderr, "%s: Fopen error!\n", __func__);
+        fprintf(stderr, "%s (%d): Fopen error!\n", __func__, __LINE__);
         exit(-1);
     }
     for (size_t dist = 1; dist < half_block_size; ++dist) {
-        fprintf(file, "%zu %zu\n", dist, weights_distances_alpha_multiple_left[dist]);
+        fprintf(file, "%zu %zu\n", dist, weights_distances_alpha_multiple_right_e0[dist]);
+    }
+    fclose(file);
+
+    memset(buffer, 0, 100 * sizeof(char));
+    sprintf(buffer, "weights_alpha_mult_right_e1_%zu.txt", id);
+    file = fopen(buffer, "w+");
+    if (NULL == file) {
+        fprintf(stderr, "%s (%d): Fopen error!\n", __func__, __LINE__);
+        exit(-1);
+    }
+    for (size_t dist = 1; dist < half_block_size; ++dist) {
+        fprintf(file, "%zu %zu\n", dist, weights_distances_alpha_multiple_right_e1[dist]);
+    }
+    fclose(file);
+
+    // alpha multiple left
+    memset(buffer, 0, 100 * sizeof(char));
+    sprintf(buffer, "weights_alpha_mult_left_e0_%zu.txt", id);
+    file = fopen(buffer, "w+");
+    if (NULL == file) {
+        fprintf(stderr, "%s (%d): Fopen error!\n", __func__, __LINE__);
+        exit(-1);
+    }
+    for (size_t dist = 1; dist < half_block_size; ++dist) {
+        fprintf(file, "%zu %zu\n", dist, weights_distances_alpha_multiple_left_e0[dist]);
+    }
+    fclose(file);
+
+    memset(buffer, 0, 100 * sizeof(char));
+    sprintf(buffer, "weights_alpha_mult_left_e1_%zu.txt", id);
+    file = fopen(buffer, "w+");
+    if (NULL == file) {
+        fprintf(stderr, "%s (%d): Fopen error!\n", __func__, __LINE__);
+        exit(-1);
+    }
+    for (size_t dist = 1; dist < half_block_size; ++dist) {
+        fprintf(file, "%zu %zu\n", dist, weights_distances_alpha_multiple_left_e1[dist]);
     }
     fclose(file);
 
     contexts_deinit(&ec, &dc);
     gf4_array_deinit(&syndrome);
     gf4_array_deinit(&err);
-    free(weights_distances_alpha_multiple_left);
-    free(weights_distances_alpha_multiple_right);
-    free(weights_distances_ones);
+    free(weights_distances_alpha_multiple_left_e1);
+    free(weights_distances_alpha_multiple_right_e1);
+    free(weights_distances_same_e1);
+    free(weights_distances_alpha_multiple_left_e0);
+    free(weights_distances_alpha_multiple_right_e0);
+    free(weights_distances_same_e0);
 }
 
 // D0[i] == true => i \in D0. equiv. for D1
