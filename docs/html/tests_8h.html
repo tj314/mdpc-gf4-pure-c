@@ -104,7 +104,9 @@ $(document).ready(function(){initNavTree('tests_8h.html',''); initResizable(); }
 <code>#include &quot;<a class="el" href="contexts_8h_source.html">contexts.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="enc_8h_source.html">enc.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="gf4_8h_source.html">gf4.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="gf4__array_8h_source.html">gf4_array.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="gf4__poly_8h_source.html">gf4_poly.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="gf4__matrix_8h_source.html">gf4_matrix.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="random_8h_source.html">random.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="utils_8h_source.html">utils.h</a>&quot;</code><br />
 </div>
@@ -122,8 +124,54 @@ Functions</h2></td></tr>
 <tr class="separator:a6b293b4befbed2b3bd08e3be2af98695"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a659ebf3eddc93d26c18f76091cca9648"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tests_8h.html#a659ebf3eddc93d26c18f76091cca9648">test_gf4_div</a> ()</td></tr>
 <tr class="separator:a659ebf3eddc93d26c18f76091cca9648"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2cfb17d4f244d1ff3798f1e9aa69f848"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tests_8h.html#a2cfb17d4f244d1ff3798f1e9aa69f848">test_utils_hamming_weight</a> ()</td></tr>
-<tr class="separator:a2cfb17d4f244d1ff3798f1e9aa69f848"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c45772bc43717325957a0f9b0898e06"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tests_8h.html#a2c45772bc43717325957a0f9b0898e06">test_gf4_array_hamming_weight</a> ()</td></tr>
+<tr class="separator:a2c45772bc43717325957a0f9b0898e06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a637fecd4c4a3be051ea727d42c93c9b2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tests_8h.html#a637fecd4c4a3be051ea727d42c93c9b2">test_gf4_poly_init_zero</a> ()</td></tr>
+<tr class="separator:a637fecd4c4a3be051ea727d42c93c9b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a527ac5e3ebae0532feaf71a6c8353964"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tests_8h.html#a527ac5e3ebae0532feaf71a6c8353964">test_gf4_poly_zero_out</a> ()</td></tr>
+<tr class="separator:a527ac5e3ebae0532feaf71a6c8353964"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d9ee98eef96d34a2ff30823a1646d7a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tests_8h.html#a6d9ee98eef96d34a2ff30823a1646d7a">test_gf4_poly_deinit</a> ()</td></tr>
+<tr class="separator:a6d9ee98eef96d34a2ff30823a1646d7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a876baa5d33faf1aac76bc49bb1dab907"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tests_8h.html#a876baa5d33faf1aac76bc49bb1dab907">test_gf4_poly_get_coefficient</a> ()</td></tr>
+<tr class="separator:a876baa5d33faf1aac76bc49bb1dab907"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21492c63816799ef23a9bc950b1b0098"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tests_8h.html#a21492c63816799ef23a9bc950b1b0098">test_gf4_poly_set_coefficient</a> ()</td></tr>
+<tr class="separator:a21492c63816799ef23a9bc950b1b0098"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaff34fe58c81ae72413af98d7958e43d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tests_8h.html#aaff34fe58c81ae72413af98d7958e43d">test_gf4_poly_add</a> ()</td></tr>
+<tr class="separator:aaff34fe58c81ae72413af98d7958e43d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1c56a974bec5861b7a321e088507a6e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tests_8h.html#ae1c56a974bec5861b7a321e088507a6e">test_gf4_poly_add_inplace</a> ()</td></tr>
+<tr class="separator:ae1c56a974bec5861b7a321e088507a6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b67d3b024c814e0c266ce93cf863606"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tests_8h.html#a1b67d3b024c814e0c266ce93cf863606">test_gf4_poly_add_ax_to_deg_inplace</a> ()</td></tr>
+<tr class="separator:a1b67d3b024c814e0c266ce93cf863606"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1aff91f53a2ad5f3e54f908b75b7a637"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tests_8h.html#a1aff91f53a2ad5f3e54f908b75b7a637">test_gf4_poly_mul</a> ()</td></tr>
+<tr class="separator:a1aff91f53a2ad5f3e54f908b75b7a637"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5344980249f6dd9321b7964c9a60ab74"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tests_8h.html#a5344980249f6dd9321b7964c9a60ab74">test_gf4_poly_div_x_to_deg</a> ()</td></tr>
+<tr class="separator:a5344980249f6dd9321b7964c9a60ab74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46befe931dde3b4f86953831e6840481"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tests_8h.html#a46befe931dde3b4f86953831e6840481">test_gf4_poly_div_x_to_deg_inplace</a> ()</td></tr>
+<tr class="separator:a46befe931dde3b4f86953831e6840481"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a644ea9e1021c2885e1d28c6a4779e374"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tests_8h.html#a644ea9e1021c2885e1d28c6a4779e374">test_gf4_poly_div_rem</a> ()</td></tr>
+<tr class="separator:a644ea9e1021c2885e1d28c6a4779e374"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38248b405a51457377910a505169c975"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tests_8h.html#a38248b405a51457377910a505169c975">test_gf4_poly_invert_slow</a> ()</td></tr>
+<tr class="separator:a38248b405a51457377910a505169c975"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5dace26f83589e53fab0481d3f9837ea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tests_8h.html#a5dace26f83589e53fab0481d3f9837ea">test_gf4_poly_is_zero</a> ()</td></tr>
+<tr class="separator:a5dace26f83589e53fab0481d3f9837ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f515b973488422ff4804adcc8842310"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tests_8h.html#a6f515b973488422ff4804adcc8842310">test_gf4_poly_equal</a> ()</td></tr>
+<tr class="separator:a6f515b973488422ff4804adcc8842310"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca2f055b999a53f34ab0527f2bac9366"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tests_8h.html#aca2f055b999a53f34ab0527f2bac9366">test_gf4_poly_cyclic_shift_right_inplace</a> ()</td></tr>
+<tr class="separator:aca2f055b999a53f34ab0527f2bac9366"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b4ea06fef21e0258897f27594d4c201"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tests_8h.html#a4b4ea06fef21e0258897f27594d4c201">test_gf4_poly_get_degree</a> ()</td></tr>
+<tr class="separator:a4b4ea06fef21e0258897f27594d4c201"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ad15b8e483278fba4f3d47b6db27bbb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tests_8h.html#a8ad15b8e483278fba4f3d47b6db27bbb">test_gf4_poly_adjust_degree</a> ()</td></tr>
+<tr class="separator:a8ad15b8e483278fba4f3d47b6db27bbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f0b063eae29e04ad44007b0b8723026"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tests_8h.html#a3f0b063eae29e04ad44007b0b8723026">test_gf4_poly_clone</a> ()</td></tr>
+<tr class="separator:a3f0b063eae29e04ad44007b0b8723026"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16d0f753e7693f8d1f9da1b001d51a6e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tests_8h.html#a16d0f753e7693f8d1f9da1b001d51a6e">test_gf4_poly_copy</a> ()</td></tr>
+<tr class="separator:a16d0f753e7693f8d1f9da1b001d51a6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae8294a9a4ec59a1db58d3779d2cda13"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tests_8h.html#aae8294a9a4ec59a1db58d3779d2cda13">test_gf4_square_matrix_init_cyclic_matrix</a> ()</td></tr>
+<tr class="separator:aae8294a9a4ec59a1db58d3779d2cda13"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a7cc26f5c65f49cc8653bc3f1efbf9d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tests_8h.html#a0a7cc26f5c65f49cc8653bc3f1efbf9d">test_gf4_matrix_gaussian_elimination_inplace</a> ()</td></tr>
+<tr class="separator:a0a7cc26f5c65f49cc8653bc3f1efbf9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa534347801108a51ef072879dc5ac060"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tests_8h.html#aa534347801108a51ef072879dc5ac060">test_gf4_matrix_solve_homogenous_linear_system</a> ()</td></tr>
+<tr class="separator:aa534347801108a51ef072879dc5ac060"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab8d05d3be370ebc48b8a3d0be5db1bdb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tests_8h.html#ab8d05d3be370ebc48b8a3d0be5db1bdb">test_contexts_init</a> ()</td></tr>
 <tr class="separator:ab8d05d3be370ebc48b8a3d0be5db1bdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7a2473a9ea02c8d04d1b009c4fe1353b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tests_8h.html#a7a2473a9ea02c8d04d1b009c4fe1353b">test_contexts_save_load</a> ()</td></tr>
@@ -134,6 +182,8 @@ Functions</h2></td></tr>
 <tr class="separator:a7b3d036a19d4494bb9e92eb911ae64bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99fa68f98998461e15eaccf8a76f0ac5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tests_8h.html#a99fa68f98998461e15eaccf8a76f0ac5">test_dec_calculate_syndrome</a> ()</td></tr>
 <tr class="separator:a99fa68f98998461e15eaccf8a76f0ac5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a643a157456b1df7184f108b3295f2216"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tests_8h.html#a643a157456b1df7184f108b3295f2216">run_unit_tests</a> ()</td></tr>
+<tr class="separator:a643a157456b1df7184f108b3295f2216"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Unit tests. </p>
@@ -142,6 +192,25 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition in file <a class="el" href="tests_8h_source.html">tests.h</a>.</p>
 </div><h2 class="groupheader">Function Documentation</h2>
+<a id="a643a157456b1df7184f108b3295f2216" name="a643a157456b1df7184f108b3295f2216"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a643a157456b1df7184f108b3295f2216">&#9670;&#160;</a></span>run_unit_tests()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void run_unit_tests </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l01671">1671</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
+
+</div>
+</div>
 <a id="ab8d05d3be370ebc48b8a3d0be5db1bdb" name="ab8d05d3be370ebc48b8a3d0be5db1bdb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab8d05d3be370ebc48b8a3d0be5db1bdb">&#9670;&#160;</a></span>test_contexts_init()</h2>
 
@@ -157,7 +226,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l00112">112</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l01394">1394</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
 
 </div>
 </div>
@@ -176,7 +245,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l00159">159</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l01442">1442</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
 
 </div>
 </div>
@@ -195,7 +264,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l00275">275</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l01581">1581</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
 
 </div>
 </div>
@@ -214,7 +283,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l00186">186</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l01473">1473</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
 
 </div>
 </div>
@@ -233,7 +302,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l00233">233</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l01538">1538</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
 
 </div>
 </div>
@@ -252,7 +321,26 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l00032">32</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l00071">71</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
+
+</div>
+</div>
+<a id="a2c45772bc43717325957a0f9b0898e06" name="a2c45772bc43717325957a0f9b0898e06"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c45772bc43717325957a0f9b0898e06">&#9670;&#160;</a></span>test_gf4_array_hamming_weight()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void test_gf4_array_hamming_weight </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l00140">140</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
 
 </div>
 </div>
@@ -271,7 +359,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l00074">74</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l00119">119</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
 
 </div>
 </div>
@@ -290,7 +378,45 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l00012">12</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l00044">44</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
+
+</div>
+</div>
+<a id="a0a7cc26f5c65f49cc8653bc3f1efbf9d" name="a0a7cc26f5c65f49cc8653bc3f1efbf9d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a7cc26f5c65f49cc8653bc3f1efbf9d">&#9670;&#160;</a></span>test_gf4_matrix_gaussian_elimination_inplace()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void test_gf4_matrix_gaussian_elimination_inplace </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l01155">1155</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
+
+</div>
+</div>
+<a id="aa534347801108a51ef072879dc5ac060" name="aa534347801108a51ef072879dc5ac060"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa534347801108a51ef072879dc5ac060">&#9670;&#160;</a></span>test_gf4_matrix_solve_homogenous_linear_system()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void test_gf4_matrix_solve_homogenous_linear_system </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l01205">1205</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
 
 </div>
 </div>
@@ -309,7 +435,406 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l00053">53</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l00095">95</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
+
+</div>
+</div>
+<a id="aaff34fe58c81ae72413af98d7958e43d" name="aaff34fe58c81ae72413af98d7958e43d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaff34fe58c81ae72413af98d7958e43d">&#9670;&#160;</a></span>test_gf4_poly_add()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void test_gf4_poly_add </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l00348">348</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
+
+</div>
+</div>
+<a id="a1b67d3b024c814e0c266ce93cf863606" name="a1b67d3b024c814e0c266ce93cf863606"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b67d3b024c814e0c266ce93cf863606">&#9670;&#160;</a></span>test_gf4_poly_add_ax_to_deg_inplace()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void test_gf4_poly_add_ax_to_deg_inplace </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l00553">553</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
+
+</div>
+</div>
+<a id="ae1c56a974bec5861b7a321e088507a6e" name="ae1c56a974bec5861b7a321e088507a6e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1c56a974bec5861b7a321e088507a6e">&#9670;&#160;</a></span>test_gf4_poly_add_inplace()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void test_gf4_poly_add_inplace </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l00462">462</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
+
+</div>
+</div>
+<a id="a8ad15b8e483278fba4f3d47b6db27bbb" name="a8ad15b8e483278fba4f3d47b6db27bbb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ad15b8e483278fba4f3d47b6db27bbb">&#9670;&#160;</a></span>test_gf4_poly_adjust_degree()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void test_gf4_poly_adjust_degree </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l00986">986</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
+
+</div>
+</div>
+<a id="a3f0b063eae29e04ad44007b0b8723026" name="a3f0b063eae29e04ad44007b0b8723026"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f0b063eae29e04ad44007b0b8723026">&#9670;&#160;</a></span>test_gf4_poly_clone()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void test_gf4_poly_clone </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l01025">1025</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
+
+</div>
+</div>
+<a id="a16d0f753e7693f8d1f9da1b001d51a6e" name="a16d0f753e7693f8d1f9da1b001d51a6e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a16d0f753e7693f8d1f9da1b001d51a6e">&#9670;&#160;</a></span>test_gf4_poly_copy()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void test_gf4_poly_copy </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l01072">1072</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
+
+</div>
+</div>
+<a id="aca2f055b999a53f34ab0527f2bac9366" name="aca2f055b999a53f34ab0527f2bac9366"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca2f055b999a53f34ab0527f2bac9366">&#9670;&#160;</a></span>test_gf4_poly_cyclic_shift_right_inplace()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void test_gf4_poly_cyclic_shift_right_inplace </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l00890">890</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
+
+</div>
+</div>
+<a id="a6d9ee98eef96d34a2ff30823a1646d7a" name="a6d9ee98eef96d34a2ff30823a1646d7a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6d9ee98eef96d34a2ff30823a1646d7a">&#9670;&#160;</a></span>test_gf4_poly_deinit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void test_gf4_poly_deinit </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l00247">247</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
+
+</div>
+</div>
+<a id="a644ea9e1021c2885e1d28c6a4779e374" name="a644ea9e1021c2885e1d28c6a4779e374"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a644ea9e1021c2885e1d28c6a4779e374">&#9670;&#160;</a></span>test_gf4_poly_div_rem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void test_gf4_poly_div_rem </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l00836">836</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
+
+</div>
+</div>
+<a id="a5344980249f6dd9321b7964c9a60ab74" name="a5344980249f6dd9321b7964c9a60ab74"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5344980249f6dd9321b7964c9a60ab74">&#9670;&#160;</a></span>test_gf4_poly_div_x_to_deg()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void test_gf4_poly_div_x_to_deg </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l00723">723</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
+
+</div>
+</div>
+<a id="a46befe931dde3b4f86953831e6840481" name="a46befe931dde3b4f86953831e6840481"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a46befe931dde3b4f86953831e6840481">&#9670;&#160;</a></span>test_gf4_poly_div_x_to_deg_inplace()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void test_gf4_poly_div_x_to_deg_inplace </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l00789">789</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
+
+</div>
+</div>
+<a id="a6f515b973488422ff4804adcc8842310" name="a6f515b973488422ff4804adcc8842310"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f515b973488422ff4804adcc8842310">&#9670;&#160;</a></span>test_gf4_poly_equal()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void test_gf4_poly_equal </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l00867">867</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
+
+</div>
+</div>
+<a id="a876baa5d33faf1aac76bc49bb1dab907" name="a876baa5d33faf1aac76bc49bb1dab907"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a876baa5d33faf1aac76bc49bb1dab907">&#9670;&#160;</a></span>test_gf4_poly_get_coefficient()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void test_gf4_poly_get_coefficient </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l00266">266</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
+
+</div>
+</div>
+<a id="a4b4ea06fef21e0258897f27594d4c201" name="a4b4ea06fef21e0258897f27594d4c201"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b4ea06fef21e0258897f27594d4c201">&#9670;&#160;</a></span>test_gf4_poly_get_degree()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void test_gf4_poly_get_degree </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l00958">958</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
+
+</div>
+</div>
+<a id="a637fecd4c4a3be051ea727d42c93c9b2" name="a637fecd4c4a3be051ea727d42c93c9b2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a637fecd4c4a3be051ea727d42c93c9b2">&#9670;&#160;</a></span>test_gf4_poly_init_zero()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void test_gf4_poly_init_zero </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l00169">169</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
+
+</div>
+</div>
+<a id="a38248b405a51457377910a505169c975" name="a38248b405a51457377910a505169c975"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a38248b405a51457377910a505169c975">&#9670;&#160;</a></span>test_gf4_poly_invert_slow()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void test_gf4_poly_invert_slow </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l00842">842</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
+
+</div>
+</div>
+<a id="a5dace26f83589e53fab0481d3f9837ea" name="a5dace26f83589e53fab0481d3f9837ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5dace26f83589e53fab0481d3f9837ea">&#9670;&#160;</a></span>test_gf4_poly_is_zero()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void test_gf4_poly_is_zero </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l00848">848</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
+
+</div>
+</div>
+<a id="a1aff91f53a2ad5f3e54f908b75b7a637" name="a1aff91f53a2ad5f3e54f908b75b7a637"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1aff91f53a2ad5f3e54f908b75b7a637">&#9670;&#160;</a></span>test_gf4_poly_mul()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void test_gf4_poly_mul </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l00605">605</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
+
+</div>
+</div>
+<a id="a21492c63816799ef23a9bc950b1b0098" name="a21492c63816799ef23a9bc950b1b0098"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a21492c63816799ef23a9bc950b1b0098">&#9670;&#160;</a></span>test_gf4_poly_set_coefficient()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void test_gf4_poly_set_coefficient </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l00292">292</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
+
+</div>
+</div>
+<a id="a527ac5e3ebae0532feaf71a6c8353964" name="a527ac5e3ebae0532feaf71a6c8353964"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a527ac5e3ebae0532feaf71a6c8353964">&#9670;&#160;</a></span>test_gf4_poly_zero_out()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void test_gf4_poly_zero_out </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l00185">185</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
+
+</div>
+</div>
+<a id="aae8294a9a4ec59a1db58d3779d2cda13" name="aae8294a9a4ec59a1db58d3779d2cda13"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae8294a9a4ec59a1db58d3779d2cda13">&#9670;&#160;</a></span>test_gf4_square_matrix_init_cyclic_matrix()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void test_gf4_square_matrix_init_cyclic_matrix </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l01124">1124</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
 
 </div>
 </div>
@@ -328,26 +853,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l00023">23</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
-
-</div>
-</div>
-<a id="a2cfb17d4f244d1ff3798f1e9aa69f848" name="a2cfb17d4f244d1ff3798f1e9aa69f848"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2cfb17d4f244d1ff3798f1e9aa69f848">&#9670;&#160;</a></span>test_utils_hamming_weight()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void test_utils_hamming_weight </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l00092">92</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tests_8c_source.html#l00059">59</a> of file <a class="el" href="tests_8c_source.html">tests.c</a>.</p>
 
 </div>
 </div>
@@ -357,7 +863,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="tests_8h.html">tests.h</a></li>
-    <li class="footer">Generated on Fri May 12 2023 15:19:20 for QC-MDPC McEliece cryptosystem over GF(4) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.6 </li>
+    <li class="footer">Generated on Mon Aug 28 2023 12:46:14 for QC-MDPC McEliece cryptosystem over GF(4) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.6 </li>
   </ul>
 </div>
 </body>

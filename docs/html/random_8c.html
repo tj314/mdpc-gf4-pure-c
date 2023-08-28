@@ -110,18 +110,23 @@ Functions</h2></td></tr>
 <tr class="memitem:abca07b79870ee356a4e00a4c146d870d"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="random_8c.html#abca07b79870ee356a4e00a4c146d870d">random_from_range</a> (size_t low_bound_inclusive, size_t top_bound_inclusive)</td></tr>
 <tr class="memdesc:abca07b79870ee356a4e00a4c146d870d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return an unsigned integer within given range.  <br /></td></tr>
 <tr class="separator:abca07b79870ee356a4e00a4c146d870d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ae976183f23da42729741067a2bfe39"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="random_8c.html#a4ae976183f23da42729741067a2bfe39">random_gf4_poly</a> (<a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *poly, size_t size)</td></tr>
-<tr class="memdesc:a4ae976183f23da42729741067a2bfe39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a random polynomial.  <br /></td></tr>
-<tr class="separator:a4ae976183f23da42729741067a2bfe39"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a39002a8e6e2a40cb076e86c4fda9f3cb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="random_8c.html#a39002a8e6e2a40cb076e86c4fda9f3cb">random_weighted_gf4_poly</a> (<a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *poly, size_t size, size_t weight)</td></tr>
-<tr class="memdesc:a39002a8e6e2a40cb076e86c4fda9f3cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a polynomial of given weight.  <br /></td></tr>
-<tr class="separator:a39002a8e6e2a40cb076e86c4fda9f3cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a71628dbcbffcacc8e9c7b12766800877"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="random_8c.html#a71628dbcbffcacc8e9c7b12766800877">random_weighted_gf4_poly_pairs_of_ones</a> (<a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *poly, size_t size, size_t weight, size_t distance)</td></tr>
-<tr class="memdesc:a71628dbcbffcacc8e9c7b12766800877"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a polynomial of given weight such that at least weight/2 ones are placed exactly distance apart.  <br /></td></tr>
-<tr class="separator:a71628dbcbffcacc8e9c7b12766800877"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d7e21b0b5c6044c9d601b90cb659280"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="random_8c.html#a6d7e21b0b5c6044c9d601b90cb659280">random_weighted_gf4_poly_pairs_of_one_alpha</a> (<a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *poly, size_t size, size_t weight, size_t distance)</td></tr>
-<tr class="memdesc:a6d7e21b0b5c6044c9d601b90cb659280"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a polynomial of given weight such that at least weight/2 pairs of 1 and (a+1) are placed exactly distance apart.  <br /></td></tr>
-<tr class="separator:a6d7e21b0b5c6044c9d601b90cb659280"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a964bd6a68eb3e4267d334b8dd9e3c68d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="random_8c.html#a964bd6a68eb3e4267d334b8dd9e3c68d">random_gf4_array</a> (<a class="el" href="structgf4__array__t.html">gf4_array_t</a> *array, size_t size)</td></tr>
+<tr class="memdesc:a964bd6a68eb3e4267d334b8dd9e3c68d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a random array.  <br /></td></tr>
+<tr class="separator:a964bd6a68eb3e4267d334b8dd9e3c68d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3dec54ba55f1455d1ac9a25b745edd6e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="random_8c.html#a3dec54ba55f1455d1ac9a25b745edd6e">random_weighted_gf4_array</a> (<a class="el" href="structgf4__array__t.html">gf4_array_t</a> *array, size_t size, size_t weight)</td></tr>
+<tr class="memdesc:a3dec54ba55f1455d1ac9a25b745edd6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a random array of given hamming weight.  <br /></td></tr>
+<tr class="separator:a3dec54ba55f1455d1ac9a25b745edd6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae89632949684d0998a948af97891aab1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="random_8c.html#ae89632949684d0998a948af97891aab1">random_weighted_gf4_vector_pairs_common</a> (<a class="el" href="structgf4__array__t.html">gf4_array_t</a> *vector, size_t size, size_t weight, size_t distance, <a class="el" href="gf4_8h.html#af2295996285576dc9de4912e6daa008d">gf4_t</a> first, <a class="el" href="gf4_8h.html#af2295996285576dc9de4912e6daa008d">gf4_t</a> second)</td></tr>
+<tr class="separator:ae89632949684d0998a948af97891aab1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a965046b08b458c1155e6c723b426c20c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="random_8c.html#a965046b08b458c1155e6c723b426c20c">random_weighted_gf4_array_pairs_of_ones</a> (<a class="el" href="structgf4__array__t.html">gf4_array_t</a> *array, size_t size, size_t weight, size_t distance)</td></tr>
+<tr class="memdesc:a965046b08b458c1155e6c723b426c20c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a array of given weight such that at least weight/2 ones are placed exactly distance apart.  <br /></td></tr>
+<tr class="separator:a965046b08b458c1155e6c723b426c20c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98ed8ce4a3e7e567b62f41d7a80dc63c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="random_8c.html#a98ed8ce4a3e7e567b62f41d7a80dc63c">random_weighted_gf4_array_pairs_of_one_alpha</a> (<a class="el" href="structgf4__array__t.html">gf4_array_t</a> *array, size_t size, size_t weight, size_t distance)</td></tr>
+<tr class="memdesc:a98ed8ce4a3e7e567b62f41d7a80dc63c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a array of given weight such that at least weight/2 pairs of 1 and alpha are placed exactly distance apart.  <br /></td></tr>
+<tr class="separator:a98ed8ce4a3e7e567b62f41d7a80dc63c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a347ac0f486e3a7fcdc2836bef2abcff4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="random_8c.html#a347ac0f486e3a7fcdc2836bef2abcff4">random_weighted_gf4_array_pairs_of_alpha_one</a> (<a class="el" href="structgf4__array__t.html">gf4_array_t</a> *array, size_t size, size_t weight, size_t distance)</td></tr>
+<tr class="memdesc:a347ac0f486e3a7fcdc2836bef2abcff4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate a array of given weight such that at least weight/2 pairs of alpha and 1 are placed exactly distance apart.  <br /></td></tr>
+<tr class="separator:a347ac0f486e3a7fcdc2836bef2abcff4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="aa3f6730111d61328826300dfc06c95e9" name="aa3f6730111d61328826300dfc06c95e9"></a>
@@ -141,7 +146,7 @@ Functions</h2></td></tr>
 
 <p>Force another call to srand using current time. </p>
 
-<p class="definition">Definition at line <a class="el" href="random_8c_source.html#l00012">12</a> of file <a class="el" href="random_8c_source.html">random.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="random_8c_source.html#l00030">30</a> of file <a class="el" href="random_8c_source.html">random.c</a>.</p>
 
 </div>
 </div>
@@ -182,21 +187,21 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>an unsigned integer i s. t. low_bound_inclusive &lt;= i &lt;= top_bound_inclusive </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="random_8c_source.html#l00017">17</a> of file <a class="el" href="random_8c_source.html">random.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="random_8c_source.html#l00035">35</a> of file <a class="el" href="random_8c_source.html">random.c</a>.</p>
 
 </div>
 </div>
-<a id="a4ae976183f23da42729741067a2bfe39" name="a4ae976183f23da42729741067a2bfe39"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4ae976183f23da42729741067a2bfe39">&#9670;&#160;</a></span>random_gf4_poly()</h2>
+<a id="a964bd6a68eb3e4267d334b8dd9e3c68d" name="a964bd6a68eb3e4267d334b8dd9e3c68d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a964bd6a68eb3e4267d334b8dd9e3c68d">&#9670;&#160;</a></span>random_gf4_array()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void random_gf4_poly </td>
+          <td class="memname">void random_gf4_array </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *&#160;</td>
-          <td class="paramname"><em>poly</em>, </td>
+          <td class="paramtype"><a class="el" href="structgf4__array__t.html">gf4_array_t</a> *&#160;</td>
+          <td class="paramname"><em>array</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -212,18 +217,17 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Generate a random polynomial. </p>
+<p>Generate a random array. </p>
 <p>May also call <a class="el" href="random_8h.html#af2e80b8de6ec1840dac4668ca5a38606" title="Initialize random using srand with current time.">random_init()</a>. poly must be initialized beforehand.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">poly</td><td>pointer to a polynomial to store the result in </td></tr>
-    <tr><td class="paramname">size</td><td>maximum size of the polynomial, size must be less or equal to the polynomial-&gt;capacity </td></tr>
-    <tr><td class="paramname">weight</td><td>number of nonzero coefficients, weight &lt;= size </td></tr>
+    <tr><td class="paramname">array</td><td>pointer to a array to store the result in </td></tr>
+    <tr><td class="paramname">size</td><td>maximum size of the array, size must be less or equal to the polynomial-&gt;capacity </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="random_8c_source.html#l00023">23</a> of file <a class="el" href="random_8c_source.html">random.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="random_8c_source.html#l00041">41</a> of file <a class="el" href="random_8c_source.html">random.c</a>.</p>
 
 </div>
 </div>
@@ -245,21 +249,21 @@ Functions</h2></td></tr>
 <p>Initialize random using srand with current time. </p>
 <p>Ensures that srand is called at most once during each program execution. This function is not thread safe. This function doesn't need to be called explicitly. </p>
 
-<p class="definition">Definition at line <a class="el" href="random_8c_source.html#l00003">3</a> of file <a class="el" href="random_8c_source.html">random.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="random_8c_source.html#l00021">21</a> of file <a class="el" href="random_8c_source.html">random.c</a>.</p>
 
 </div>
 </div>
-<a id="a39002a8e6e2a40cb076e86c4fda9f3cb" name="a39002a8e6e2a40cb076e86c4fda9f3cb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a39002a8e6e2a40cb076e86c4fda9f3cb">&#9670;&#160;</a></span>random_weighted_gf4_poly()</h2>
+<a id="a3dec54ba55f1455d1ac9a25b745edd6e" name="a3dec54ba55f1455d1ac9a25b745edd6e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3dec54ba55f1455d1ac9a25b745edd6e">&#9670;&#160;</a></span>random_weighted_gf4_array()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void random_weighted_gf4_poly </td>
+          <td class="memname">void random_weighted_gf4_array </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *&#160;</td>
-          <td class="paramname"><em>poly</em>, </td>
+          <td class="paramtype"><a class="el" href="structgf4__array__t.html">gf4_array_t</a> *&#160;</td>
+          <td class="paramname"><em>array</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -281,32 +285,32 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Generate a polynomial of given weight. </p>
+<p>Generate a random array of given hamming weight. </p>
 <p>May also call <a class="el" href="random_8h.html#af2e80b8de6ec1840dac4668ca5a38606" title="Initialize random using srand with current time.">random_init()</a>. poly must be initialized beforehand.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">poly</td><td>pointer to a polynomial to store the result in </td></tr>
-    <tr><td class="paramname">size</td><td>maximum size of the polynomial, size &lt;= polynomial-&gt;capacity </td></tr>
-    <tr><td class="paramname">weight</td><td>number of nonzero coefficients, weight &lt;= size </td></tr>
+    <tr><td class="paramname">array</td><td>pointer to a array to store the result in </td></tr>
+    <tr><td class="paramname">size</td><td>maximum size of the array, size &lt;= array-&gt;capacity </td></tr>
+    <tr><td class="paramname">weight</td><td>number of nonzero items in the array, weight &lt;= size </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="random_8c_source.html#l00038">38</a> of file <a class="el" href="random_8c_source.html">random.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="random_8c_source.html#l00049">49</a> of file <a class="el" href="random_8c_source.html">random.c</a>.</p>
 
 </div>
 </div>
-<a id="a6d7e21b0b5c6044c9d601b90cb659280" name="a6d7e21b0b5c6044c9d601b90cb659280"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6d7e21b0b5c6044c9d601b90cb659280">&#9670;&#160;</a></span>random_weighted_gf4_poly_pairs_of_one_alpha()</h2>
+<a id="a347ac0f486e3a7fcdc2836bef2abcff4" name="a347ac0f486e3a7fcdc2836bef2abcff4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a347ac0f486e3a7fcdc2836bef2abcff4">&#9670;&#160;</a></span>random_weighted_gf4_array_pairs_of_alpha_one()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void random_weighted_gf4_poly_pairs_of_one_alpha </td>
+          <td class="memname">void random_weighted_gf4_array_pairs_of_alpha_one </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *&#160;</td>
-          <td class="paramname"><em>poly</em>, </td>
+          <td class="paramtype"><a class="el" href="structgf4__array__t.html">gf4_array_t</a> *&#160;</td>
+          <td class="paramname"><em>array</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -334,33 +338,33 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Generate a polynomial of given weight such that at least weight/2 pairs of 1 and (a+1) are placed exactly distance apart. </p>
-<p>poly must be initialized beforehand.</p>
+<p>Generate a array of given weight such that at least weight/2 pairs of alpha and 1 are placed exactly distance apart. </p>
+<p>array must be initialized beforehand.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">poly</td><td>pointer to a polynomial to store the result in </td></tr>
-    <tr><td class="paramname">size</td><td>maximum size of the polynomial, size &lt;= polynomial-&gt;capacity </td></tr>
-    <tr><td class="paramname">weight</td><td>number of nonzero coefficients, weight &lt;= size </td></tr>
+    <tr><td class="paramname">array</td><td>pointer to a array to store the result in </td></tr>
+    <tr><td class="paramname">size</td><td>maximum size of the array, size &lt;= array-&gt;capacity </td></tr>
+    <tr><td class="paramname">weight</td><td>number of nonzero items in the array, weight &lt;= size </td></tr>
     <tr><td class="paramname">distance</td><td>distance between pairs </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="random_8c_source.html#l00071">71</a> of file <a class="el" href="random_8c_source.html">random.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="random_8c_source.html#l00091">91</a> of file <a class="el" href="random_8c_source.html">random.c</a>.</p>
 
 </div>
 </div>
-<a id="a71628dbcbffcacc8e9c7b12766800877" name="a71628dbcbffcacc8e9c7b12766800877"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a71628dbcbffcacc8e9c7b12766800877">&#9670;&#160;</a></span>random_weighted_gf4_poly_pairs_of_ones()</h2>
+<a id="a98ed8ce4a3e7e567b62f41d7a80dc63c" name="a98ed8ce4a3e7e567b62f41d7a80dc63c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98ed8ce4a3e7e567b62f41d7a80dc63c">&#9670;&#160;</a></span>random_weighted_gf4_array_pairs_of_one_alpha()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void random_weighted_gf4_poly_pairs_of_ones </td>
+          <td class="memname">void random_weighted_gf4_array_pairs_of_one_alpha </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *&#160;</td>
-          <td class="paramname"><em>poly</em>, </td>
+          <td class="paramtype"><a class="el" href="structgf4__array__t.html">gf4_array_t</a> *&#160;</td>
+          <td class="paramname"><em>array</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -388,19 +392,127 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Generate a polynomial of given weight such that at least weight/2 ones are placed exactly distance apart. </p>
-<p>poly must be initialized beforehand.</p>
+<p>Generate a array of given weight such that at least weight/2 pairs of 1 and alpha are placed exactly distance apart. </p>
+<p>array must be initialized beforehand.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">poly</td><td>pointer to a polynomial to store the result in </td></tr>
-    <tr><td class="paramname">size</td><td>maximum size of the polynomial, size &lt;= polynomial-&gt;capacity </td></tr>
-    <tr><td class="paramname">weight</td><td>number of nonzero coefficients, weight &lt;= size </td></tr>
+    <tr><td class="paramname">array</td><td>pointer to a array to store the result in </td></tr>
+    <tr><td class="paramname">size</td><td>maximum size of the array, size &lt;= array-&gt;capacity </td></tr>
+    <tr><td class="paramname">weight</td><td>number of nonzero items in the array, weight &lt;= size </td></tr>
     <tr><td class="paramname">distance</td><td>distance between pairs </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="random_8c_source.html#l00060">60</a> of file <a class="el" href="random_8c_source.html">random.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="random_8c_source.html#l00087">87</a> of file <a class="el" href="random_8c_source.html">random.c</a>.</p>
+
+</div>
+</div>
+<a id="a965046b08b458c1155e6c723b426c20c" name="a965046b08b458c1155e6c723b426c20c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a965046b08b458c1155e6c723b426c20c">&#9670;&#160;</a></span>random_weighted_gf4_array_pairs_of_ones()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void random_weighted_gf4_array_pairs_of_ones </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structgf4__array__t.html">gf4_array_t</a> *&#160;</td>
+          <td class="paramname"><em>array</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>weight</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>distance</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Generate a array of given weight such that at least weight/2 ones are placed exactly distance apart. </p>
+<p>array must be initialized beforehand.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">array</td><td>pointer to a array to store the result in </td></tr>
+    <tr><td class="paramname">size</td><td>maximum size of the array, size &lt;= array-&gt;capacity </td></tr>
+    <tr><td class="paramname">weight</td><td>number of nonzero items in the array, weight &lt;= size </td></tr>
+    <tr><td class="paramname">distance</td><td>distance between pairs </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="random_8c_source.html#l00083">83</a> of file <a class="el" href="random_8c_source.html">random.c</a>.</p>
+
+</div>
+</div>
+<a id="ae89632949684d0998a948af97891aab1" name="ae89632949684d0998a948af97891aab1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae89632949684d0998a948af97891aab1">&#9670;&#160;</a></span>random_weighted_gf4_vector_pairs_common()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void random_weighted_gf4_vector_pairs_common </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structgf4__array__t.html">gf4_array_t</a> *&#160;</td>
+          <td class="paramname"><em>vector</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>weight</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>distance</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="gf4_8h.html#af2295996285576dc9de4912e6daa008d">gf4_t</a>&#160;</td>
+          <td class="paramname"><em>first</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="gf4_8h.html#af2295996285576dc9de4912e6daa008d">gf4_t</a>&#160;</td>
+          <td class="paramname"><em>second</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="random_8c_source.html#l00066">66</a> of file <a class="el" href="random_8c_source.html">random.c</a>.</p>
 
 </div>
 </div>
@@ -410,7 +522,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="random_8c.html">random.c</a></li>
-    <li class="footer">Generated on Fri May 12 2023 15:19:20 for QC-MDPC McEliece cryptosystem over GF(4) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.6 </li>
+    <li class="footer">Generated on Mon Aug 28 2023 12:46:14 for QC-MDPC McEliece cryptosystem over GF(4) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.6 </li>
   </ul>
 </div>
 </body>

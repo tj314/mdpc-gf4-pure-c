@@ -99,16 +99,18 @@ $(document).ready(function(){initNavTree('dec_8h.html',''); initResizable(); });
 <p>Decoders and associated functions.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="gf4_8h_source.html">gf4.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="gf4__array_8h_source.html">gf4_array.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="gf4__poly_8h_source.html">gf4_poly.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="contexts_8h_source.html">contexts.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="utils_8h_source.html">utils.h</a>&quot;</code><br />
 </div>
 <p><a href="dec_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a5344a62fb89a99962989127fe8406556"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dec_8h.html#a5344a62fb89a99962989127fe8406556">dec_calculate_syndrome</a> (<a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *out_syndrome, <a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *in_vector, <a class="el" href="structdecoding__context__t.html">decoding_context_t</a> *ctx)</td></tr>
-<tr class="memdesc:a5344a62fb89a99962989127fe8406556"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the syndrome of a vector.  <br /></td></tr>
-<tr class="separator:a5344a62fb89a99962989127fe8406556"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0a7b0913bd4d4c824f885b45c9c2f9c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dec_8h.html#ad0a7b0913bd4d4c824f885b45c9c2f9c">dec_calculate_syndrome</a> (<a class="el" href="structgf4__array__t.html">gf4_array_t</a> *out_syndrome, <a class="el" href="structgf4__array__t.html">gf4_array_t</a> *in_message, <a class="el" href="structdecoding__context__t.html">decoding_context_t</a> *ctx)</td></tr>
+<tr class="memdesc:ad0a7b0913bd4d4c824f885b45c9c2f9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the syndrome of an array.  <br /></td></tr>
+<tr class="separator:ad0a7b0913bd4d4c824f885b45c9c2f9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a849b1a3de5ae3e5bd05f7ce80564a149"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dec_8h.html#a849b1a3de5ae3e5bd05f7ce80564a149">dec_calculate_threshold_0</a> (long syndrome_weight)</td></tr>
 <tr class="memdesc:a849b1a3de5ae3e5bd05f7ce80564a149"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate adaptive threshold.  <br /></td></tr>
 <tr class="separator:a849b1a3de5ae3e5bd05f7ce80564a149"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -127,30 +129,27 @@ Functions</h2></td></tr>
 <tr class="memitem:a80dea66abf66ca4e7b24c03be09c9932"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dec_8h.html#a80dea66abf66ca4e7b24c03be09c9932">dec_calculate_threshold_5</a> (long syndrome_weight)</td></tr>
 <tr class="memdesc:a80dea66abf66ca4e7b24c03be09c9932"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate adaptive threshold.  <br /></td></tr>
 <tr class="separator:a80dea66abf66ca4e7b24c03be09c9932"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0288b8148b9075c4f707849c59eeb786"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dec_8h.html#a0288b8148b9075c4f707849c59eeb786">dec_calculate_new_sigma</a> (<a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *h_block, <a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *syndrome, long syndrome_weight, <a class="el" href="gf4_8h.html#af2295996285576dc9de4912e6daa008d">gf4_t</a> a, size_t actual_j, <a class="el" href="structdecoding__context__t.html">decoding_context_t</a> *ctx)</td></tr>
-<tr class="memdesc:a0288b8148b9075c4f707849c59eeb786"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate sigma_j.  <br /></td></tr>
-<tr class="separator:a0288b8148b9075c4f707849c59eeb786"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab2005690a723bdeb4c9c375e9cbffd5e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dec_8h.html#ab2005690a723bdeb4c9c375e9cbffd5e">dec_flip_symbol</a> (<a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *h_block, <a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *syndrome, <a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *maybe_decoded, <a class="el" href="gf4_8h.html#af2295996285576dc9de4912e6daa008d">gf4_t</a> a, size_t actual_j, size_t j, <a class="el" href="structdecoding__context__t.html">decoding_context_t</a> *ctx)</td></tr>
-<tr class="memdesc:ab2005690a723bdeb4c9c375e9cbffd5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flip the symbol in the output vector and update the syndrome.  <br /></td></tr>
-<tr class="separator:ab2005690a723bdeb4c9c375e9cbffd5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aba38f37fc15712661ce45d7d9f0f08ff"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dec_8h.html#aba38f37fc15712661ce45d7d9f0f08ff">dec_decode_symbol_flipping</a> (<a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *maybe_decoded, <a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *in_vector, size_t num_iterations, <a class="el" href="structdecoding__context__t.html">decoding_context_t</a> *ctx)</td></tr>
-<tr class="memdesc:aba38f37fc15712661ce45d7d9f0f08ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform basic symbol-flipping decoding.  <br /></td></tr>
-<tr class="separator:aba38f37fc15712661ce45d7d9f0f08ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaddd256952167430fae4d979b247d017"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dec_8h.html#aaddd256952167430fae4d979b247d017">dec_decode_symbol_flipping_2</a> (<a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *maybe_decoded, <a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *in_vector, size_t num_iterations, <a class="el" href="structdecoding__context__t.html">decoding_context_t</a> *ctx)</td></tr>
-<tr class="memdesc:aaddd256952167430fae4d979b247d017"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform basic symbol-flipping decoding, version 2.  <br /></td></tr>
-<tr class="separator:aaddd256952167430fae4d979b247d017"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a280ce87477074a22223370d2606d0453"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dec_8h.html#a280ce87477074a22223370d2606d0453">dec_decode_symbol_flipping_delta</a> (<a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *maybe_decoded, <a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *in_vector, size_t num_iterations, <a class="el" href="structdecoding__context__t.html">decoding_context_t</a> *ctx)</td></tr>
-<tr class="memdesc:a280ce87477074a22223370d2606d0453"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform symbol-flipping decoding with delta param.  <br /></td></tr>
-<tr class="separator:a280ce87477074a22223370d2606d0453"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab7d333585a2d5f33278459f94179d70d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dec_8h.html#ab7d333585a2d5f33278459f94179d70d">dec_decode_symbol_flipping_threshold</a> (<a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *maybe_decoded, <a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *in_vector, size_t num_iterations, <a class="el" href="structdecoding__context__t.html">decoding_context_t</a> *ctx)</td></tr>
-<tr class="memdesc:ab7d333585a2d5f33278459f94179d70d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform symbol-flipping decoding with adaptive threshold.  <br /></td></tr>
-<tr class="separator:ab7d333585a2d5f33278459f94179d70d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af9d43c2e505405d06889c89a72bd473e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dec_8h.html#af9d43c2e505405d06889c89a72bd473e">dec_decode_symbol_flipping_bg</a> (<a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *maybe_decoded, <a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *in_vector, size_t num_iterations, <a class="el" href="structdecoding__context__t.html">decoding_context_t</a> *ctx)</td></tr>
-<tr class="memdesc:af9d43c2e505405d06889c89a72bd473e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform symbol-flipping with black and gray symbols.  <br /></td></tr>
-<tr class="separator:af9d43c2e505405d06889c89a72bd473e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab579b035d9aac395b82557627e4b431c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dec_8h.html#ab579b035d9aac395b82557627e4b431c">dec_decrypt</a> (<a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *out_decrypted, <a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *in_encrypted, bool(*decode)(<a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *, <a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *, size_t, <a class="el" href="structdecoding__context__t.html">decoding_context_t</a> *), size_t num_iterations, <a class="el" href="structdecoding__context__t.html">decoding_context_t</a> *ctx)</td></tr>
-<tr class="memdesc:ab579b035d9aac395b82557627e4b431c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decrypt an encrypted message using specified decoder.  <br /></td></tr>
-<tr class="separator:ab579b035d9aac395b82557627e4b431c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab65bc87897e3d73279385ebba72e643"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dec_8h.html#aab65bc87897e3d73279385ebba72e643">dec_calculate_new_sigma</a> (<a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *h_block, <a class="el" href="structgf4__array__t.html">gf4_array_t</a> *syndrome, long syndrome_weight, <a class="el" href="gf4_8h.html#af2295996285576dc9de4912e6daa008d">gf4_t</a> a, size_t actual_j, <a class="el" href="structdecoding__context__t.html">decoding_context_t</a> *ctx)</td></tr>
+<tr class="memdesc:aab65bc87897e3d73279385ebba72e643"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate sigma_j.  <br /></td></tr>
+<tr class="separator:aab65bc87897e3d73279385ebba72e643"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a786bcf87f1df359f92bf5b11bb722b9e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dec_8h.html#a786bcf87f1df359f92bf5b11bb722b9e">dec_flip_symbol</a> (<a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *h_block, <a class="el" href="structgf4__array__t.html">gf4_array_t</a> *syndrome, <a class="el" href="structgf4__array__t.html">gf4_array_t</a> *maybe_decoded, <a class="el" href="gf4_8h.html#af2295996285576dc9de4912e6daa008d">gf4_t</a> a, size_t actual_j, size_t j, <a class="el" href="structdecoding__context__t.html">decoding_context_t</a> *ctx)</td></tr>
+<tr class="memdesc:a786bcf87f1df359f92bf5b11bb722b9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flip the symbol in the output vector and update the syndrome.  <br /></td></tr>
+<tr class="separator:a786bcf87f1df359f92bf5b11bb722b9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefea04696d41e55b2469c156013c3595"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dec_8h.html#aefea04696d41e55b2469c156013c3595">dec_decode_symbol_flipping</a> (<a class="el" href="structgf4__array__t.html">gf4_array_t</a> *maybe_decoded, <a class="el" href="structgf4__array__t.html">gf4_array_t</a> *in_array, size_t num_iterations, <a class="el" href="structdecoding__context__t.html">decoding_context_t</a> *ctx)</td></tr>
+<tr class="memdesc:aefea04696d41e55b2469c156013c3595"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform basic symbol-flipping decoding.  <br /></td></tr>
+<tr class="separator:aefea04696d41e55b2469c156013c3595"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab266115c607358b7c6c52532a3c708ba"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dec_8h.html#ab266115c607358b7c6c52532a3c708ba">dec_decode_symbol_flipping_delta</a> (<a class="el" href="structgf4__array__t.html">gf4_array_t</a> *maybe_decoded, <a class="el" href="structgf4__array__t.html">gf4_array_t</a> *in_array, size_t num_iterations, <a class="el" href="structdecoding__context__t.html">decoding_context_t</a> *ctx)</td></tr>
+<tr class="memdesc:ab266115c607358b7c6c52532a3c708ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform symbol-flipping decoding with delta param.  <br /></td></tr>
+<tr class="separator:ab266115c607358b7c6c52532a3c708ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7787a17d5f6722d185984c2fa9dfccb9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dec_8h.html#a7787a17d5f6722d185984c2fa9dfccb9">dec_decode_symbol_flipping_threshold</a> (<a class="el" href="structgf4__array__t.html">gf4_array_t</a> *maybe_decoded, <a class="el" href="structgf4__array__t.html">gf4_array_t</a> *in_array, size_t num_iterations, <a class="el" href="structdecoding__context__t.html">decoding_context_t</a> *ctx)</td></tr>
+<tr class="memdesc:a7787a17d5f6722d185984c2fa9dfccb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform symbol-flipping decoding with adaptive threshold.  <br /></td></tr>
+<tr class="separator:a7787a17d5f6722d185984c2fa9dfccb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc8bec5d7d13f1b36000108915bdda2f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dec_8h.html#abc8bec5d7d13f1b36000108915bdda2f">dec_decode_symbol_flipping_bg</a> (<a class="el" href="structgf4__array__t.html">gf4_array_t</a> *maybe_decoded, <a class="el" href="structgf4__array__t.html">gf4_array_t</a> *in_array, size_t num_iterations, <a class="el" href="structdecoding__context__t.html">decoding_context_t</a> *ctx)</td></tr>
+<tr class="memdesc:abc8bec5d7d13f1b36000108915bdda2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform symbol-flipping with black and gray symbols.  <br /></td></tr>
+<tr class="separator:abc8bec5d7d13f1b36000108915bdda2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a373d0f3ba40a226dd9cb2b14ac068351"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="dec_8h.html#a373d0f3ba40a226dd9cb2b14ac068351">dec_decrypt</a> (<a class="el" href="structgf4__array__t.html">gf4_array_t</a> *out_decrypted, <a class="el" href="structgf4__array__t.html">gf4_array_t</a> *in_encrypted, bool(*decode)(<a class="el" href="structgf4__array__t.html">gf4_array_t</a> *, <a class="el" href="structgf4__array__t.html">gf4_array_t</a> *, size_t, <a class="el" href="structdecoding__context__t.html">decoding_context_t</a> *), size_t num_iterations, <a class="el" href="structdecoding__context__t.html">decoding_context_t</a> *ctx)</td></tr>
+<tr class="memdesc:a373d0f3ba40a226dd9cb2b14ac068351"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decrypt an encrypted message using specified decoder.  <br /></td></tr>
+<tr class="separator:a373d0f3ba40a226dd9cb2b14ac068351"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Decoders and associated functions. </p>
@@ -159,8 +158,8 @@ Functions</h2></td></tr>
 
 <p class="definition">Definition in file <a class="el" href="dec_8h_source.html">dec.h</a>.</p>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="a0288b8148b9075c4f707849c59eeb786" name="a0288b8148b9075c4f707849c59eeb786"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0288b8148b9075c4f707849c59eeb786">&#9670;&#160;</a></span>dec_calculate_new_sigma()</h2>
+<a id="aab65bc87897e3d73279385ebba72e643" name="aab65bc87897e3d73279385ebba72e643"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab65bc87897e3d73279385ebba72e643">&#9670;&#160;</a></span>dec_calculate_new_sigma()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -174,7 +173,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structgf4__array__t.html">gf4_array_t</a> *&#160;</td>
           <td class="paramname"><em>syndrome</em>, </td>
         </tr>
         <tr>
@@ -225,12 +224,12 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>calculated sigma_j </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="dec__utils_8c_source.html#l00026">26</a> of file <a class="el" href="dec__utils_8c_source.html">dec_utils.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dec__utils_8c_source.html#l00037">37</a> of file <a class="el" href="dec__utils_8c_source.html">dec_utils.c</a>.</p>
 
 </div>
 </div>
-<a id="a5344a62fb89a99962989127fe8406556" name="a5344a62fb89a99962989127fe8406556"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5344a62fb89a99962989127fe8406556">&#9670;&#160;</a></span>dec_calculate_syndrome()</h2>
+<a id="ad0a7b0913bd4d4c824f885b45c9c2f9c" name="ad0a7b0913bd4d4c824f885b45c9c2f9c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0a7b0913bd4d4c824f885b45c9c2f9c">&#9670;&#160;</a></span>dec_calculate_syndrome()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -238,14 +237,14 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void dec_calculate_syndrome </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structgf4__array__t.html">gf4_array_t</a> *&#160;</td>
           <td class="paramname"><em>out_syndrome</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *&#160;</td>
-          <td class="paramname"><em>in_vector</em>, </td>
+          <td class="paramtype"><a class="el" href="structgf4__array__t.html">gf4_array_t</a> *&#160;</td>
+          <td class="paramname"><em>in_message</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -261,18 +260,18 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Calculate the syndrome of a vector. </p>
-<p>out_syndrome must be initialized in advance. It must have capacity of at least block_size. It must be a zero polynomial.</p>
+<p>Calculate the syndrome of an array. </p>
+<p>out_syndrome must be initialized in advance. It must have capacity of at least block_size. It must be a zero vector.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">out_syndrome</td><td>pointer to a polynomial that will be used to store the calculated syndrome </td></tr>
-    <tr><td class="paramname">in_vector</td><td>pointer to a polynomial representing a vector </td></tr>
+    <tr><td class="paramname">out_syndrome</td><td>pointer to an array that will be used to store the calculated syndrome </td></tr>
+    <tr><td class="paramname">in_message</td><td>pointer to an array </td></tr>
     <tr><td class="paramname">ctx</td><td>a valid decoding context </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="dec__utils_8c_source.html#l00003">3</a> of file <a class="el" href="dec__utils_8c_source.html">dec_utils.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dec__utils_8c_source.html#l00021">21</a> of file <a class="el" href="dec__utils_8c_source.html">dec_utils.c</a>.</p>
 
 </div>
 </div>
@@ -302,7 +301,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>calculated adaptive threshold. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="dec__threshold_8c_source.html#l00003">3</a> of file <a class="el" href="dec__threshold_8c_source.html">dec_threshold.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dec__threshold_8c_source.html#l00021">21</a> of file <a class="el" href="dec__threshold_8c_source.html">dec_threshold.c</a>.</p>
 
 </div>
 </div>
@@ -332,7 +331,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>calculated adaptive threshold. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="dec__threshold_8c_source.html#l00010">10</a> of file <a class="el" href="dec__threshold_8c_source.html">dec_threshold.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dec__threshold_8c_source.html#l00028">28</a> of file <a class="el" href="dec__threshold_8c_source.html">dec_threshold.c</a>.</p>
 
 </div>
 </div>
@@ -362,7 +361,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>calculated adaptive threshold. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="dec__threshold_8c_source.html#l00017">17</a> of file <a class="el" href="dec__threshold_8c_source.html">dec_threshold.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dec__threshold_8c_source.html#l00035">35</a> of file <a class="el" href="dec__threshold_8c_source.html">dec_threshold.c</a>.</p>
 
 </div>
 </div>
@@ -392,7 +391,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>calculated adaptive threshold. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="dec__threshold_8c_source.html#l00024">24</a> of file <a class="el" href="dec__threshold_8c_source.html">dec_threshold.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dec__threshold_8c_source.html#l00042">42</a> of file <a class="el" href="dec__threshold_8c_source.html">dec_threshold.c</a>.</p>
 
 </div>
 </div>
@@ -422,7 +421,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>calculated adaptive threshold. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="dec__threshold_8c_source.html#l00031">31</a> of file <a class="el" href="dec__threshold_8c_source.html">dec_threshold.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dec__threshold_8c_source.html#l00049">49</a> of file <a class="el" href="dec__threshold_8c_source.html">dec_threshold.c</a>.</p>
 
 </div>
 </div>
@@ -452,12 +451,12 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>calculated adaptive threshold. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="dec__threshold_8c_source.html#l00038">38</a> of file <a class="el" href="dec__threshold_8c_source.html">dec_threshold.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dec__threshold_8c_source.html#l00056">56</a> of file <a class="el" href="dec__threshold_8c_source.html">dec_threshold.c</a>.</p>
 
 </div>
 </div>
-<a id="aba38f37fc15712661ce45d7d9f0f08ff" name="aba38f37fc15712661ce45d7d9f0f08ff"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aba38f37fc15712661ce45d7d9f0f08ff">&#9670;&#160;</a></span>dec_decode_symbol_flipping()</h2>
+<a id="aefea04696d41e55b2469c156013c3595" name="aefea04696d41e55b2469c156013c3595"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aefea04696d41e55b2469c156013c3595">&#9670;&#160;</a></span>dec_decode_symbol_flipping()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -465,14 +464,14 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">bool dec_decode_symbol_flipping </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structgf4__array__t.html">gf4_array_t</a> *&#160;</td>
           <td class="paramname"><em>maybe_decoded</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *&#160;</td>
-          <td class="paramname"><em>in_vector</em>, </td>
+          <td class="paramtype"><a class="el" href="structgf4__array__t.html">gf4_array_t</a> *&#160;</td>
+          <td class="paramname"><em>in_array</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -495,11 +494,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Perform basic symbol-flipping decoding. </p>
-<p>maybe_decoded and in_vector must be initialized in advance and must have capacity at least 2*block_size. ctx must a valid <a class="el" href="structdecoding__context__t.html" title="Structure that holds the private key.">decoding_context_t</a>.</p>
+<p>maybe_decoded and in_array must be initialized in advance and must have capacity at least 2*block_size. ctx must a valid <a class="el" href="structdecoding__context__t.html" title="Structure that holds the private key.">decoding_context_t</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">maybe_decoded</td><td>pointer to a polynomial that will be used to store the decoded message </td></tr>
-    <tr><td class="paramname">in_vector</td><td>pointer to a polynomial representing the encoded message </td></tr>
+    <tr><td class="paramname">maybe_decoded</td><td>pointer to an array that will be used to store the decoded message </td></tr>
+    <tr><td class="paramname">in_array</td><td>pointer to an array representing the encoded message </td></tr>
     <tr><td class="paramname">num_iterations</td><td>number of decoding iterations </td></tr>
     <tr><td class="paramname">ctx</td><td>a valid decoding context </td></tr>
   </table>
@@ -507,69 +506,12 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on successful decoding, false otherwise </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="dec__symbol__flipping_8c_source.html#l00004">4</a> of file <a class="el" href="dec__symbol__flipping_8c_source.html">dec_symbol_flipping.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dec__symbol__flipping_8c_source.html#l00022">22</a> of file <a class="el" href="dec__symbol__flipping_8c_source.html">dec_symbol_flipping.c</a>.</p>
 
 </div>
 </div>
-<a id="aaddd256952167430fae4d979b247d017" name="aaddd256952167430fae4d979b247d017"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaddd256952167430fae4d979b247d017">&#9670;&#160;</a></span>dec_decode_symbol_flipping_2()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool dec_decode_symbol_flipping_2 </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *&#160;</td>
-          <td class="paramname"><em>maybe_decoded</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *&#160;</td>
-          <td class="paramname"><em>in_vector</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>num_iterations</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structdecoding__context__t.html">decoding_context_t</a> *&#160;</td>
-          <td class="paramname"><em>ctx</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Perform basic symbol-flipping decoding, version 2. </p>
-<p>maybe_decoded and in_vector must be initialized in advance and must have capacity at least 2*block_size. ctx must a valid <a class="el" href="structdecoding__context__t.html" title="Structure that holds the private key.">decoding_context_t</a>.</p>
-<p>while symbol flipping thies to maximize w(s) - w(s-a*h_j), this version tries to minimize w(s-a*h_j).</p>
-<p>WARNING This version of SF decoder is DEPRECATED and will be removed. Do not use this!</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">maybe_decoded</td><td>pointer to a polynomial that will be used to store the decoded message </td></tr>
-    <tr><td class="paramname">in_vector</td><td>pointer to a polynomial representing the encoded message </td></tr>
-    <tr><td class="paramname">num_iterations</td><td>number of decoding iterations </td></tr>
-    <tr><td class="paramname">ctx</td><td>a valid decoding context </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true on successful decoding, false otherwise </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="dec__symbol__flipping_8c_source.html#l00212">212</a> of file <a class="el" href="dec__symbol__flipping_8c_source.html">dec_symbol_flipping.c</a>.</p>
-
-</div>
-</div>
-<a id="af9d43c2e505405d06889c89a72bd473e" name="af9d43c2e505405d06889c89a72bd473e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af9d43c2e505405d06889c89a72bd473e">&#9670;&#160;</a></span>dec_decode_symbol_flipping_bg()</h2>
+<a id="abc8bec5d7d13f1b36000108915bdda2f" name="abc8bec5d7d13f1b36000108915bdda2f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc8bec5d7d13f1b36000108915bdda2f">&#9670;&#160;</a></span>dec_decode_symbol_flipping_bg()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -577,14 +519,14 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">bool dec_decode_symbol_flipping_bg </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structgf4__array__t.html">gf4_array_t</a> *&#160;</td>
           <td class="paramname"><em>maybe_decoded</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *&#160;</td>
-          <td class="paramname"><em>in_vector</em>, </td>
+          <td class="paramtype"><a class="el" href="structgf4__array__t.html">gf4_array_t</a> *&#160;</td>
+          <td class="paramname"><em>in_array</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -607,13 +549,13 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Perform symbol-flipping with black and gray symbols. </p>
-<p>maybe_decoded and in_vector must be initialized in advance and must have capacity = 2*block_size. ctx must a valid <a class="el" href="structdecoding__context__t.html" title="Structure that holds the private key.">decoding_context_t</a>.</p>
+<p>maybe_decoded and in_array must be initialized in advance and must have capacity = 2*block_size. ctx must a valid <a class="el" href="structdecoding__context__t.html" title="Structure that holds the private key.">decoding_context_t</a>.</p>
 <p>This decoder calculates adaptive threshold T and then flips all positions where sigma_j &gt; T. It saves the flipped symbols in the array called black. It saves symbols that were almost flipped (sigma_j &gt; T - DELTA) in the array called gray. It then recalculates sigma_j for black symbols and flips some of them back. It then recalculates sigma_j for gray symbols and flips some of them. The function to calculate the threshold value must be set in the decoding context prior to calling this function! For instance, ctx-&gt;threshold = &amp;dec_calculate_threshold_1;</p>
 <p>WARNING: This function is under development and is not tested. Do not use it!</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">maybe_decoded</td><td>pointer to a vector that will be used to store the decoded message </td></tr>
-    <tr><td class="paramname">in_vector</td><td>pointer to a vector representing the encoded message </td></tr>
+    <tr><td class="paramname">maybe_decoded</td><td>pointer to an array that will be used to store the decoded message </td></tr>
+    <tr><td class="paramname">in_array</td><td>pointer to an array representing the encoded message </td></tr>
     <tr><td class="paramname">num_iterations</td><td>number of decoding iterations </td></tr>
     <tr><td class="paramname">ctx</td><td>a valid decoding context </td></tr>
   </table>
@@ -621,12 +563,10 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on successful decoding, false otherwise </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="dec__sf__bg_8c_source.html#l00108">108</a> of file <a class="el" href="dec__sf__bg_8c_source.html">dec_sf_bg.c</a>.</p>
-
 </div>
 </div>
-<a id="a280ce87477074a22223370d2606d0453" name="a280ce87477074a22223370d2606d0453"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a280ce87477074a22223370d2606d0453">&#9670;&#160;</a></span>dec_decode_symbol_flipping_delta()</h2>
+<a id="ab266115c607358b7c6c52532a3c708ba" name="ab266115c607358b7c6c52532a3c708ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab266115c607358b7c6c52532a3c708ba">&#9670;&#160;</a></span>dec_decode_symbol_flipping_delta()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -634,14 +574,14 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">bool dec_decode_symbol_flipping_delta </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structgf4__array__t.html">gf4_array_t</a> *&#160;</td>
           <td class="paramname"><em>maybe_decoded</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *&#160;</td>
-          <td class="paramname"><em>in_vector</em>, </td>
+          <td class="paramtype"><a class="el" href="structgf4__array__t.html">gf4_array_t</a> *&#160;</td>
+          <td class="paramname"><em>in_array</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -664,12 +604,12 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Perform symbol-flipping decoding with delta param. </p>
-<p>maybe_decoded and in_vector must be initialized in advance and must have capacity = 2*block_size. ctx must a valid <a class="el" href="structdecoding__context__t.html" title="Structure that holds the private key.">decoding_context_t</a>.</p>
+<p>maybe_decoded and in_array must be initialized in advance and must have capacity = 2*block_size. ctx must a valid <a class="el" href="structdecoding__context__t.html" title="Structure that holds the private key.">decoding_context_t</a>.</p>
 <p>Symbol flipping searches maximum positive value of maximize w(s) - w(s-a*h_j) = sigma_max. This version finds sigma_max and then flips all positions where sigma_j &gt;= sigma_max-DELTA. The required value of DELTA must be set in ctx before calling this decoder! For instance, setting the value to 3: ctx-&gt;delta_setting = 3</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">maybe_decoded</td><td>pointer to a vector that will be used to store the decoded message </td></tr>
-    <tr><td class="paramname">in_vector</td><td>pointer to a vector representing the encoded message </td></tr>
+    <tr><td class="paramname">maybe_decoded</td><td>pointer to an array that will be used to store the decoded message </td></tr>
+    <tr><td class="paramname">in_array</td><td>pointer to an array representing the encoded message </td></tr>
     <tr><td class="paramname">num_iterations</td><td>number of decoding iterations </td></tr>
     <tr><td class="paramname">ctx</td><td>a valid decoding context </td></tr>
   </table>
@@ -677,12 +617,12 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on successful decoding, false otherwise </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="dec__sf__with__delta_8c_source.html#l00003">3</a> of file <a class="el" href="dec__sf__with__delta_8c_source.html">dec_sf_with_delta.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dec__sf__with__delta_8c_source.html#l00021">21</a> of file <a class="el" href="dec__sf__with__delta_8c_source.html">dec_sf_with_delta.c</a>.</p>
 
 </div>
 </div>
-<a id="ab7d333585a2d5f33278459f94179d70d" name="ab7d333585a2d5f33278459f94179d70d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab7d333585a2d5f33278459f94179d70d">&#9670;&#160;</a></span>dec_decode_symbol_flipping_threshold()</h2>
+<a id="a7787a17d5f6722d185984c2fa9dfccb9" name="a7787a17d5f6722d185984c2fa9dfccb9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7787a17d5f6722d185984c2fa9dfccb9">&#9670;&#160;</a></span>dec_decode_symbol_flipping_threshold()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -690,14 +630,14 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">bool dec_decode_symbol_flipping_threshold </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structgf4__array__t.html">gf4_array_t</a> *&#160;</td>
           <td class="paramname"><em>maybe_decoded</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *&#160;</td>
-          <td class="paramname"><em>in_vector</em>, </td>
+          <td class="paramtype"><a class="el" href="structgf4__array__t.html">gf4_array_t</a> *&#160;</td>
+          <td class="paramname"><em>in_array</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -720,12 +660,12 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Perform symbol-flipping decoding with adaptive threshold. </p>
-<p>maybe_decoded and in_vector must be initialized in advance and must have capacity = 2*block_size. ctx must a valid <a class="el" href="structdecoding__context__t.html" title="Structure that holds the private key.">decoding_context_t</a>.</p>
+<p>maybe_decoded and in_array must be initialized in advance and must have capacity = 2*block_size. ctx must a valid <a class="el" href="structdecoding__context__t.html" title="Structure that holds the private key.">decoding_context_t</a>.</p>
 <p>This decoder calculates adaptive threshold T and then flips all positions where sigma_j &gt; T. The function to calculate the threshold value must be set in the decoding context prior to calling this function! For instance, ctx-&gt;threshold = &amp;dec_calculate_threshold_1;</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">maybe_decoded</td><td>pointer to a vector that will be used to store the decoded message </td></tr>
-    <tr><td class="paramname">in_vector</td><td>pointer to a vector representing the encoded message </td></tr>
+    <tr><td class="paramname">maybe_decoded</td><td>pointer to an array that will be used to store the decoded message </td></tr>
+    <tr><td class="paramname">in_array</td><td>pointer to an array representing the encoded message </td></tr>
     <tr><td class="paramname">num_iterations</td><td>number of decoding iterations </td></tr>
     <tr><td class="paramname">ctx</td><td>a valid decoding context </td></tr>
   </table>
@@ -733,12 +673,12 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on successful decoding, false otherwise </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="dec__threshold_8c_source.html#l00122">122</a> of file <a class="el" href="dec__threshold_8c_source.html">dec_threshold.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dec__threshold_8c_source.html#l00063">63</a> of file <a class="el" href="dec__threshold_8c_source.html">dec_threshold.c</a>.</p>
 
 </div>
 </div>
-<a id="ab579b035d9aac395b82557627e4b431c" name="ab579b035d9aac395b82557627e4b431c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab579b035d9aac395b82557627e4b431c">&#9670;&#160;</a></span>dec_decrypt()</h2>
+<a id="a373d0f3ba40a226dd9cb2b14ac068351" name="a373d0f3ba40a226dd9cb2b14ac068351"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a373d0f3ba40a226dd9cb2b14ac068351">&#9670;&#160;</a></span>dec_decrypt()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -746,19 +686,19 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">bool dec_decrypt </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structgf4__array__t.html">gf4_array_t</a> *&#160;</td>
           <td class="paramname"><em>out_decrypted</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structgf4__array__t.html">gf4_array_t</a> *&#160;</td>
           <td class="paramname"><em>in_encrypted</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">bool(*)(<a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *, <a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *, size_t, <a class="el" href="structdecoding__context__t.html">decoding_context_t</a> *)&#160;</td>
+          <td class="paramtype">bool(*)(<a class="el" href="structgf4__array__t.html">gf4_array_t</a> *, <a class="el" href="structgf4__array__t.html">gf4_array_t</a> *, size_t, <a class="el" href="structdecoding__context__t.html">decoding_context_t</a> *)&#160;</td>
           <td class="paramname"><em>decode</em>, </td>
         </tr>
         <tr>
@@ -785,8 +725,8 @@ Functions</h2></td></tr>
 <p>out_decrypted and in_encrypted must be initialized in advance and must have capacity at least 2*ctx-&gt;block size! After a successful decryption, the decrypted messige is store as the first ctx-&gt;block_size symbols in out_encrypted. The remaining ctx-&gt;block_size symbols are set to 0. out_decrypted-&gt;degree MAY NOT be set! In the case of unsuccessful decryption (decoding failure was encountered), all symbols in out_decrypted are set to 0.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">out_decrypted</td><td>pointer a polynomial that will be used to store the decrypted message </td></tr>
-    <tr><td class="paramname">in_encrypted</td><td>pointer to a polynomial representing the ciphertext </td></tr>
+    <tr><td class="paramname">out_decrypted</td><td>pointer an array that will be used to store the decrypted message </td></tr>
+    <tr><td class="paramname">in_encrypted</td><td>pointer to an array representing the ciphertext </td></tr>
     <tr><td class="paramname">decode</td><td>pointer to the decoder function to be used </td></tr>
     <tr><td class="paramname">num_iterations</td><td>number of decoding iterations </td></tr>
     <tr><td class="paramname">ctx</td><td>a valid decoding context </td></tr>
@@ -795,12 +735,12 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>true on successful decryption, false otherwise </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="dec__utils_8c_source.html#l00054">54</a> of file <a class="el" href="dec__utils_8c_source.html">dec_utils.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dec__utils_8c_source.html#l00065">65</a> of file <a class="el" href="dec__utils_8c_source.html">dec_utils.c</a>.</p>
 
 </div>
 </div>
-<a id="ab2005690a723bdeb4c9c375e9cbffd5e" name="ab2005690a723bdeb4c9c375e9cbffd5e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab2005690a723bdeb4c9c375e9cbffd5e">&#9670;&#160;</a></span>dec_flip_symbol()</h2>
+<a id="a786bcf87f1df359f92bf5b11bb722b9e" name="a786bcf87f1df359f92bf5b11bb722b9e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a786bcf87f1df359f92bf5b11bb722b9e">&#9670;&#160;</a></span>dec_flip_symbol()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -814,13 +754,13 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structgf4__array__t.html">gf4_array_t</a> *&#160;</td>
           <td class="paramname"><em>syndrome</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="structgf4__array__t.html">gf4_array_t</a> *&#160;</td>
           <td class="paramname"><em>maybe_decoded</em>, </td>
         </tr>
         <tr>
@@ -870,7 +810,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="dec__utils_8c_source.html#l00043">43</a> of file <a class="el" href="dec__utils_8c_source.html">dec_utils.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dec__utils_8c_source.html#l00054">54</a> of file <a class="el" href="dec__utils_8c_source.html">dec_utils.c</a>.</p>
 
 </div>
 </div>
@@ -880,7 +820,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dec_8h.html">dec.h</a></li>
-    <li class="footer">Generated on Fri May 12 2023 15:19:20 for QC-MDPC McEliece cryptosystem over GF(4) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.6 </li>
+    <li class="footer">Generated on Mon Aug 28 2023 12:46:14 for QC-MDPC McEliece cryptosystem over GF(4) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.6 </li>
   </ul>
 </div>
 </body>

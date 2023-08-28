@@ -91,6 +91,7 @@ $(document).ready(function(){initNavTree('utils_8h.html',''); initResizable(); }
 
 <div class="header">
   <div class="summary">
+<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">utils.h File Reference</div></div>
 </div><!--header-->
@@ -99,15 +100,21 @@ $(document).ready(function(){initNavTree('utils_8h.html',''); initResizable(); }
 <p>Additional utilities.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;stdlib.h&gt;</code><br />
-<code>#include &quot;<a class="el" href="gf4__poly_8h_source.html">gf4_poly.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="contexts_8h_source.html">contexts.h</a>&quot;</code><br />
 </div>
 <p><a href="utils_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a797b759ecdfbfc9250cd55fa2e27bd85"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utils_8h.html#a797b759ecdfbfc9250cd55fa2e27bd85">UTILS_SUBTRACT_OR_ZERO</a>(a,  b)&#160;&#160;&#160;((a &gt;= b) ? (a - b) : 0)</td></tr>
+<tr class="separator:a797b759ecdfbfc9250cd55fa2e27bd85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a524e00f572c88708beb5f7c9c6a8a607"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utils_8h.html#a524e00f572c88708beb5f7c9c6a8a607">utils_hamming_weight</a> (<a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *vector)</td></tr>
-<tr class="memdesc:a524e00f572c88708beb5f7c9c6a8a607"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find Hamming weight of a vector.  <br /></td></tr>
-<tr class="separator:a524e00f572c88708beb5f7c9c6a8a607"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c9f9ad45b3c060e7e1284e03b611792"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utils_8h.html#a7c9f9ad45b3c060e7e1284e03b611792">utils_get_distance_multiplicities_h0</a> (size_t **multiplicities_same_symbols, size_t **multiplicities_different_symbols, <a class="el" href="structdecoding__context__t.html">decoding_context_t</a> *dc)</td></tr>
+<tr class="separator:a7c9f9ad45b3c060e7e1284e03b611792"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac85d6291a72204de998bf4f7706147fe"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utils_8h.html#ac85d6291a72204de998bf4f7706147fe">utils_binary_pow</a> (size_t x, size_t n)</td></tr>
+<tr class="separator:ac85d6291a72204de998bf4f7706147fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Additional utilities. </p>
@@ -115,34 +122,101 @@ Functions</h2></td></tr>
 <dl class="section date"><dt>Date</dt><dd>2023-05-12 </dd></dl>
 
 <p class="definition">Definition in file <a class="el" href="utils_8h_source.html">utils.h</a>.</p>
-</div><h2 class="groupheader">Function Documentation</h2>
-<a id="a524e00f572c88708beb5f7c9c6a8a607" name="a524e00f572c88708beb5f7c9c6a8a607"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a524e00f572c88708beb5f7c9c6a8a607">&#9670;&#160;</a></span>utils_hamming_weight()</h2>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a797b759ecdfbfc9250cd55fa2e27bd85" name="a797b759ecdfbfc9250cd55fa2e27bd85"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a797b759ecdfbfc9250cd55fa2e27bd85">&#9670;&#160;</a></span>UTILS_SUBTRACT_OR_ZERO</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">size_t utils_hamming_weight </td>
+          <td class="memname">#define UTILS_SUBTRACT_OR_ZERO</td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structgf4__poly__t.html">gf4_poly_t</a> *&#160;</td>
-          <td class="paramname"><em>vector</em></td><td>)</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">a, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">b&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;((a &gt;= b) ? (a - b) : 0)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Find Hamming weight of a vector. </p>
-<p>vector must be initialized beforehand.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">vector</td><td>pointer to a vector </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Hamming weight of vector </dd></dl>
+<p class="definition">Definition at line <a class="el" href="utils_8h_source.html#l00036">36</a> of file <a class="el" href="utils_8h_source.html">utils.h</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="utils_8c_source.html#l00003">3</a> of file <a class="el" href="utils_8c_source.html">utils.c</a>.</p>
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="ac85d6291a72204de998bf4f7706147fe" name="ac85d6291a72204de998bf4f7706147fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac85d6291a72204de998bf4f7706147fe">&#9670;&#160;</a></span>utils_binary_pow()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t utils_binary_pow </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>n</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="utils_8c_source.html#l00065">65</a> of file <a class="el" href="utils_8c_source.html">utils.c</a>.</p>
+
+</div>
+</div>
+<a id="a7c9f9ad45b3c060e7e1284e03b611792" name="a7c9f9ad45b3c060e7e1284e03b611792"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c9f9ad45b3c060e7e1284e03b611792">&#9670;&#160;</a></span>utils_get_distance_multiplicities_h0()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void utils_get_distance_multiplicities_h0 </td>
+          <td>(</td>
+          <td class="paramtype">size_t **&#160;</td>
+          <td class="paramname"><em>multiplicities_same_symbols</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t **&#160;</td>
+          <td class="paramname"><em>multiplicities_different_symbols</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structdecoding__context__t.html">decoding_context_t</a> *&#160;</td>
+          <td class="paramname"><em>dc</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="utils_8c_source.html#l00021">21</a> of file <a class="el" href="utils_8c_source.html">utils.c</a>.</p>
 
 </div>
 </div>
@@ -152,7 +226,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="utils_8h.html">utils.h</a></li>
-    <li class="footer">Generated on Fri May 12 2023 15:19:20 for QC-MDPC McEliece cryptosystem over GF(4) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.6 </li>
+    <li class="footer">Generated on Mon Aug 28 2023 12:46:14 for QC-MDPC McEliece cryptosystem over GF(4) by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.6 </li>
   </ul>
 </div>
 </body>

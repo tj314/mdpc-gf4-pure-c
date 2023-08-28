@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['block_5fsize_0',['block_size',['../structencoding__context__t.html#ad7524613c3881d09bda0d270ede83779',1,'encoding_context_t::block_size()'],['../structdecoding__context__t.html#ad7524613c3881d09bda0d270ede83779',1,'decoding_context_t::block_size()']]]
+  ['array_0',['array',['../structgf4__array__t.html#a703913905fa50f376ba9cf7d7c558509',1,'gf4_array_t']]]
 ];
