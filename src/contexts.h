@@ -120,9 +120,8 @@ void contexts_save(const char * filename, encoding_context_t * enc_ctx, decoding
  * @see contexts_deinit
  *
  * @param filename savefile path
- * @param block_size block size
  * @param enc_ctx memory location of the encoding context
  * @param dec_ctx memory location of the decoding context
  */
-void contexts_load(const char * filename, size_t block_size, encoding_context_t * enc_ctx, decoding_context_t * dec_ctx);
+void contexts_load(const char * filename, encoding_context_t * enc_ctx, decoding_context_t * dec_ctx);
 #endif // MDPC_GF4_CONTEXTS_H

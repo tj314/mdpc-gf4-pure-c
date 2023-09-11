@@ -1454,7 +1454,7 @@ void test_contexts_save_load() {
 
         // test: save, load, compare to the original
         contexts_save(filename, &ec_gen, &dc_gen);
-        contexts_load(filename, block_size, &ec_load, &dc_load);
+        contexts_load(filename, &ec_load, &dc_load);
         assert(ec_gen.block_size == ec_load.block_size);
         assert(dc_gen.block_size == dc_load.block_size);
         assert(gf4_poly_equal(&ec_gen.second_block_G, &ec_load.second_block_G));

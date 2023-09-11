@@ -91,20 +91,43 @@ void gen_keys(const char * keys_fname, const char * mults_fname) {
 void collect_syndrome_weights(const size_t id) {
     size_t half_block_size = (block_size / 2) + 1; // half of the block size rounded up
 
-    size_t * weights_distances_same_e0 = calloc(half_block_size, sizeof(size_t));
-    size_t * weights_distances_alpha_multiple_right_e0 = calloc(half_block_size, sizeof(size_t));
-    size_t * weights_distances_alpha_multiple_left_e0 = calloc(half_block_size, sizeof(size_t));
+    size_t * weights_same_e0 = calloc(half_block_size, sizeof(size_t));
+    size_t * weights_alpha_multiple_right_e0 = calloc(half_block_size, sizeof(size_t));
+    size_t * weights_alpha_multiple_left_e0 = calloc(half_block_size, sizeof(size_t));
+    size_t * weights_same_e1 = calloc(half_block_size, sizeof(size_t));
+    size_t * weights_alpha_multiple_right_e1 = calloc(half_block_size, sizeof(size_t));
+    size_t * weights_alpha_multiple_left_e1 = calloc(half_block_size, sizeof(size_t));
+    size_t * attempts_same_e0 = calloc(half_block_size, sizeof(size_t));
+    size_t * attempts_alpha_multiple_right_e0 = calloc(half_block_size, sizeof(size_t));
+    size_t * attempts_alpha_multiple_left_e0 = calloc(half_block_size, sizeof(size_t));
+    size_t * attempts_same_e1 = calloc(half_block_size, sizeof(size_t));
+    size_t * attempts_alpha_multiple_right_e1 = calloc(half_block_size, sizeof(size_t));
+    size_t * attempts_alpha_multiple_left_e1 = calloc(half_block_size, sizeof(size_t));
+    bool * distance_same_e0_written_to = calloc(half_block_size, sizeof(bool));
+    bool * distance_same_e1_written_to = calloc(half_block_size, sizeof(bool));
+    bool * distance_alpha_right_e0_written_to = calloc(half_block_size, sizeof(bool));
+    bool * distance_alpha_right_e1_written_to = calloc(half_block_size, sizeof(bool));
+    bool * distance_alpha_left_e0_written_to = calloc(half_block_size, sizeof(bool));
+    bool * distance_alpha_left_e1_written_to = calloc(half_block_size, sizeof(bool));
 
-    size_t * weights_distances_same_e1 = calloc(half_block_size, sizeof(size_t));
-    size_t * weights_distances_alpha_multiple_right_e1 = calloc(half_block_size, sizeof(size_t));
-    size_t * weights_distances_alpha_multiple_left_e1 = calloc(half_block_size, sizeof(size_t));
-
-    if (NULL == weights_distances_same_e0
-        || NULL == weights_distances_alpha_multiple_right_e0
-        || NULL == weights_distances_alpha_multiple_left_e0
-        || NULL == weights_distances_same_e1
-        || NULL == weights_distances_alpha_multiple_right_e1
-        || NULL == weights_distances_alpha_multiple_left_e1) {
+    if (NULL == weights_same_e0
+        || NULL == weights_alpha_multiple_right_e0
+        || NULL == weights_alpha_multiple_left_e0
+        || NULL == weights_same_e1
+        || NULL == weights_alpha_multiple_right_e1
+        || NULL == weights_alpha_multiple_left_e1
+        || NULL == attempts_same_e0
+        || NULL == attempts_alpha_multiple_right_e0
+        || NULL == attempts_alpha_multiple_left_e0
+        || NULL == attempts_same_e1
+        || NULL == attempts_alpha_multiple_right_e1
+        || NULL == attempts_alpha_multiple_left_e1
+        || NULL == distance_same_e0_written_to
+        || NULL == distance_same_e1_written_to
+        || NULL == distance_alpha_right_e0_written_to
+        || NULL == distance_alpha_right_e1_written_to
+        || NULL == distance_alpha_left_e0_written_to
+        || NULL == distance_alpha_left_e1_written_to) {
         fprintf(stderr, "%s (%d): Allocation error!\n", __func__, __LINE__);
         exit(-1);
     }
@@ -114,58 +137,91 @@ void collect_syndrome_weights(const size_t id) {
 
     encoding_context_t ec;
     decoding_context_t dc;
-    contexts_load("keys.txt", block_size, &ec, &dc);
+    contexts_load("keys.txt", &ec, &dc);
+
+    if (ec.block_size != dc.block_size || ec.block_size != block_size) {
+        fprintf(stderr, "%s: Error! Incorrect keys.txt block size!\n", __func__);
+        exit(-1);
+    }
 
     for (size_t run = 0; run < M; ++run) {
         fprintf(stderr, "Progress: %zu/%zu\n", (run+1), M);
         random_weighted_gf4_array(&err, 2*block_size, num_errors);
         dec_calculate_syndrome(&syndrome, &err, &dc);
         size_t syndrome_weight = gf4_array_hamming_weight(&syndrome);
+        // fprintf(stderr, "syndrome weight: %zu\n", syndrome_weight);
+        // fprintf(stderr, "err weight: %zu\n", gf4_array_hamming_weight(&err));
 
         for (size_t i = 0; i < block_size; ++i) {
             for (size_t j = i + 1; j < block_size; ++j) {
-                size_t distance = (j - i) < half_block_size ? j - i : block_size - (j - i);
-
-                // first half of err (e0)
-                gf4_t a_e0 = err.array[i], b_e0 = err.array[j];
-                if (0 != a_e0 && a_e0 == b_e0) {
-                    weights_distances_same_e0[distance] += syndrome_weight;
-                } else if (IS_ALPHA_MULT_RIGHT(a_e0, b_e0)) {
-                    weights_distances_alpha_multiple_right_e0[distance] += syndrome_weight;
-                } else if (IS_ALPHA_MULT_LEFT(a_e0, b_e0)) {
-                    weights_distances_alpha_multiple_left_e0[distance] += syndrome_weight;
+                size_t distance = (j - i) < half_block_size ? (j - i) : (block_size - (j - i));
+                // e0
+                if (0 != err.array[i] && 0 != err.array[j]) {
+                    if (err.array[i] == err.array[j]) {
+                        if (!distance_same_e0_written_to[distance]) {
+                            weights_same_e0[distance] += (syndrome_weight);
+                            attempts_same_e0[distance] += 1;
+                            distance_same_e0_written_to[distance] = true;
+                        }
+                    } else if (IS_ALPHA_MULT_RIGHT(err.array[i], err.array[j])) {
+                        if (!distance_alpha_right_e0_written_to[distance]) {
+                            weights_alpha_multiple_right_e0[distance] += syndrome_weight;
+                            attempts_alpha_multiple_right_e0[distance] += 1;
+                            distance_alpha_right_e0_written_to[distance] = true;
+                        }
+                    } else if (IS_ALPHA_MULT_LEFT(err.array[i], err.array[j])) {
+                        if (!distance_alpha_left_e0_written_to[distance]) {
+                            weights_alpha_multiple_left_e0[distance] += syndrome_weight;
+                            attempts_alpha_multiple_left_e0[distance] += 1;
+                            distance_alpha_left_e0_written_to[distance] = true;
+                        }
+                    }
                 }
 
-                // second half of err (e1)
-                gf4_t a_e1 = err.array[block_size + i], b_e1 = err.array[block_size + j];
-                if (0 != a_e1 && a_e1 == b_e1) {
-                    weights_distances_same_e1[distance] += syndrome_weight;
-                } else if (IS_ALPHA_MULT_RIGHT(a_e1, b_e1)) {
-                    weights_distances_alpha_multiple_right_e1[distance] += syndrome_weight;
-                } else if (IS_ALPHA_MULT_LEFT(a_e1, b_e1)) {
-                    weights_distances_alpha_multiple_left_e1[distance] += syndrome_weight;
+                // e1
+                if (0 != err.array[block_size + i] && 0 != err.array[block_size + j]) {
+                    if (err.array[block_size + i] == err.array[block_size + j]) {
+                        if (!distance_same_e1_written_to[distance]) {
+                            weights_same_e1[distance] += syndrome_weight;
+                            attempts_same_e1[distance] += 1;
+                            distance_same_e1_written_to[distance] = true;
+                        }
+                    } else if (IS_ALPHA_MULT_RIGHT(err.array[block_size + i], err.array[block_size + j])) {
+                        if (!distance_alpha_right_e1_written_to[distance]) {
+                            weights_alpha_multiple_right_e1[distance] += syndrome_weight;
+                            attempts_alpha_multiple_right_e1[distance] += 1;
+                            distance_alpha_right_e1_written_to[distance] = true;
+                        }
+                    } else if (IS_ALPHA_MULT_LEFT(err.array[block_size + i], err.array[block_size + j])) {
+                        if (!distance_alpha_left_e1_written_to[distance]) {
+                            weights_alpha_multiple_left_e1[distance] += syndrome_weight;
+                            attempts_alpha_multiple_left_e1[distance] += 1;
+                            distance_alpha_left_e1_written_to[distance] = true;
+                        }
+                    }
                 }
             }
         }
-
+        memset(distance_same_e0_written_to, 0, half_block_size * sizeof(bool));
+        memset(distance_same_e1_written_to, 0, half_block_size * sizeof(bool));
+        memset(distance_alpha_right_e0_written_to, 0, half_block_size * sizeof(bool));
+        memset(distance_alpha_right_e1_written_to, 0, half_block_size * sizeof(bool));
+        memset(distance_alpha_left_e0_written_to, 0, half_block_size * sizeof(bool));
+        memset(distance_alpha_left_e1_written_to, 0, half_block_size * sizeof(bool));
         gf4_array_zero_out(&syndrome);
         gf4_array_zero_out(&err);
+        for (size_t check = 0; check < block_size; ++check) {
+            if (0 != syndrome.array[check] || 0 != err.array[check] || 0 != err.array[check + block_size]) {
+                fprintf(stderr, "%s: Error! Arrays are not zeroed out!!!\n", __func__);
+                exit(-1);
+            }
+        }
     }
 
     char buffer[100] = {0};
-
-    // number of trials
-    sprintf(buffer, "num_trials_%zu.txt", id);
-    FILE * file = fopen(buffer, "w+");
-    if (NULL == file) {
-        fprintf(stderr, "%s (%d): Fopen error!\n", __func__, __LINE__);
-        exit(-1);
-    }
-    fprintf(file, "%zu\n", M);
-    fclose(file);
+    FILE * file;
 
     // same symbols
-    memset(buffer, 0, 100 * sizeof(char));
     sprintf(buffer, "weights_same_e0_%zu.txt", id);
     file = fopen(buffer, "w+");
     if (NULL == file) {
@@ -173,7 +229,7 @@ void collect_syndrome_weights(const size_t id) {
         exit(-1);
     }
     for (size_t dist = 1; dist < half_block_size; ++dist) {
-        fprintf(file, "%zu %zu\n", dist, weights_distances_same_e0[dist]);
+        fprintf(file, "%zu %zu %zu\n", dist, weights_same_e0[dist], attempts_same_e0[dist]);
     }
     fclose(file);
 
@@ -185,7 +241,7 @@ void collect_syndrome_weights(const size_t id) {
         exit(-1);
     }
     for (size_t dist = 1; dist < half_block_size; ++dist) {
-        fprintf(file, "%zu %zu\n", dist, weights_distances_same_e1[dist]);
+        fprintf(file, "%zu %zu %zu\n", dist, weights_same_e1[dist], attempts_same_e1[dist]);
     }
     fclose(file);
 
@@ -198,7 +254,7 @@ void collect_syndrome_weights(const size_t id) {
         exit(-1);
     }
     for (size_t dist = 1; dist < half_block_size; ++dist) {
-        fprintf(file, "%zu %zu\n", dist, weights_distances_alpha_multiple_right_e0[dist]);
+        fprintf(file, "%zu %zu %zu\n", dist, weights_alpha_multiple_right_e0[dist], attempts_alpha_multiple_right_e0[dist]);
     }
     fclose(file);
 
@@ -210,7 +266,7 @@ void collect_syndrome_weights(const size_t id) {
         exit(-1);
     }
     for (size_t dist = 1; dist < half_block_size; ++dist) {
-        fprintf(file, "%zu %zu\n", dist, weights_distances_alpha_multiple_right_e1[dist]);
+        fprintf(file, "%zu %zu %zu\n", dist, weights_alpha_multiple_right_e1[dist], attempts_alpha_multiple_right_e1[dist]);
     }
     fclose(file);
 
@@ -223,7 +279,7 @@ void collect_syndrome_weights(const size_t id) {
         exit(-1);
     }
     for (size_t dist = 1; dist < half_block_size; ++dist) {
-        fprintf(file, "%zu %zu\n", dist, weights_distances_alpha_multiple_left_e0[dist]);
+        fprintf(file, "%zu %zu %zu\n", dist, weights_alpha_multiple_left_e0[dist], attempts_alpha_multiple_left_e0[dist]);
     }
     fclose(file);
 
@@ -235,19 +291,31 @@ void collect_syndrome_weights(const size_t id) {
         exit(-1);
     }
     for (size_t dist = 1; dist < half_block_size; ++dist) {
-        fprintf(file, "%zu %zu\n", dist, weights_distances_alpha_multiple_left_e1[dist]);
+        fprintf(file, "%zu %zu %zu\n", dist, weights_alpha_multiple_left_e1[dist], attempts_alpha_multiple_left_e1[dist]);
     }
     fclose(file);
 
     contexts_deinit(&ec, &dc);
     gf4_array_deinit(&syndrome);
     gf4_array_deinit(&err);
-    free(weights_distances_alpha_multiple_left_e1);
-    free(weights_distances_alpha_multiple_right_e1);
-    free(weights_distances_same_e1);
-    free(weights_distances_alpha_multiple_left_e0);
-    free(weights_distances_alpha_multiple_right_e0);
-    free(weights_distances_same_e0);
+    free(distance_alpha_left_e1_written_to);
+    free(distance_alpha_left_e0_written_to);
+    free(distance_alpha_right_e1_written_to);
+    free(distance_alpha_right_e0_written_to);
+    free(distance_same_e1_written_to);
+    free(distance_same_e0_written_to);
+    free(attempts_alpha_multiple_left_e1);
+    free(attempts_alpha_multiple_right_e1);
+    free(attempts_same_e1);
+    free(attempts_alpha_multiple_left_e0);
+    free(attempts_alpha_multiple_right_e0);
+    free(attempts_same_e0);
+    free(weights_alpha_multiple_left_e1);
+    free(weights_alpha_multiple_right_e1);
+    free(weights_same_e1);
+    free(weights_alpha_multiple_left_e0);
+    free(weights_alpha_multiple_right_e0);
+    free(weights_same_e0);
 }
 
 // D0[i] == true => i \in D0. equiv. for D1
@@ -262,7 +330,7 @@ void reconstruct_private_key(bool * D0, bool * D1, size_t s0, size_t s1) {
 
     encoding_context_t ec;
     decoding_context_t dc;
-    contexts_load("keys.txt", block_size, &ec, &dc);
+    contexts_load("keys.txt", &ec, &dc);
 
     // construct Z0 and Z1' (called not_Z1 in the code)
     // we will use this to delete some rows and columns of matrix B later
