@@ -1,3 +1,0 @@
-/home/tj/Dokumenty/mdpc-gf4-pure-c/gjs/CMakeFiles/mdpc-gf4.dir
-/home/tj/Dokumenty/mdpc-gf4-pure-c/gjs/CMakeFiles/edit_cache.dir
-/home/tj/Dokumenty/mdpc-gf4-pure-c/gjs/CMakeFiles/rebuild_cache.dir
